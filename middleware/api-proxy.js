@@ -1,4 +1,7 @@
-// server/middleware/api-proxy.js
+// Fix for middleware export
+// This should be placed in server/middleware/api-proxy.js
+
+// Export the handler function directly
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
   const path = getRequestURL(event).pathname;
@@ -23,7 +26,11 @@ export default defineEventHandler(async (event) => {
   }
 
   // Add authorization header
-  headers.Authorization = headers.Authorization || `Bearer ${config.apiToken}`;
+  headers.Authorization = `Bearer ${config.apiToken}`;
+
+  // Remove any existing origin headers that might cause issues
+  delete headers.origin;
+  delete headers.Origin;
 
   try {
     // Forward request to backend
