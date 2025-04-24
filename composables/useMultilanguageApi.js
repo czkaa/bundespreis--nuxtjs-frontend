@@ -1,7 +1,10 @@
+// composables/useMultilanguageApi.js
 export default function useMultilanguageApi() {
   const { locale } = useI18n();
   const config = useRuntimeConfig();
-  const backendUrl = config.public.backendUrl;
+
+  // Use relative URLs instead of direct backend URLs
+  const apiBase = '/api';
 
   const fetchOptions = {
     server: true,
@@ -9,7 +12,6 @@ export default function useMultilanguageApi() {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      Origin: backendUrl,
     },
     responseType: 'json',
   };
@@ -18,7 +20,7 @@ export default function useMultilanguageApi() {
     try {
       // Clean the slug to ensure no double slashes
       const cleanSlug = slug.replace(/^\/+|\/+$/g, '');
-      const url = `${backendUrl}/${locale.value}/${cleanSlug}`;
+      const url = `${apiBase}/${locale.value}/${cleanSlug}`;
 
       const { data } = await useFetch(url, {
         ...fetchOptions,
@@ -33,7 +35,7 @@ export default function useMultilanguageApi() {
 
   const getFooterPages = async () => {
     try {
-      const { data } = await useFetch(`${backendUrl}/${locale.value}/site`, {
+      const { data } = await useFetch(`${apiBase}/${locale.value}/site`, {
         ...fetchOptions,
         key: `footer-pages-${locale.value}`,
         transform: (response) => response.footerPages,

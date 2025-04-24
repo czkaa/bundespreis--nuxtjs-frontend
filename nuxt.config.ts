@@ -61,6 +61,7 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/**': { ssr: true }
+    '/**': { ssr: true },
+    '/api/**': { cors: true }  // Enable CORS for API routes
   }
 })

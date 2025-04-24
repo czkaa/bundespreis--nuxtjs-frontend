@@ -6,9 +6,9 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   // Only fetch on server-side or if data doesn't exist yet
   if (process.server || !footerPagesGlobal.value) {
     try {
-      const response = await fetch(`${config.public.backendUrl}/site`, {
+      // Use the API proxy instead of direct backend URL
+      const response = await fetch(`/api/site`, {
         headers: {
-          Authorization: `Bearer ${config.apiToken}`,
           'Content-Type': 'application/json',
         },
       });
