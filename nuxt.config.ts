@@ -10,7 +10,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     apiToken: process.env.API_TOKEN || 'K18eVvSsRMtu-NTG!3_M',
     public: {
-      backendUrl: process.env.BACKEND_URL || 'http://localhost:8000',
+      backendUrl: 'https://bundespreis-backend.czkaa.site',
     }
   },
 
@@ -19,7 +19,7 @@ export default defineNuxtConfig({
     defaultLocale: 'de',
     detectBrowserLanguage: false,
     langDir: 'locales',
-    baseUrl: 'http://localhost:8000',
+    baseUrl: 'https://bundespreis-backend.czkaa.site',
     skipSettingLocaleOnNavigate: false,
     locales: [
       {
@@ -43,7 +43,7 @@ export default defineNuxtConfig({
 
   hooks: {
     async 'prerender:routes'(ctx) {
-      const backendUrl = 'http://localhost:8000';
+      const backendUrl = 'https://bundespreis-backend.czkaa.site';
       const { footerPages } = await fetch(`${backendUrl}/site`, {
         headers: {
           Authorization: `Bearer ${process.env.API_TOKEN || 'K18eVvSsRMtu-NTG!3_M'}`,
