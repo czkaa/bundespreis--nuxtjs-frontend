@@ -1,15 +1,17 @@
-export default defineNuxtPlugin(async (nuxtApp) => {
+// plugins/site-data.js
+export default defineNuxtPlugin((nuxtApp) => {
   const footerPagesGlobal = useState('footer-pages', () => []);
 
-  if (process.server || !footerPagesGlobal.value.length) {
+  // Use onNuxtReady to ensure the app is mounted before fetching
+  nuxtApp.hook('app:mounted', async () => {
     try {
+      // Try to fetch data
       const data = await $fetch('/api/site');
       footerPagesGlobal.value = data?.footerPages || [];
     } catch (error) {
       console.error('Failed to fetch site data:', error);
-      // Keep the default empty array
     }
-  }
+  });
 
   return {
     provide: {
