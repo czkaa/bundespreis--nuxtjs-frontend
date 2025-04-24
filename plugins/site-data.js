@@ -1,17 +1,25 @@
 // plugins/site-data.js
-export default defineNuxtPlugin((nuxtApp) => {
+export default defineNuxtPlugin(async (nuxtApp) => {
+  const config = useRuntimeConfig();
   const footerPagesGlobal = useState('footer-pages', () => []);
 
-  // Use onNuxtReady to ensure the app is mounted before fetching
-  nuxtApp.hook('app:mounted', async () => {
+  // Only fetch on server-side to avoid CORS issues
+  if (process.server) {
     try {
-      // Try to fetch data
-      const data = await $fetch('/api/site');
-      footerPagesGlobal.value = data?.footerPages || [];
+      const response = await fetch(`${config.public.backendUrl}/site`, {
+        headers: {
+          Authorization: `Bearer ${config.apiToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await response.json();
+      footerPagesGlobal.value = data.footerPages || [];
     } catch (error) {
       console.error('Failed to fetch site data:', error);
+      footerPagesGlobal.value = [];
     }
-  });
+  }
 
   return {
     provide: {

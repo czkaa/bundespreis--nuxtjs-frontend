@@ -33,20 +33,21 @@
           </template>
 
           <div class="flex gap-2">
-            <NuxtLink
-              :to="switchLocalePath('de')"
+            <!-- Using regular <a> tags with full URLs to force page reload -->
+            <a
+              :href="fullPathForLocale('de')"
               class="px-3 py-1 rounded transition-colors"
               :class="locale === 'de' ? 'bg-gray-200' : 'hover:bg-gray-100'"
             >
               DE
-            </NuxtLink>
-            <NuxtLink
-              :to="switchLocalePath('en')"
+            </a>
+            <a
+              :href="fullPathForLocale('en')"
               class="px-3 py-1 rounded transition-colors"
               :class="locale === 'en' ? 'bg-gray-200' : 'hover:bg-gray-100'"
             >
               EN
-            </NuxtLink>
+            </a>
           </div>
         </nav>
       </div>
@@ -63,4 +64,17 @@ const switchLocalePath = useSwitchLocalePath();
 // Use the global state from the plugin
 const { $siteData } = useNuxtApp();
 const footerPages = computed(() => $siteData.footerPages.value);
+
+// Function to generate full absolute URL paths for language switching
+// This forces a full page reload and avoids client-side navigation issues
+function fullPathForLocale(localeCode) {
+  const path = switchLocalePath(localeCode);
+  // If we're in the browser, return the full URL
+  if (process.client) {
+    const origin = window.location.origin;
+    return `${origin}${path}`;
+  }
+  // During SSR, just return the path
+  return path;
+}
 </script>

@@ -60,8 +60,20 @@ export default defineNuxtConfig({
     }
   },
 
+  // Add CORS headers for all routes
+  nitro: {
+    routeRules: {
+      '/**': {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+        }
+      }
+    }
+  },
+
   routeRules: {
-    '/**': { ssr: true },
-    '/api/**': { cors: true }  // Enable CORS for API routes
+    '/**': { ssr: true }
   }
 })
