@@ -1,7 +1,5 @@
 export default function useMultilanguageApi() {
   const { locale } = useI18n();
-
-  // Use /api/ prefix for all backend requests
   const apiBase = '/api';
 
   const getPageData = async (slug) => {
@@ -10,26 +8,24 @@ export default function useMultilanguageApi() {
       const url = `${apiBase}/${locale.value}/${cleanSlug}`;
 
       const { data } = await useFetch(url);
-      return data.value;
+      return data.value || {}; // Return empty object as fallback
     } catch (error) {
       console.error(`Error fetching page data for slug ${slug}:`, error);
-      return null;
+      return {}; // Return empty object on error
     }
   };
 
   const getFooterPages = async () => {
     try {
       const { data } = await useFetch(`${apiBase}/${locale.value}/site`, {
-        transform: (response) => response.footerPages,
+        transform: (response) => response?.footerPages || [], // Handle null response
       });
-      return data.value;
+      return data.value || []; // Return empty array as fallback
     } catch (error) {
       console.error('Error fetching footer pages:', error);
-      return null;
+      return []; // Return empty array on error
     }
   };
-
-  // You can add more API methods here as needed
 
   return {
     getPageData,

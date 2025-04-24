@@ -1,7 +1,13 @@
+// server/api/[...].js
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
   const url = getRequestURL(event);
   const path = url.pathname;
+
+  // Skip service worker requests - these should be handled by Nuxt
+  if (path.includes('sw.js')) {
+    return;
+  }
 
   // Get the path after /api/
   const apiPath = path.replace(/^\/api/, '');
@@ -14,20 +20,18 @@ export default defineEventHandler(async (event) => {
   // Add authorization
   headers.Authorization = `Bearer ${config.apiToken}`;
 
-  // Get body for non-GET requests
-  let body = null;
-  if (method !== 'GET' && method !== 'HEAD') {
-    body = await readBody(event);
-  }
-
   try {
     // Forward the request to the backend
     return await $fetch(targetUrl, {
       method,
       headers,
-      body,
     });
   } catch (error) {
+    // For 404 errors, return empty data instead of throwing an error
+    if (error.response?.status === 404) {
+      return { footerPages: [] };
+    }
+
     console.error(`API error for ${apiPath}:`, error);
     throw createError({
       statusCode: error.response?.status || 500,

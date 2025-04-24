@@ -5,14 +5,14 @@
 </template>
 
 <script setup>
-import { NuxtLayout } from '#components';
-
+// These should be at the top level
 const route = useRoute();
 const { locale } = useI18n();
 const localePath = useLocalePath();
 const switchLocalePath = useSwitchLocalePath();
 const { getFooterPages } = useMultilanguageApi();
 
+// This is fine as it's at the top level
 const { data: footerPages } = await useAsyncData(
   `footer-pages-${locale.value}`,
   () => getFooterPages(),
