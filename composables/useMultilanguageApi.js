@@ -19,7 +19,7 @@ export default function useMultilanguageApi() {
       // Clean the slug to ensure no double slashes
       const cleanSlug = slug.replace(/^\/+|\/+$/g, '');
       const url = `${backendUrl}/${locale.value}/${cleanSlug}`;
-      
+
       const { data } = await useFetch(url, {
         ...fetchOptions,
         key: `page-${cleanSlug}-${locale.value}`,

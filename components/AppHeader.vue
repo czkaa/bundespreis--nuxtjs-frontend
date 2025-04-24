@@ -14,10 +14,7 @@
             :to="localePath('/')"
             class="text-secondary-700 hover:text-primary-600 transition duration-200"
             :class="{
-              'text-primary-600':
-                route.path === '/' ||
-                route.path === '/de' ||
-                route.path === '/en',
+              'text-primary-600': route.path === '/' || route.path === '/en',
             }"
           >
             {{ $t('navigation.home') }}

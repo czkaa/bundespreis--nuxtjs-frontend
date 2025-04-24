@@ -18,9 +18,10 @@ const { getPageData } = useMultilanguageApi();
 
 const slug = computed(() => {
   const slugArray = route.params.slug;
-  // Remove locale prefix if present
+  // Handle path construction
   const path = Array.isArray(slugArray) ? slugArray.join('/') : slugArray;
-  return '/' + path.replace(/^(de|en)\//, '');
+  // No need to strip locale prefix for default locale
+  return '/' + path;
 });
 
 const { data: pageData } = await useAsyncData(

@@ -15,7 +15,7 @@ export default defineNuxtConfig({
   },
 
   i18n: {
-    strategy: 'prefix',
+    strategy: 'prefix_except_default',
     defaultLocale: 'de',
     detectBrowserLanguage: false,
     langDir: 'locales',
@@ -25,12 +25,14 @@ export default defineNuxtConfig({
       {
         code: 'de',
         name: 'Deutsch',
-        file: 'de.json'
+        file: 'de.json',
+        iso: 'de-DE'
       },
       {
         code: 'en',
         name: 'English',
-        file: 'en.json'
+        file: 'en.json',
+        iso: 'en-US'
       }
     ]
   },
@@ -50,10 +52,9 @@ export default defineNuxtConfig({
       }).then(res => res.json());
 
       ctx.routes.add(`/`);
-      ctx.routes.add(`/de`);
       ctx.routes.add(`/en`);
       for (const page of footerPages) {
-        ctx.routes.add(`/de/${page.uri}`);
+        ctx.routes.add(`/${page.uri}`);
         ctx.routes.add(`/en/${page.uri}`);
       }
     }
