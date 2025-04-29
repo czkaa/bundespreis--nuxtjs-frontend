@@ -1,44 +1,76 @@
 <template>
-  <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
+  <div>
+    <LayoutHeader :siteData="siteData" class="fixed top-0 z-50" />
+
+    <div
+      class="w-full top-0 h-frame-h fixed overflow-y-auto snap-y snap-mandatory"
+      :class="{ 'overflow-hidden': gap.isGap }"
+    >
+      <LayoutIntro :siteData="siteData" />
+
+      <LayoutGallery :siteData="siteData" />
+
+      <LayoutFooter :siteData="siteData" class="sm:hidden" />
+    </div>
+
+    <main
+      :key="currentLang"
+      class="max-w-[40vw] mx-auto p-10 overflow-hidden"
+      :class="
+        true ? 'pointer-events-auto z-50' : 'opacity-0 pointer-events-none'
+      "
+    >
+      <NuxtPage />
+    </main>
+  </div>
 </template>
 
 <script setup>
-// These should be at the top level
-const route = useRoute();
-const { locale } = useI18n();
-const localePath = useLocalePath();
-const switchLocalePath = useSwitchLocalePath();
-const { getFooterPages } = useMultilanguageApi();
+const { currentLang } = useLanguage();
+const gap = useGapStore();
 
-// This is fine as it's at the top level
-const { data: footerPages } = await useAsyncData(
-  `footer-pages-${locale.value}`,
-  () => getFooterPages(),
-  {
-    server: true,
-    watch: [() => locale.value],
+const { data: siteData } = await useFetch('/api/site', {
+  server: true,
+  query: {
+    lang: currentLang,
+  },
+});
+
+// Fixed useHead implementation
+useHead(() => {
+  const headConfig = {
+    title: siteData.value?.title || 'Bundespreis für Kunststudierende',
+    meta: [
+      {
+        name: 'description',
+        content: siteData.value?.seo?.description || '',
+      },
+      {
+        name: 'keywords',
+        content: siteData.value?.seo?.keywords || '',
+      },
+    ],
+  };
+
+  if (siteData.value?.seo?.image) {
+    headConfig.meta.push({
+      property: 'og:image',
+      content: siteData.value.seo.image,
+    });
   }
-);
+
+  return headConfig;
+});
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@400;700&display=swap');
-
-body {
-  font-family: 'Inter', sans-serif;
-  color: #1e293b;
-  background-color: #fff;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
 }
 
-.page-enter-active,
-.page-leave-active {
-  transition: all 0.2s;
-}
-.page-enter-from,
-.page-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
-  transform: translateY(10px);
 }
 </style>

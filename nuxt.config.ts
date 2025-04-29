@@ -1,79 +1,46 @@
+// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: false },
-
-  modules: [
-    '@nuxtjs/tailwindcss',
-    '@nuxtjs/i18n',
-  ],
-
-  runtimeConfig: {
-    apiToken: process.env.API_TOKEN || 'K18eVvSsRMtu-NTG!3_M',
-    public: {
-      backendUrl: 'https://bundespreis-backend.czkaa.site',
-    }
-  },
-
-  i18n: {
-    strategy: 'prefix_except_default',
-    defaultLocale: 'de',
-    detectBrowserLanguage: false,
-    langDir: 'locales',
-    baseUrl: 'https://bundespreis-backend.czkaa.site',
-    skipSettingLocaleOnNavigate: false,
-    locales: [
-      {
-        code: 'de',
-        name: 'Deutsch',
-        file: 'de.json',
-        iso: 'de-DE'
-      },
-      {
-        code: 'en',
-        name: 'English',
-        file: 'en.json',
-        iso: 'en-US'
-      }
+  components: {
+    dirs: [
+      '~/components',
+      { path: '~/components/global', global: true },
+      { path: '~/components', pathPrefix: false, prefix: '', extensions: ['vue'] },
     ]
   },
-
-  app: {
-    pageTransition: { name: 'page', mode: 'out-in' }
-  },
-
-  hooks: {
-    async 'prerender:routes'(ctx) {
-      const backendUrl = 'https://bundespreis-backend.czkaa.site';
-      const { footerPages } = await fetch(`${backendUrl}/site`, {
-        headers: {
-          Authorization: `Bearer ${process.env.API_TOKEN || 'K18eVvSsRMtu-NTG!3_M'}`,
-          'Content-Type': 'application/json',
-        },
-      }).then(res => res.json());
-
-      ctx.routes.add(`/`);
-      ctx.routes.add(`/en`);
-      for (const page of footerPages) {
-        ctx.routes.add(`/${page.uri}`);
-        ctx.routes.add(`/en/${page.uri}`);
-      }
-    }
-  },
-
-  // Add CORS headers for all routes
+  modules: [
+    '@nuxtjs/tailwindcss',
+    '@pinia/nuxt'
+  ],
+  css: [
+    '~/assets/css/main.css'
+  ],
   nitro: {
-    routeRules: {
-      '/**': {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-        }
-      }
+    prerender: {
+      crawlLinks: true,
+      routes: ['/']
     }
   },
-
-  routeRules: {
-    '/**': { ssr: true }
+  runtimeConfig: {
+    public: {
+      apiUrl: 'http://localhost:8000'
+    }
+  },
+  app: {
+    head: {
+      title: 'Bundespreis Data Viewer',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'format-detection', content: 'telephone=no' },
+        { name: 'robots', content: 'index, follow' },
+        { name: 'description', content: 'Bundespreis data viewer application' }
+      ],
+      link: [
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap' },
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      ]
+    }
   }
 })

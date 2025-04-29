@@ -1,26 +1,41 @@
 <template>
-  <div class="container mx-auto px-4 py-8">
-    <SeoHead
-      :title="pageData?.title || 'Home'"
-      :description="pageData?.description"
-    />
+  <div v-if="pending">loading</div>
+  <div v-else-if="data?.sections">
+    <SectionWrapper :section="data.sections.ueber">
+      <SectionUeber :section="data.sections.ueber" />
+    </SectionWrapper>
 
-    <h1 class="text-4xl font-bold text-center py-12">
-      {{ pageData?.title || 'Loading...' }}
-    </h1>
+    <SectionWrapper :section="data.sections.preistragende">
+      <SectionPreistragende :section="data.sections.preistragende" />
+    </SectionWrapper>
+
+    <SectionWrapper :section="data.sections.nominierte">
+      <SectionNominierte :section="data.sections.nominierte" />
+    </SectionWrapper>
+
+    <SectionWrapper :section="data.sections.ausstellung">
+      <SectionAusstellung :section="data.sections.ausstellung" />
+    </SectionWrapper>
+
+    <SectionWrapper :section="data.sections.katalog">
+      <SectionKatalog :section="data.sections.katalog" />
+    </SectionWrapper>
   </div>
 </template>
 
 <script setup>
-const { locale } = useI18n();
-const { getPageData } = useMultilanguageApi();
+const { currentLang } = useLanguage();
+import SectionWrapper from '~/components/sections/SectionWrapper.vue';
+import SectionUeber from '~/components/sections/SectionUeber.vue';
+import SectionPreistragende from '~/components/sections/SectionPreistragende.vue';
+import SectionNominierte from '~/components/sections/SectionNominierte.vue';
+import SectionKatalog from '~/components/sections/SectionKatalog.vue';
+import SectionAusstellung from '~/components/sections/SectionAusstellung.vue';
 
-const { data: pageData } = await useAsyncData(
-  `page-home-${locale.value}`,
-  () => getPageData('/home'),
-  {
-    server: true,
-    watch: [() => locale.value],
-  }
-);
+const { data, pending, error } = await useFetch('/api/root', {
+  server: true,
+  query: {
+    lang: currentLang,
+  },
+});
 </script>

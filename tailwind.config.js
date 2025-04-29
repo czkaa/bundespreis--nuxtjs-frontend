@@ -1,77 +1,33 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./components/**/*.{js,vue,ts}",
-    "./layouts/**/*.vue",
-    "./pages/**/*.vue",
-    "./plugins/**/*.{js,ts}",
-    "./app.vue",
-  ],
+  content: ['./site/**/*.php', './content/**/*.txt'],
   theme: {
+    fontSize: {
+      xs: ['0.7rem', { lineHeight: '1.35' }], // customized xs
+      sm: ['0.85rem', { lineHeight: '1.25' }], // customized sm
+      md: ['1.15rem', { lineHeight: '1.2' }], // customized base
+      lg: ['3rem', { lineHeight: '0.9' }], // customized lg
+      xl: ['4rem', { lineHeight: '0.8' }], // customized xl
+    },
+    screens: {
+      lg: { min: '1280px' },
+      md: { max: '900px' },
+      sm: { max: '500px' },
+      'hover-hover': { raw: '(hover: hover)' },
+    },
     extend: {
-      colors: {
-        primary: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
-        },
-        secondary: {
-          50: '#f8fafc',
-          100: '#f1f5f9',
-          200: '#e2e8f0',
-          300: '#cbd5e1',
-          400: '#94a3b8',
-          500: '#64748b',
-          600: '#475569',
-          700: '#334155',
-          800: '#1e293b',
-          900: '#0f172a',
-        },
-        accent: {
-          50: '#fff7ed',
-          100: '#ffedd5',
-          200: '#fed7aa',
-          300: '#fdba74',
-          400: '#fb923c',
-          500: '#f97316',
-          600: '#ea580c',
-          700: '#c2410c',
-          800: '#9a3412',
-          900: '#7c2d12',
-        },
-      },
-      fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        serif: ['Merriweather', 'serif'],
-      },
       spacing: {
-        '0': '0',
-        '1': '0.25rem',
-        '2': '0.5rem',
-        '3': '0.75rem',
-        '4': '1rem',
-        '5': '1.25rem',
-        '6': '1.5rem',
-        '8': '2rem',
-        '10': '2.5rem',
-        '12': '3rem',
-        '16': '4rem',
-        '20': '5rem',
-        '24': '6rem',
-        '32': '8rem',
-        '40': '10rem',
-        '48': '12rem',
-        '56': '14rem',
-        '64': '16rem',
+        xs: '0.25rem',
+        sm: '0.5rem',
+        md: '1rem',
+        'indent-sm': '3rem',
+        'indent-md': '6rem',
+        'frame-h': 'min(100vh, 100dvh)',
+        'frame-w': 'min(100vw, 100dvw)',
+      },
+      transitionDuration: {
+        intro: '2s',
       },
     },
   },
   plugins: [],
-}
+};
