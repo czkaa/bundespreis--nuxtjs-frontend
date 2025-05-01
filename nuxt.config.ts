@@ -16,7 +16,10 @@ export default defineNuxtConfig({
   css: [
     '~/assets/css/main.css'
   ],
+  ssr: true,
+
   nitro: {
+    preset: 'node-server',
     prerender: {
       crawlLinks: true,
       routes: ['/']
