@@ -6,7 +6,7 @@ module.exports = {
       serif: ['SeasonVF', 'serif'],
     },
     fontSize: {
-      root: '16px',
+      root: '1.1vw',
       'root-md': '10px',
 
       xs: ['1.16rem', { lineHeight: '1.14', letterSpacing: '0' }], // customized xs
@@ -15,9 +15,9 @@ module.exports = {
 
       md: ['2.25rem', { lineHeight: '1.2', letterSpacing: '0' }], // customized base
       lg: ['3.75rem', { lineHeight: '0.866', letterSpacing: '-0.01em' }], // customized lg
-      'lg-md': ['3rem', { lineHeight: '0.866', letterSpacing: '-0.01em' }], // customized lg
+      'lg-md': ['2.5rem', { lineHeight: '0.866', letterSpacing: '-0.01em' }], // customized lg
       xl: ['5.625rem', { lineHeight: '0.8', letterSpacing: '-0.02em' }], // customized xl
-      'xl-md': ['3rem', { lineHeight: '0.8', letterSpacing: '-0.02em' }], // customized xl
+      'xl-md': ['3.5rem', { lineHeight: '0.8', letterSpacing: '-0.02em' }], // customized xl
     },
     screens: {
       lg: { min: '1280px' },

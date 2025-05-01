@@ -16,7 +16,7 @@
       ></div>
       <BasicsNavItem
         :text="page.title"
-        class="t-tag flex justify-end flex-col"
+        class="t-tag flex justify-end flex-col -mt-[1px]"
       />
     </NuxtLink>
   </template>

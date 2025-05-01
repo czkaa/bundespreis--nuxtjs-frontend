@@ -5,7 +5,7 @@
     id="dynamic-footer"
   >
     <div
-      class="transition-all duration-500 ease-in-out flex justify-start items-end gap-2"
+      class="transition-all duration-700 ease-in-out flex justify-start items-end gap-2"
       :class="isVisible && !gap.isGap ? 'translate-y-0' : 'translate-y-full'"
     >
       <LayoutFooterPages :siteData="siteData" />

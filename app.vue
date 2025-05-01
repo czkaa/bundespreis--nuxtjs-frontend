@@ -6,7 +6,7 @@
   </Transition>
 
   <Transition name="slide-in">
-    <div v-if="!introVisible" class="">
+    <div v-if="!introVisible" class="absolute w-full">
       <div
         class="fixed top-0 h-frame-h w-full z-50"
         :class="{
@@ -77,6 +77,8 @@ const handleMouseMove = () => {
     if (mouseMoveCounter > mouseMoveThreshold) {
       if (introStore.isDone) introStore.setIntro(false);
     }
+  } else {
+    introStore.setDone(true);
   }
 };
 
@@ -118,16 +120,16 @@ const handleContainers = (boolean) => {
   }
 };
 
-// Reset scroll position when route changes
-watch(
-  () => route.path,
-  () => {
-    scrollPosition.value = 0;
-    if (scrollContainer.value) {
-      scrollContainer.value.scrollTop = 0;
-    }
-  }
-);
+// // Reset scroll position when route changes
+// watch(
+//   () => route.path,
+//   () => {
+//     scrollPosition.value = 0;
+//     if (scrollContainer.value) {
+//       scrollContainer.value.scrollTop = 0;
+//     }
+//   }
+// );
 
 // Initialize all event listeners on mount
 onMounted(() => {
@@ -167,10 +169,10 @@ body {
 }
 /* Slide up transition for the intro */
 .slide-up-enter-active {
-  transition: transform 1s ease-out;
+  transition: transform 2s ease-out;
 }
 .slide-up-leave-active {
-  transition: transform 1s ease-out;
+  transition: transform 2s ease-out;
   position: absolute;
   width: 100%;
 }
@@ -181,12 +183,11 @@ body {
   transform: translateY(-100dvh);
 }
 /* Slide in transition for the main content */
-.slide-in-enter-active {
-  transition: transform 1s ease-out;
-}
+.slide-in-enter-active,
 .slide-in-leave-active {
-  transition: transform 1s ease-out;
+  transition: transform 2s ease-out;
 }
+
 .slide-in-enter-from {
   transform: translateY(100dvh);
 }

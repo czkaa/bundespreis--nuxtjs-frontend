@@ -86,8 +86,5 @@ onMounted(() => {
   setTimeout(() => {
     imageScaled.value = true;
   }, 100);
-  setTimeout(() => {
-    introStore.setDone(true);
-  }, 2000);
 });
 </script>

@@ -12,15 +12,13 @@
 }
 
 
-body {
-  font-family: 'SeasonVF';
-  @apply font-serif text-root-md;
-}
 
 
 html,
 body {
   scroll-behavior: smooth;
+  font-family: 'SeasonVF';
+  @apply font-serif text-root md:text-root-md;
 }
 
 

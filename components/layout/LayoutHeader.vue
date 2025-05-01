@@ -3,17 +3,15 @@
     <SnippetsHomeLogo :title="siteData?.title" />
     <SnippetsHomeLogo :isTop="false" :title="siteData?.title" />
 
-    <div class="flex justify-end items-start md:hidden">
-      <div
-        :class="[introStore.isIntro ? '-translate-y-full' : 'translate-y-0']"
-      >
-        <LayoutNavDesktop
-          :siteData
-          class="transition-transform duration-500 delay-1000 md:hidden"
-        />
-      </div>
+    <div class="flex justify-end items-start md:hidden transition">
+      <LayoutNavDesktop
+        :class="[!introStore.isDone ? '-translate-y-full' : 'translate-y-0']"
+        :siteData
+        class="transition-transform duration-700 delay-1000 md:hidden"
+      />
     </div>
   </header>
+
   <LayoutNavMobile :siteData />
 </template>
 

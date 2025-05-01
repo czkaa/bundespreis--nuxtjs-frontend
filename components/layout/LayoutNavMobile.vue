@@ -10,9 +10,10 @@
         <LayoutFooterPages :siteData />
       </div>
     </Transition>
+
     <div
       class="fixed top-0 right-0 z-[100] transition-transform duration-500 delay-1000 flex gap-xs"
-      :class="[introStore.isIntro ? '-translate-y-full' : 'translate-y-0']"
+      :class="[!introStore.isDone ? '-translate-y-full' : 'translate-y-0']"
     >
       <button
         class="relative w-tag h-tag bg-black pointer-events-auto z-[100]"

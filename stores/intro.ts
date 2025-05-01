@@ -10,7 +10,10 @@ export const useIntroStore = defineStore('intro', {
       this.isIntro = !this.isIntro
     },
     setIntro(value: boolean) {
-       this.isIntro = value
+      this.isIntro = value
+      setTimeout(() => {
+        this.setDone(true);
+      }, 2000);
     },
     setDone(value: boolean) {
       this.isDone = value

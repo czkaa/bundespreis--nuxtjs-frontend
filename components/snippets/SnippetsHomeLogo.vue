@@ -1,7 +1,7 @@
 <template>
   <NuxtLink
     to="/"
-    class="pointer-events-auto absolute"
+    class="pointer-events-auto absolute w-fit"
     :class="[isTop ? 'top-0 left-0' : 'bottom-0 right-0']"
     @click="handleClick()"
   >
