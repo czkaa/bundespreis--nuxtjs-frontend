@@ -1,4 +1,5 @@
 <template>
+  {{ isHomeRoute }}
   <LayoutHeader v-if="siteData" :siteData="siteData" class="fixed top-0 z-50" />
 
   <Transition name="slide-up">
@@ -34,6 +35,7 @@
 </template>
 <script setup>
 const { locale } = useI18n();
+const localePath = useLocalePath();
 
 const gap = useGapStore();
 const introStore = useIntroStore();
@@ -48,7 +50,7 @@ const scrollPosition = ref(0); // Store the scroll position
 
 // Computed property to determine if intro should be visible
 const introVisible = computed(() => {
-  return introStore.isIntro && route.path === '/';
+  return introStore.isIntro && localePath(route.path === '/');
 });
 
 // Initialize intro visibility based on initial route
@@ -122,14 +124,10 @@ const handleContainers = (boolean) => {
 
 // Initialize all event listeners on mount
 onMounted(() => {
-  const path = route.fullPath.split('#')[0]; // Remove hash from path
+  const path = route.fullPath; // Remove hash from path
   const isHomeRoute = path === '/' || path === '/en' || path === '/de';
   if (!isHomeRoute) {
-    introStore.setIntro(false);
-  }
-
-  // Only show intro if initial entry is on the home route
-  if (!isHomeRoute) {
+    console.log('Noo');
     introStore.setIntro(false);
   }
 

@@ -1,6 +1,6 @@
 <template>
   <KeepAlive>
-    <div class="flex relative z-10 overflow-x-hidden">
+    <div class="flex relative z-10 overflow-x-hidden pt-20">
       <LayoutGalleryColumn :items="leftImages" :is-left="true" />
       <LayoutGalleryColumn :items="rightImages" />
     </div>

@@ -14,7 +14,7 @@
     <NuxtLink
       v-for="(item, index) in items"
       :key="index"
-      :to="`/${item.page.uri}`"
+      :to="localePath(`/${item.page.uri}`)"
       :style="{
         transform: `translateX(${getPosition(item, index)}%)`,
       }"
@@ -38,6 +38,7 @@
 import { useGapStore } from '../stores/gap';
 import { useImageStore } from '../stores/images';
 import { ref } from 'vue';
+const localePath = useLocalePath();
 
 // Get the gap store
 const gap = useGapStore();

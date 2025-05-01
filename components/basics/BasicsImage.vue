@@ -6,12 +6,18 @@
       :width="image.width"
       :height="image.height"
       class="w-full h-auto object-contain"
+      :class="[
+        'transition-opacity duration-300',
+        isLoaded ? 'opacity-100' : 'opacity-0',
+      ]"
+      :style="{ aspectRatio: image.ratio }"
+      loading="lazy"
+      @load="handleImageLoad"
     />
   </figure>
 </template>
 
 <script setup>
-// Props
 const props = defineProps({
   image: {
     type: Object,
@@ -22,4 +28,10 @@ const props = defineProps({
     default: '',
   },
 });
+
+const isLoaded = ref(false);
+
+function handleImageLoad() {
+  isLoaded.value = true;
+}
 </script>

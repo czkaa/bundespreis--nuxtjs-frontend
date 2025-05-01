@@ -6,7 +6,10 @@
         (index + 1) % 4 === 3 || (index + 1) % 4 === 0 ? 'ml-indent-sm' : '',
       ]"
     >
-      <NuxtLink :to="child.uri" class="block w-fit bg-black text-white pb-md">
+      <NuxtLink
+        :to="localePath(child.uri)"
+        class="block w-fit bg-black text-white pb-md"
+      >
         <BasicsHeading
           tag="h2"
           :text="child.title"
@@ -17,6 +20,7 @@
 </template>
 
 <script setup>
+const localePath = useLocalePath();
 const props = defineProps({
   section: {
     type: Object,
