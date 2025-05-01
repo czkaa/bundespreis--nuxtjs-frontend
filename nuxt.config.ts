@@ -11,7 +11,8 @@ export default defineNuxtConfig({
   },
   modules: [
     '@nuxtjs/tailwindcss',
-    '@pinia/nuxt'
+    '@pinia/nuxt',
+    '@nuxtjs/i18n'
   ],
   css: [
     '~/assets/css/main.css'
@@ -30,6 +31,21 @@ export default defineNuxtConfig({
       apiBaseUrl: 'https://bundespreis-backend.czkaa.site'
     }
   },
+
+  i18n: {
+    defaultLocale: 'de',
+    locales: ['de', 'en'],
+    detectBrowserLanguage: false,
+    strategy: 'prefix',
+    rootRedirect: null,
+    pages: {
+      'info': {
+        de: '/info',
+        en: '/info'
+      }
+    }
+  },
+  
   app: {
     head: {
       title: 'Bundespreis für Kunststudierende 2025',

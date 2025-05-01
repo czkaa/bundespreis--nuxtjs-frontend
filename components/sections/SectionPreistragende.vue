@@ -7,7 +7,10 @@
       ]"
     >
       <NuxtLink :to="child.uri" class="block w-fit bg-black text-white pb-md">
-        <BasicsHeading tag="h2" :text="child.title" class="h-[4.1rem]"
+        <BasicsHeading
+          tag="h2"
+          :text="child.title"
+          class="h-[4.1rem] md:h-[2.25rem]"
       /></NuxtLink>
     </li>
   </ul>

@@ -1,9 +1,7 @@
 <template>
   <template v-for="page in siteData?.footerPages" :key="page.uri">
-    <!-- Use anchor links on home page with active state, NuxtLink elsewhere -->
-
     <NuxtLink
-      :to="`${isInfoPage ? '' : '/'}info#${page.uri}`"
+      :to="localePath(`${isInfoPage ? '' : '/'}info#${page.uri}`)"
       @click="handleNavClick"
       class="md:w-full"
     >
@@ -21,24 +19,16 @@ const props = defineProps({
 });
 
 const route = useRoute();
-const { currentLang } = useLanguage();
 const hashStore = useHashStore();
+const localePath = useLocalePath();
 
 // Get current hash from the store
 const currentHash = computed(() => hashStore.currentHash);
 
 // Check if we're on the home page (/ or /en or /de)
 const isInfoPage = computed(() => {
-  return (
-    route.path === '/info' ||
-    route.path === `/info/${currentLang.value}` ||
-    route.path === `/info/${currentLang.value}/`
-  );
-});
-
-// Get the appropriate home path based on currentLang
-const homePath = computed(() => {
-  return currentLang.value;
+  const path = route.fullPath.split('#')[0];
+  return path === '/info' || path === '/en/info' || path === '/de/info';
 });
 
 // Handle navigation click - set isBlocked to true, then false after 1000ms

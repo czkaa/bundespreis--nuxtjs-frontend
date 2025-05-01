@@ -15,12 +15,14 @@
 </template>
 
 <script setup>
-const route = useRoute();
-const { currentLang } = useLanguage();
+const { locale } = useI18n();
+
 import SectionWrapper from '~/components/sections/SectionWrapper.vue';
 import SectionDatenschutz from '~/components/sections/SectionDatenschutz.vue';
 import SectionImpressum from '~/components/sections/SectionImpressum.vue';
 import SectionArchiv from '~/components/sections/SectionArchiv.vue';
 
-const { data: data } = await useFetch('/api/info');
+const { data: data } = await useFetch(
+  () => `/api/${locale.value === 'en' ? 'en/' : ''}info`
+);
 </script>

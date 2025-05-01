@@ -25,7 +25,6 @@
 
 <script setup>
 const route = useRoute();
-const { currentLang } = useLanguage();
 
 const { data: data } = await useFetch(
   `/api/preistragende/${route.params.slug}`

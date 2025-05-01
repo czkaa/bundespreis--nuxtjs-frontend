@@ -1,9 +1,12 @@
 <template>
-  <button @click="toggleLanguage" class="w-tag h-tag">
-    <BasicsNavItem :text="currentLang.toUpperCase()" class="items-end" />
-  </button>
+  <NuxtLink
+    :to="switchLocalePath($i18n.locale === 'de' ? 'en' : 'de')"
+    class="w-tag h-tag text-primary-600 hover:text-primary-800 transition-colors duration-200 text-center"
+  >
+    <BasicsNavItem :text="$i18n.locale.toUpperCase()" class="items-end" />
+  </NuxtLink>
 </template>
 
 <script setup>
-const { currentLang, toggleLanguage } = useLanguage();
+const switchLocalePath = useSwitchLocalePath();
 </script>

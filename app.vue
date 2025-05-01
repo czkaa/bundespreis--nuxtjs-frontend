@@ -1,5 +1,5 @@
 <template>
-  <LayoutHeader :siteData="siteData" class="fixed top-0 z-50" />
+  <LayoutHeader v-if="siteData" :siteData="siteData" class="fixed top-0 z-50" />
 
   <Transition name="slide-up">
     <LayoutIntro v-if="introVisible" :siteData="siteData" />
@@ -33,29 +33,25 @@
   </Transition>
 </template>
 <script setup>
-const { currentLang } = useLanguage();
+const { locale } = useI18n();
+
 const gap = useGapStore();
 const introStore = useIntroStore();
 const scrollContainer = ref(null);
 const route = useRoute();
 
+const { data: siteData } = await useFetch(
+  () => `/api/${locale.value === 'en' ? 'en/' : ''}site`
+);
+
 const scrollPosition = ref(0); // Store the scroll position
 
 // Computed property to determine if intro should be visible
 const introVisible = computed(() => {
-  return (
-    introStore.isIntro &&
-    (route.path === '/' || route.path === `/${currentLang}`)
-  );
+  return introStore.isIntro && route.path === '/';
 });
 
 // Initialize intro visibility based on initial route
-onMounted(() => {
-  const isHomeRoute = route.path === '/' || route.path === `/${currentLang}`;
-  if (!isHomeRoute) {
-    introStore.setIntro(false);
-  }
-});
 
 // Handle scroll event
 const handleScroll = () => {
@@ -81,8 +77,6 @@ const handleMouseMove = () => {
     introStore.setDone(true);
   }
 };
-
-const { data: siteData } = await useFetch('/api/site');
 
 // Watch for changes in isGap
 watch(
@@ -128,7 +122,11 @@ const handleContainers = (boolean) => {
 
 // Initialize all event listeners on mount
 onMounted(() => {
-  const isHomeRoute = route.path === '/' || route.path === `/${currentLang}`;
+  const path = route.fullPath.split('#')[0]; // Remove hash from path
+  const isHomeRoute = path === '/' || path === '/en' || path === '/de';
+  if (!isHomeRoute) {
+    introStore.setIntro(false);
+  }
 
   // Only show intro if initial entry is on the home route
   if (!isHomeRoute) {

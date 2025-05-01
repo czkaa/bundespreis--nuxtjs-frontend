@@ -6,9 +6,10 @@
     class="font-sans"
     :class="[
       {
-        'text-xl md:text-xl-md capitalize': tag === 'h2',
-        'text-lg md:text-lg-md md:hyphens-auto capitalize': tag === 'h3',
-        'text-sm-sans ml-indent-sm capitalize': tag === 'h4',
+        'text-xl md:text-xl-md first-letter:uppercase': tag === 'h2',
+        'text-lg md:text-lg-md md:hyphens-auto first-letter:uppercase':
+          tag === 'h3',
+        'text-sm-sans ml-indent-sm first-letter:uppercase': tag === 'h4',
       },
     ]"
   >

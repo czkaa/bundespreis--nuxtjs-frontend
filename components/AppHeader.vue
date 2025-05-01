@@ -35,7 +35,6 @@
 </template>
 
 <script setup>
-const { currentLang, toggleLanguage } = useLanguage();
 const gap = useGapStore();
 
 const props = defineProps({

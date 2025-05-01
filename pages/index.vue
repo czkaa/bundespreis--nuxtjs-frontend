@@ -23,7 +23,8 @@
 </template>
 
 <script setup>
-const { currentLang } = useLanguage();
+const { locale } = useI18n();
+
 import SectionWrapper from '~/components/sections/SectionWrapper.vue';
 import SectionUeber from '~/components/sections/SectionUeber.vue';
 import SectionPreistragende from '~/components/sections/SectionPreistragende.vue';
@@ -31,5 +32,7 @@ import SectionNominierte from '~/components/sections/SectionNominierte.vue';
 import SectionKatalog from '~/components/sections/SectionKatalog.vue';
 import SectionAusstellung from '~/components/sections/SectionAusstellung.vue';
 
-const { data: data } = await useFetch('/api');
+const { data: data } = await useFetch(
+  () => `/api${locale.value === 'en' ? '/en' : ''}`
+);
 </script>
