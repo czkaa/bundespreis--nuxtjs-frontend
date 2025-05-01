@@ -23,6 +23,7 @@ import SectionImpressum from '~/components/sections/SectionImpressum.vue';
 import SectionArchiv from '~/components/sections/SectionArchiv.vue';
 
 const { data, pending, error } = await useFetch('/api/dynamic', {
+  server: false,
   query: {
     lang: currentLang,
     slug: route.params.slug,

@@ -33,7 +33,7 @@ import SectionKatalog from '~/components/sections/SectionKatalog.vue';
 import SectionAusstellung from '~/components/sections/SectionAusstellung.vue';
 
 const { data, pending, error } = await useFetch('/api/root', {
-  server: true,
+  server: false,
   query: {
     lang: currentLang,
   },

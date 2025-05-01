@@ -29,6 +29,7 @@ const route = useRoute();
 const { currentLang } = useLanguage();
 
 const { data, pending, error } = await useFetch('/api/preistragende', {
+  server: false,
   query: {
     lang: currentLang,
     slug: route.params.slug,
