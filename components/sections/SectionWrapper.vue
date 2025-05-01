@@ -21,6 +21,7 @@ const hashStore = useHashStore();
 
 const checkPosition = () => {
   if (!sectionRef.value) return;
+  return;
 
   const rect = sectionRef.value.getBoundingClientRect();
   const windowHeight = window.innerHeight;
@@ -29,6 +30,11 @@ const checkPosition = () => {
   if (rect.top >= 0 && rect.top <= windowHeight / 3) {
     if (!hashStore.isBlocked) {
       hashStore.setCurrentHash(props.section.slug);
+      const hash = `#${props.section.slug}`;
+      if (window.location.hash !== hash) {
+        // Use history.replaceState to avoid adding new entries to the browser history
+        history.replaceState(null, null, hash);
+      }
     }
   }
 };

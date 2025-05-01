@@ -1,12 +1,10 @@
 <template>
-  <ClientOnly>
-    <div
-      class="w-full flex relative z-10 space-x-sm mt-20 p-sm snap-start snap-always"
-    >
+  <KeepAlive>
+    <div class="flex relative z-10 overflow-x-hidden">
       <LayoutGalleryColumn :items="leftImages" :is-left="true" />
       <LayoutGalleryColumn :items="rightImages" />
     </div>
-  </ClientOnly>
+  </KeepAlive>
 </template>
 
 <script setup>

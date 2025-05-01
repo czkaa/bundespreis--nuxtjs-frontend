@@ -1,38 +1,38 @@
 <template>
   <div
-    class="pointer-events-auto snap-start w-full z-[100] transition-all duration-1000 overflow-hidden bg-white h-frame-h"
+    class="pointer-events-auto snap-start w-full transition-all duration-1000 overflow-hidden bg-white h-frame-h"
     id="intro"
   >
     <div
-      class="flex flex-col items-center justify-center overflow-hidden relative [&_div]:h-full [&_figure]:h-full transition-all linear duration-intro"
+      class="flex flex-col items-center justify-center relative [&_div]:h-full [&_figure]:h-full [&_img]:object-cover! transition-all linear duration-intro"
       :class="
         !imageScaled ? 'w-20 h-10 p-0' : 'w-frame-w h-frame-h p-11 px-[7.6rem]'
       "
     >
       <!-- Show portrait image on mobile (below md breakpoint) -->
-      <div v-if="randomPortraitImage" class="w-full h-full block md:hidden">
-        <figure>
-          <img
-            :src="randomPortraitImage.url"
-            :alt="randomPortraitImage.alt"
-            :width="randomPortraitImage.width"
-            :height="randomPortraitImage.height"
-            class="w-full h-full object-cover"
-          />
-        </figure>
+      <div
+        v-if="randomPortraitImage"
+        class="w-full h-full hidden md:flex justify-center items-center relative"
+      >
+        <BasicsImage :image="randomPortraitImage" class="relative z-10" />
+        <BasicsCaption
+          :text="randomPortraitImage.page.title"
+          class="absolute bottom-0 right-0 transition-translate duration-300"
+          :class="{ '-translate-y-full': !introStore.isDone }"
+        />
       </div>
 
       <!-- Show landscape image on md breakpoint and above -->
-      <div v-if="randomLandscapeImage" class="w-full h-full hidden md:block">
-        <figure>
-          <img
-            :src="randomLandscapeImage.url"
-            :alt="randomLandscapeImage.alt"
-            :width="randomLandscapeImage.width"
-            :height="randomLandscapeImage.height"
-            class="w-full h-full object-cover"
-          />
-        </figure>
+      <div
+        v-if="randomLandscapeImage"
+        class="w-full h-full md:hidden flex justify-center items-center relative"
+      >
+        <BasicsImage :image="randomLandscapeImage" class="relative z-10" />
+        <BasicsCaption
+          :text="randomLandscapeImage.page.title"
+          class="absolute bottom-0 right-0 transition-translate duration-300"
+          :class="{ 'translate-y-full': introStore.isDone }"
+        />
       </div>
     </div>
   </div>
@@ -40,6 +40,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
+const introStore = useIntroStore();
 
 // Props
 const props = defineProps({
@@ -51,7 +52,7 @@ const props = defineProps({
 
 // Reactive state
 const imageScaled = ref(false);
-const showIntro = ref(true);
+const imageScaledDone = ref(false);
 const randomPortraitImage = ref(null);
 const randomLandscapeImage = ref(null);
 
@@ -85,21 +86,9 @@ onMounted(() => {
   // Start image scaling animation immediately
   setTimeout(() => {
     imageScaled.value = true;
-
-    // Update global state (assuming you have a store or provide/inject setup)
-    // This replaces the Alpine store approach
-    if (
-      window.$store &&
-      window.$store.site &&
-      typeof window.$store.site.setIsIntro === 'function'
-    ) {
-      window.$store.site.setIsIntro(false);
-    }
-
-    // Optional: Hide the intro component after a delay
-    setTimeout(() => {
-      showIntro.value = false;
-    }, 1000);
   }, 100);
+  setTimeout(() => {
+    introStore.setDone(true);
+  }, 2000);
 });
 </script>

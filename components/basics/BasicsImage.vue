@@ -5,14 +5,8 @@
       :alt="image.alt || image.page?.title"
       :width="image.width"
       :height="image.height"
-      class="w-full h-auto object-cover"
+      class="w-full h-auto object-contain"
     />
-    <figcaption
-      v-if="caption"
-      class="ml-auto w-fit bg-black text-white text-xs"
-    >
-      {{ caption }}
-    </figcaption>
   </figure>
 </template>
 

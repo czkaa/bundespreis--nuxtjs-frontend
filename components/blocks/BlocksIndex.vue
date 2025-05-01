@@ -3,11 +3,11 @@
     <BlocksText
       v-if="block.type === 'customtext'"
       :text="block.content.text"
-      class="mt-md"
-      :class="{
-        'pl-10': block.content.indent === 'small',
-        'pl-20': block.content.indent === 'medium',
-      }"
+      :indent="block.content.text"
+    />
+    <BlocksLogos
+      v-if="block.type === 'customlogos'"
+      :logos="block.content.logos"
     />
   </div>
 </template>

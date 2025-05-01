@@ -1,4 +1,5 @@
 <template>
+  <BasicsHeading tag="h3" :text="section.subheading" />
   <Blocks :blocks="section.text" />
 </template>
 

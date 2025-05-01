@@ -1,33 +1,112 @@
 <template>
-  <div>
-    <LayoutHeader :siteData="siteData" class="fixed top-0 z-50" />
+  <Transition name="fade">
+    <div>
+      <LayoutHeader :siteData="siteData" class="fixed top-0 z-50" />
 
-    <div
-      class="w-full top-0 h-frame-h fixed overflow-y-auto snap-y snap-mandatory"
-      :class="{ 'overflow-hidden': gap.isGap }"
-    >
-      <LayoutIntro :siteData="siteData" />
+      <Transition name="slide-up">
+        <LayoutIntro v-if="introVisible" :siteData="siteData" />
+      </Transition>
 
-      <LayoutGallery :siteData="siteData" />
+      <Transition name="slide-in">
+        <div v-if="!introVisible" class="h-frame-h overflow-hidden">
+          <div
+            class="absolute top-0 h-frame-h"
+            :class="{
+              'pointer-events-none overflow-hidden': gap.isGap,
+              'overflow-y-scroll': !gap.isGap,
+            }"
+            @scroll="handleScroll"
+            @wheel="handleWheel"
+            ref="scrollContainer"
+          >
+            <LayoutGallery :siteData="siteData" />
+            <LayoutFooter :siteData="siteData" class="md:hidden" />
+          </div>
 
-      <LayoutFooter :siteData="siteData" class="sm:hidden" />
+          <main
+            class="absolute top-0 mx-auto p-10 h-frame-h scroll-smooth transition-opacity"
+            :class="{
+              'overflow-hidden opacity-0': !gap.isGap,
+              'overflow-y-scroll ': gap.isGap,
+            }"
+          >
+            <div class="w-1/2 mx-auto">
+              <NuxtPage />
+            </div>
+          </main>
+        </div>
+      </Transition>
     </div>
-
-    <main
-      :key="currentLang"
-      class="max-w-[40vw] mx-auto p-10 overflow-hidden"
-      :class="
-        true ? 'pointer-events-auto z-50' : 'opacity-0 pointer-events-none'
-      "
-    >
-      <NuxtPage />
-    </main>
-  </div>
+  </Transition>
 </template>
-
 <script setup>
 const { currentLang } = useLanguage();
 const gap = useGapStore();
+const introStore = useIntroStore();
+const scrollContainer = ref(null);
+const route = useRoute();
+const isFirstVisit = ref(true); // Track if this is the first route in the session
+
+// Computed property to determine if intro should be visible
+const introVisible = computed(() => {
+  // Show intro only if we're on home route AND it's set to be visible in the store
+  return (
+    introStore.isIntro &&
+    (route.path === '/' || route.path === `/${currentLang}`)
+  );
+});
+
+// Initialize intro visibility based on initial route
+onMounted(() => {
+  const isHomeRoute = route.path === '/' || route.path === `/${currentLang}`;
+
+  // Only show intro if initial entry is on the home route
+  if (!isHomeRoute) {
+    introStore.setIntro(false);
+  }
+});
+
+// Mouse movement threshold and tracking
+let mouseMoveCounter = 0;
+const mouseMoveThreshold = 10; // Number of mouse movements before hiding intro
+
+// Mouse move handler - primary method to hide intro
+const handleMouseMove = () => {
+  // Only process if we're on home and intro is visible
+  if (introVisible.value) {
+    mouseMoveCounter++;
+    console.log('Mouse moved!', mouseMoveCounter);
+
+    // Hide intro after sufficient mouse movement
+    if (mouseMoveCounter > mouseMoveThreshold) {
+      introStore.setIntro(false);
+      mouseMoveCounter = 0; // Reset counter
+    }
+  }
+};
+
+// Touch handling for swipes (as fallback for mobile)
+let touchStartY = 0;
+const handleTouchStart = (event) => {
+  touchStartY = event.touches[0].clientY;
+};
+
+const handleTouchMove = (event) => {
+  if (!touchStartY || !introVisible.value) return;
+
+  const touchY = event.touches[0].clientY;
+  const deltaY = touchStartY - touchY;
+
+  // Only process if it's a significant movement to avoid small unintentional swipes
+  if (Math.abs(deltaY) > 30) {
+    introStore.setIntro(false);
+    touchStartY = 0; // Reset to prevent continuous triggering
+  }
+};
+
+const handleTouchEnd = () => {
+  touchStartY = 0;
+};
 
 const { data: siteData } = await useFetch('/api/site', {
   server: true,
@@ -36,41 +115,84 @@ const { data: siteData } = await useFetch('/api/site', {
   },
 });
 
-// Fixed useHead implementation
-useHead(() => {
-  const headConfig = {
-    title: siteData.value?.title || 'Bundespreis für Kunststudierende',
-    meta: [
-      {
-        name: 'description',
-        content: siteData.value?.seo?.description || '',
-      },
-      {
-        name: 'keywords',
-        content: siteData.value?.seo?.keywords || '',
-      },
-    ],
-  };
+// Initialize all event listeners on mount
+onMounted(() => {
+  const isHomeRoute = route.path === '/' || route.path === `/${currentLang}`;
 
-  if (siteData.value?.seo?.image) {
-    headConfig.meta.push({
-      property: 'og:image',
-      content: siteData.value.seo.image,
-    });
+  // Only show intro if initial entry is on the home route
+  if (!isHomeRoute) {
+    introStore.setIntro(false);
   }
 
-  return headConfig;
+  // Add event listeners
+  window.addEventListener('touchstart', handleTouchStart);
+  window.addEventListener('touchmove', handleTouchMove);
+  window.addEventListener('touchend', handleTouchEnd);
+  window.addEventListener('mousemove', handleMouseMove);
 });
-</script>
 
-<style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
+onUnmounted(() => {
+  window.removeEventListener('touchstart', handleTouchStart);
+  window.removeEventListener('touchmove', handleTouchMove);
+  window.removeEventListener('touchend', handleTouchEnd);
+  window.removeEventListener('mousemove', handleMouseMove);
+});
+
+function handleScroll() {
+  // Your existing scroll handling logic
 }
-
+</script>
+<style>
+body {
+  @apply w-frame-w h-frame-h overflow-hidden;
+}
+/* Fixed fade transitions with matched durations */
+.fade-enter-active {
+  transition: opacity 1s ease;
+}
+.fade-leave-active {
+  transition: opacity 1s ease;
+}
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+}
+/* Slide up transition for the intro */
+.slide-up-enter-active {
+  transition: transform 1s ease-out;
+}
+.slide-up-leave-active {
+  transition: transform 1s ease-out;
+  position: absolute;
+  width: 100%;
+}
+.slide-up-enter-from {
+  transform: translateY(0);
+}
+.slide-up-leave-to {
+  transform: translateY(-100dvh);
+}
+/* Slide in transition for the main content */
+.slide-in-enter-active {
+  transition: transform 1s ease-out;
+}
+.slide-in-leave-active {
+  transition: transform 1s ease-out;
+}
+.slide-in-enter-from {
+  transform: translateY(100dvh);
+}
+.slide-in-enter-to {
+  transform: translateY(0);
+}
+.slide-in-leave-from {
+  transform: translateY(0);
+}
+.slide-in-leave-to {
+  transform: translateY(-100dvh);
 }
 </style>

@@ -3,7 +3,7 @@
     :is="tag"
     lang="de"
     basics-heading
-    class=""
+    class="font-sans"
     :class="[
       {
         'hyphens-auto text-xl': tag === 'h2',

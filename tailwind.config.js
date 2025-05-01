@@ -1,17 +1,26 @@
 module.exports = {
   content: ['./site/**/*.php', './content/**/*.txt'],
   theme: {
+    fontFamily: {
+      sans: ['SeasonVF', 'sans-serif'],
+      serif: ['SeasonVF', 'serif'],
+    },
     fontSize: {
-      xs: ['0.7rem', { lineHeight: '1.35' }], // customized xs
-      sm: ['0.85rem', { lineHeight: '1.25' }], // customized sm
-      md: ['1.15rem', { lineHeight: '1.2' }], // customized base
-      lg: ['3rem', { lineHeight: '0.9' }], // customized lg
-      xl: ['4rem', { lineHeight: '0.8' }], // customized xl
+      root: '16px',
+      'root-md': '13px',
+
+      xs: ['1.16rem', { lineHeight: '1.14', letterSpacing: '0' }], // customized xs
+      sm: ['1.66rem', { lineHeight: '1.1', letterSpacing: '0' }], // customized sm
+      'sm-sans': ['1.7rem', { lineHeight: '1.07', letterSpacing: '0' }], // customized sm
+
+      md: ['2.25rem', { lineHeight: '1.2', letterSpacing: '0' }], // customized base
+      lg: ['3.75rem', { lineHeight: '0.866', letterSpacing: '-0.01em' }], // customized lg
+      xl: ['5.625rem', { lineHeight: '0.8', letterSpacing: '-0.02em' }], // customized xl
     },
     screens: {
       lg: { min: '1280px' },
-      md: { max: '900px' },
-      sm: { max: '500px' },
+      sm: { max: '900px' },
+      md: { max: '1000px' },
       'hover-hover': { raw: '(hover: hover)' },
     },
     extend: {
@@ -23,11 +32,23 @@ module.exports = {
         'indent-md': '6rem',
         'frame-h': 'min(100vh, 100dvh)',
         'frame-w': 'min(100vw, 100dvw)',
+        tag: '3rem',
       },
       transitionDuration: {
         intro: '2s',
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addBase }) {
+      addBase({
+        '.font-sans': {
+          'font-variation-settings': '"wght" 500, "SERF" 0',
+        },
+        '.font-serif': {
+          'font-variation-settings': '"wght" 500, "SERF" 100',
+        },
+      });
+    },
+  ],
 };

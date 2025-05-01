@@ -6,14 +6,20 @@
       :href="`#${page.uri}`"
       :class="[
         'transition-transform duration-300',
-        currentHash === page.uri ? 'translate-y-1/2 sm:tanslate-y-0' : '',
+        currentHash === page.uri
+          ? 'translate-y-tag md:translate-y-0'
+          : 'translate-y-0',
       ]"
       @click="handleNavClick(page.uri)"
     >
-      <BasicsTag :text="page.title" />
+      <div class="bg-black w-fit">
+        <BasicsTag :text="page.title" class="h-tag flex justify-end flex-col" />
+      </div>
     </a>
-    <NuxtLink v-else :to="`/${homePath}#${page.uri}`" @click="handleNavClick">
-      <BasicsTag :text="page.title" />
+    <NuxtLink v-else :to="`/#${page.uri}`" @click="handleNavClick">
+      <div class="bg-black w-fit">
+        <BasicsTag :text="page.title" class="t-tag flex justify-end flex-col" />
+      </div>
     </NuxtLink>
   </template>
 </template>

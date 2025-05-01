@@ -6,7 +6,10 @@
     >
       Gap {{ gap.isEnabled ? 'On' : 'Off' }}
     </button> -->
-    <button @click="toggleLanguage">
+    <button
+      @click="toggleLanguage"
+      class="text-center flex justify-center items-center"
+    >
       <BasicsTag :text="currentLang.toUpperCase()" />
     </button>
   </div>

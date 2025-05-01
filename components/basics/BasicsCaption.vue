@@ -1,6 +1,6 @@
 <template>
   <span
-    class="h-tag font-sans bg-black px-sm text-white text-md transition-transform duration-300 flex justify-center items-center pointer-events-auto"
+    class="w-fit block text-xs font-sans bg-black px-xs text-white transition-transform duration-300 pointer-events-auto"
   >
     {{ text }}</span
   >

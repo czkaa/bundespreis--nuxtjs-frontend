@@ -9,9 +9,3 @@ const props = defineProps({
   blocks: Array,
 });
 </script>
-
-<style>
-[blocks] {
-  counter-reset: heading-counter;
-}
-</style>

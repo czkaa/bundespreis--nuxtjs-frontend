@@ -6,7 +6,8 @@ export const useImageStore = defineStore('image', {
   }),
   actions: {
     setCurrentIndex(value: number) {
-       this.currentIndex = 0;
+        console.log('SETTING INDEX')
+       this.currentIndex = value;
     },
 
   }

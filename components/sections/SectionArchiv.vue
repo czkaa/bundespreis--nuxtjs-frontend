@@ -1,12 +1,10 @@
 <template>
-  <nav class="flex gap-xs pointer-events-auto sm:flex-col">
-    <LayoutNavPages :siteData />
-  </nav>
+  <Blocks :blocks="section.text" />
 </template>
 
 <script setup>
 const props = defineProps({
-  siteData: {
+  section: {
     type: Object,
     required: true,
   },

@@ -3,6 +3,21 @@
 @tailwind utilities;
 
 
+@font-face {
+  font-family: 'SeasonVF';
+  src: url('../fonts/SeasonVFTRIALVF.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+body {
+  font-family: 'SeasonVF';
+  @apply font-serif text-sm;
+}
+
+
 html,
 body {
   scroll-behavior: smooth;

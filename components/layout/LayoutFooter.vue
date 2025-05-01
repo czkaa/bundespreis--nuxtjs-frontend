@@ -1,12 +1,12 @@
 <template>
   <footer
     ref="footerEl"
-    class="footer z-50 snap-end snap-always pointer-events-auto"
+    class="footer z-50 relative pointer-events-auto"
     id="dynamic-footer"
   >
     <div
-      class="transition-all duration-300 ease-in-out flex justify-start items-end gap-2"
-      :class="isVisible ? 'translate-y-0' : 'translate-y-full'"
+      class="transition-all duration-500 ease-in-out flex justify-start items-end gap-2"
+      :class="isVisible && !gap.isGap ? 'translate-y-0' : 'translate-y-full'"
     >
       <LayoutFooterPages :siteData="siteData" />
     </div>
@@ -15,6 +15,10 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useGapStore } from '../stores/gap';
+
+// Get the gap store
+const gap = useGapStore();
 
 const props = defineProps({
   siteData: {
