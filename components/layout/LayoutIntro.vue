@@ -4,7 +4,7 @@
     id="intro"
   >
     <div
-      class="flex flex-col items-center justify-center relative [&_div]:h-full [&_figure]:h-full [&_img]:object-cover! transition-all linear duration-intro"
+      class="flex flex-col items-center justify-center relative [&_div]:h-full [&_figure]:h-full [&_img]:object-cover [&_img]:h-full transition-all linear duration-intro"
       :class="
         !imageScaled ? 'w-20 h-10 p-0' : 'w-frame-w h-frame-h p-11 px-[7.6rem]'
       "
@@ -52,7 +52,6 @@ const props = defineProps({
 
 // Reactive state
 const imageScaled = ref(false);
-const imageScaledDone = ref(false);
 const randomPortraitImage = ref(null);
 const randomLandscapeImage = ref(null);
 

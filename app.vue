@@ -1,41 +1,34 @@
 <template>
-  <Transition name="fade">
-    <div>
-      <LayoutHeader :siteData="siteData" class="fixed top-0 z-50" />
+  <LayoutHeader :siteData="siteData" class="fixed top-0 z-50" />
 
-      <Transition name="slide-up">
-        <LayoutIntro v-if="introVisible" :siteData="siteData" />
-      </Transition>
+  <Transition name="slide-up">
+    <LayoutIntro v-if="introVisible" :siteData="siteData" />
+  </Transition>
 
-      <Transition name="slide-in">
-        <div v-if="!introVisible" class="h-frame-h overflow-hidden">
-          <div
-            class="absolute top-0 h-frame-h"
-            :class="{
-              'pointer-events-none overflow-hidden': gap.isGap,
-              'overflow-y-scroll': !gap.isGap,
-            }"
-            @scroll="handleScroll"
-            @wheel="handleWheel"
-            ref="scrollContainer"
-          >
-            <LayoutGallery :siteData="siteData" />
-            <LayoutFooter :siteData="siteData" class="md:hidden" />
-          </div>
+  <Transition name="slide-in">
+    <div v-if="!introVisible" class="">
+      <div
+        class="fixed top-0 h-frame-h w-full z-50"
+        :class="{
+          'pointer-events-none overflow-hidden': gap.isGap,
+          'overflow-y-scroll': !gap.isGap,
+        }"
+        @scroll="handleScroll"
+        @wheel="handleWheel"
+        ref="scrollContainer"
+      >
+        <LayoutGallery :siteData="siteData" />
+        <LayoutFooter :siteData="siteData" class="md:hidden" />
+      </div>
 
-          <main
-            class="absolute top-0 mx-auto p-10 h-frame-h scroll-smooth transition-opacity"
-            :class="{
-              'overflow-hidden opacity-0': !gap.isGap,
-              'overflow-y-scroll ': gap.isGap,
-            }"
-          >
-            <div class="w-1/2 mx-auto">
-              <NuxtPage />
-            </div>
-          </main>
+      <main
+        class="scroll-smooth transition-opacity duration-500"
+        :class="{ 'opacity-0': !gap.isGap }"
+      >
+        <div class="w-main mx-auto mb-24">
+          <NuxtPage />
         </div>
-      </Transition>
+      </main>
     </div>
   </Transition>
 </template>
@@ -45,11 +38,11 @@ const gap = useGapStore();
 const introStore = useIntroStore();
 const scrollContainer = ref(null);
 const route = useRoute();
-const isFirstVisit = ref(true); // Track if this is the first route in the session
+
+const scrollPosition = ref(0); // Store the scroll position
 
 // Computed property to determine if intro should be visible
 const introVisible = computed(() => {
-  // Show intro only if we're on home route AND it's set to be visible in the store
   return (
     introStore.isIntro &&
     (route.path === '/' || route.path === `/${currentLang}`)
@@ -59,12 +52,17 @@ const introVisible = computed(() => {
 // Initialize intro visibility based on initial route
 onMounted(() => {
   const isHomeRoute = route.path === '/' || route.path === `/${currentLang}`;
-
-  // Only show intro if initial entry is on the home route
   if (!isHomeRoute) {
     introStore.setIntro(false);
   }
 });
+
+// Handle scroll event
+const handleScroll = () => {
+  if (!gap.isGap && scrollContainer.value) {
+    scrollPosition.value = scrollContainer.value.scrollTop;
+  }
+};
 
 // Mouse movement threshold and tracking
 let mouseMoveCounter = 0;
@@ -72,40 +70,14 @@ const mouseMoveThreshold = 10; // Number of mouse movements before hiding intro
 
 // Mouse move handler - primary method to hide intro
 const handleMouseMove = () => {
-  // Only process if we're on home and intro is visible
   if (introVisible.value) {
     mouseMoveCounter++;
     console.log('Mouse moved!', mouseMoveCounter);
 
-    // Hide intro after sufficient mouse movement
     if (mouseMoveCounter > mouseMoveThreshold) {
-      introStore.setIntro(false);
-      mouseMoveCounter = 0; // Reset counter
+      if (introStore.isDone) introStore.setIntro(false);
     }
   }
-};
-
-// Touch handling for swipes (as fallback for mobile)
-let touchStartY = 0;
-const handleTouchStart = (event) => {
-  touchStartY = event.touches[0].clientY;
-};
-
-const handleTouchMove = (event) => {
-  if (!touchStartY || !introVisible.value) return;
-
-  const touchY = event.touches[0].clientY;
-  const deltaY = touchStartY - touchY;
-
-  // Only process if it's a significant movement to avoid small unintentional swipes
-  if (Math.abs(deltaY) > 30) {
-    introStore.setIntro(false);
-    touchStartY = 0; // Reset to prevent continuous triggering
-  }
-};
-
-const handleTouchEnd = () => {
-  touchStartY = 0;
 };
 
 const { data: siteData } = await useFetch('/api/site', {
@@ -114,6 +86,48 @@ const { data: siteData } = await useFetch('/api/site', {
     lang: currentLang,
   },
 });
+
+// Watch for changes in isGap
+watch(
+  () => gap.isGap,
+  (newIsGap, oldIsGap) => {
+    handleContainers(newIsGap);
+  }
+);
+
+const handleContainers = (boolean) => {
+  if (boolean === false) {
+    // Store the current body scroll position when moving to gallery view
+    if (document.body) {
+      document.body.style.height = 'min(100vh, 100dvh)';
+      document.body.style.overflow = 'hidden';
+    }
+  } else {
+    // Restore scroll position when moving back to gap view
+    if (document.body) {
+      document.body.style.height = '';
+      document.body.style.overflow = '';
+
+      // Use nextTick to ensure the DOM has updated
+      nextTick(() => {
+        if (scrollContainer.value) {
+          scrollContainer.value.scrollTop = scrollPosition.value;
+        }
+      });
+    }
+  }
+};
+
+// Reset scroll position when route changes
+watch(
+  () => route.path,
+  () => {
+    scrollPosition.value = 0;
+    if (scrollContainer.value) {
+      scrollContainer.value.scrollTop = 0;
+    }
+  }
+);
 
 // Initialize all event listeners on mount
 onMounted(() => {
@@ -124,27 +138,17 @@ onMounted(() => {
     introStore.setIntro(false);
   }
 
-  // Add event listeners
-  window.addEventListener('touchstart', handleTouchStart);
-  window.addEventListener('touchmove', handleTouchMove);
-  window.addEventListener('touchend', handleTouchEnd);
   window.addEventListener('mousemove', handleMouseMove);
+  handleContainers(gap.isGap);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('touchstart', handleTouchStart);
-  window.removeEventListener('touchmove', handleTouchMove);
-  window.removeEventListener('touchend', handleTouchEnd);
   window.removeEventListener('mousemove', handleMouseMove);
 });
-
-function handleScroll() {
-  // Your existing scroll handling logic
-}
 </script>
 <style>
 body {
-  @apply w-frame-w h-frame-h overflow-hidden;
+  @apply w-full;
 }
 /* Fixed fade transitions with matched durations */
 .fade-enter-active {

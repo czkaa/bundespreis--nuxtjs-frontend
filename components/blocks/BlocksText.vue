@@ -3,8 +3,8 @@
     :text="text"
     class="text-sm-serif font-serif"
     :class="{
-      'pl-10': indent === 'small',
-      'pl-20': indent === 'medium',
+      'ml-indent-sm': indent === 'small',
+      'ml-indent-md': indent === 'medium',
     }"
   />
 </template>

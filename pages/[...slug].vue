@@ -18,6 +18,7 @@
 <script setup>
 const route = useRoute();
 const { currentLang } = useLanguage();
+import SectionWrapper from '~/components/sections/SectionWrapper.vue';
 import SectionDatenschutz from '~/components/sections/SectionDatenschutz.vue';
 import SectionImpressum from '~/components/sections/SectionImpressum.vue';
 import SectionArchiv from '~/components/sections/SectionArchiv.vue';

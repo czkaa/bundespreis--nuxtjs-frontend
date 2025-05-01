@@ -1,6 +1,6 @@
 <template>
   <div v-if="pending">loading</div>
-  <div v-else>
+  <div v-else class="space-y-lg my-24">
     <BasicsHeading tag="h2" :text="data.title" />
 
     <SnippetsSlider :images="data.gallery" />

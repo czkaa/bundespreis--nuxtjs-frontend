@@ -1,25 +1,13 @@
 <template>
   <template v-for="page in siteData?.footerPages" :key="page.uri">
     <!-- Use anchor links on home page with active state, NuxtLink elsewhere -->
-    <a
-      v-if="isInfoPage"
-      :href="`#${page.uri}`"
-      :class="[
-        'transition-transform duration-300',
-        currentHash === page.uri
-          ? 'translate-y-tag md:translate-y-0'
-          : 'translate-y-0',
-      ]"
-      @click="handleNavClick(page.uri)"
+
+    <NuxtLink
+      :to="`${isInfoPage ? '' : '/'}info#${page.uri}`"
+      @click="handleNavClick"
+      class="md:w-full"
     >
-      <div class="bg-black w-fit">
-        <BasicsTag :text="page.title" class="h-tag flex justify-end flex-col" />
-      </div>
-    </a>
-    <NuxtLink v-else :to="`/info#${page.uri}`" @click="handleNavClick">
-      <div class="bg-black w-fit">
-        <BasicsTag :text="page.title" class="t-tag flex justify-end flex-col" />
-      </div>
+      <BasicsNavItem :text="page.title" class="items-end" />
     </NuxtLink>
   </template>
 </template>

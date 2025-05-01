@@ -1,5 +1,5 @@
 <template>
-  <section :id="section.slug" ref="sectionRef" class="h-screen">
+  <section :id="section.slug" ref="sectionRef" class="pt-24 space-y-lg">
     <BasicsHeading tag="h2" :text="section.title" />
     <slot />
   </section>
@@ -17,35 +17,4 @@ const props = defineProps({
 });
 
 const sectionRef = ref(null);
-const hashStore = useHashStore();
-
-const checkPosition = () => {
-  if (!sectionRef.value) return;
-  return;
-
-  const rect = sectionRef.value.getBoundingClientRect();
-  const windowHeight = window.innerHeight;
-
-  // Check if the top of the component is in the upper third of the screen
-  if (rect.top >= 0 && rect.top <= windowHeight / 3) {
-    if (!hashStore.isBlocked) {
-      hashStore.setCurrentHash(props.section.slug);
-      const hash = `#${props.section.slug}`;
-      if (window.location.hash !== hash) {
-        // Use history.replaceState to avoid adding new entries to the browser history
-        history.replaceState(null, null, hash);
-      }
-    }
-  }
-};
-
-onMounted(() => {
-  window.addEventListener('scroll', checkPosition);
-  // Check position initially after component is mounted
-  checkPosition();
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener('scroll', checkPosition);
-});
 </script>

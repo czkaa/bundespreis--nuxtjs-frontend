@@ -7,7 +7,7 @@ module.exports = {
     },
     fontSize: {
       root: '16px',
-      'root-md': '13px',
+      'root-md': '10px',
 
       xs: ['1.16rem', { lineHeight: '1.14', letterSpacing: '0' }], // customized xs
       sm: ['1.66rem', { lineHeight: '1.1', letterSpacing: '0' }], // customized sm
@@ -15,7 +15,9 @@ module.exports = {
 
       md: ['2.25rem', { lineHeight: '1.2', letterSpacing: '0' }], // customized base
       lg: ['3.75rem', { lineHeight: '0.866', letterSpacing: '-0.01em' }], // customized lg
+      'lg-md': ['3rem', { lineHeight: '0.866', letterSpacing: '-0.01em' }], // customized lg
       xl: ['5.625rem', { lineHeight: '0.8', letterSpacing: '-0.02em' }], // customized xl
+      'xl-md': ['3rem', { lineHeight: '0.8', letterSpacing: '-0.02em' }], // customized xl
     },
     screens: {
       lg: { min: '1280px' },
@@ -28,11 +30,15 @@ module.exports = {
         xs: '0.25rem',
         sm: '0.5rem',
         md: '1rem',
-        'indent-sm': '3rem',
-        'indent-md': '6rem',
+        lg: '2rem',
+
+        'indent-sm': '4rem',
+        'indent-md': '8rem',
         'frame-h': 'min(100vh, 100dvh)',
         'frame-w': 'min(100vw, 100dvw)',
-        tag: '3rem',
+        tag: '4rem',
+        main: 'var(--main)',
+        column: 'calc((100vw - var(--main)) / 2)',
       },
       transitionDuration: {
         intro: '2s',
@@ -43,7 +49,7 @@ module.exports = {
     function ({ addBase }) {
       addBase({
         '.font-sans': {
-          'font-variation-settings': '"wght" 500, "SERF" 0',
+          'font-variation-settings': '"wght" 510, "SERF" 0',
         },
         '.font-serif': {
           'font-variation-settings': '"wght" 500, "SERF" 100',

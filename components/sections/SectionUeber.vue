@@ -1,5 +1,5 @@
 <template>
-  <BasicsHeading tag="h3" :text="section.subheading" />
+  <BasicsHeading tag="h3" :text="section.subheading" class="ml-indent-sm" />
   <Blocks :blocks="section.text" />
 </template>
 

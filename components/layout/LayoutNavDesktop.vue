@@ -1,8 +1,9 @@
 <template>
   <nav
-    class="flex gap-xs pointer-events-auto transition-transform duration-300 delay-700"
+    class="flex justify-end items-start gap-xs transition-transform duration-500 delay-1000"
   >
     <LayoutNavPages :siteData />
+    <SnippetsLanguageToggle />
   </nav>
 </template>
 

@@ -1,12 +1,12 @@
 <template>
   <div
     @click="toggleGap"
-    class="w-1/2 transition-all duration-500 ease-in-out transform bg-white cursor-pointer space-y-sm p-sm"
+    class="w-1/2 transition-all duration-1000 ease-in-out transform cursor-pointer overflow-hidden space-y-sm p-xs flex flex-col"
     :class="[
       gap.isGap
         ? isLeft
-          ? '-translate-x-[70%]'
-          : 'translate-x-[70%]'
+          ? '-translate-x-column'
+          : 'translate-x-column'
         : 'translate-x-0',
       gap.isGap ? 'pointer-events-auto' : 'pointer-events-none',
     ]"
@@ -16,17 +16,19 @@
       :key="index"
       :to="`/${item.page.uri}`"
       :style="{
-        marginLeft: `${getPosition(item, index)}%`,
-        width: `${100 - 20}%`,
+        transform: `translateX(${getPosition(item, index)}%)`,
       }"
-      class="block relative cursor-pointer transform hover:scale-[102%] hover:z-50 m-xs transition-transform duration-300"
+      class="relative cursor-pointer transform hover:scale-[102%] hover:z-50 m-xs transition-transform duration-300 grid w-[max-content]"
       :class="{
         'pointer-events-none': gap.isGap,
         'pointer-events-auto': !gap.isGap,
       }"
-      @click="handleImageClick(item)"
+      @click.stop="handleImageClick(item)"
     >
-      <BasicsImage :image="item" />
+      <BasicsImage
+        :image="item"
+        class="[&>img]:max-h-[60vh] [&>img]:max-w-[40vw]"
+      />
       <BasicsCaption :text="item.page.title" class="ml-auto" />
     </NuxtLink>
   </div>
@@ -40,6 +42,7 @@ import { ref } from 'vue';
 // Get the gap store
 const gap = useGapStore();
 const imageStore = useImageStore();
+const route = useRoute();
 
 // Props
 const props = defineProps({
@@ -77,16 +80,21 @@ const toggleGap = () => {
 
 const handleImageClick = (item) => {
   imageStore.setCurrentIndex(item.imageIndex);
+  console.log(item.imageIndex);
+
+  if (route.fullPath.includes(item.page.uri)) {
+    gap.setGap(true);
+  }
 };
 
 const getRandomPosition = () => {
   const max = 20;
   const min = 0;
-  const positionType = Math.floor(Math.random() * 101);
+  const positionType = Math.floor(Math.random() * 100);
 
   if (positionType <= 20) {
     return min;
-  } else if (positionType >= 81) {
+  } else if (positionType >= 80) {
     return max;
   } else {
     return Math.floor(Math.random() * (max - min + 1)) + min;

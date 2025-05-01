@@ -1,12 +1,13 @@
 <template>
   <div v-if="items && items.length">
-    <ul class="list-none space-y-2">
-      <li v-for="(item, index) in items" :key="index" class="flex space-x-2">
-        <span class="font-sans text-sm-sans shrink-0 text-right w-32">{{
-          item.year
-        }}</span>
-        <div class="text">{{ item.text }}</div>
-      </li>
+    <ul class="list-none grid [grid-template-columns:max-content_1fr] gap-x-md">
+      <template v-for="(item, index) in items" :key="index">
+        <BasicsText
+          :text="item.year"
+          class="block font-sans text-sm-sans text-right whitespace-nowrap tabular-nums tracking-[-0.06em]"
+        />
+        <BasicsText :text="item.text" />
+      </template>
     </ul>
   </div>
 </template>

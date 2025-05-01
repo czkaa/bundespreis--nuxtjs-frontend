@@ -1,5 +1,10 @@
 <template>
-  <div v-if="formattedText" class="w-full" v-html="formattedText"></div>
+  <div
+    basics-text
+    v-if="formattedText"
+    class="w-full text-sm"
+    v-html="formattedText"
+  ></div>
 </template>
 
 <script setup>
@@ -11,3 +16,18 @@ const formattedText = computed(() => {
   return props.text ? props.text.replaceAll('<a', '<a target="_blank"') : null;
 });
 </script>
+
+<style>
+/* Target elements with data-text="bold-link" */
+[basics-text] strong {
+  @apply text-sm-sans font-sans;
+}
+
+[basics-text] a {
+  @apply text-sm-sans font-sans;
+}
+
+[basics-text] a:hover {
+  @apply underline;
+}
+</style>

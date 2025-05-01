@@ -1,17 +1,20 @@
 <template>
   <div class="gallery-slider relative">
-    <div class="h-[70vh] flex flex-col justify-center overflow-hidden">
+    <div class="h-[50vh] flex flex-col justify-center overflow-hidden">
       <transition name="slide-fade" mode="out-in">
         <div
           :key="currentIndex"
-          class="flex flex-col justify-center items-center [&_img]:max-h-full overflow-hidden"
+          class="grid w-[max-content] max-w-full mx-auto [&_img]:h-full overflow-hidden"
         >
           <BasicsImage :image="currentImage" />
-          <div class="flex w-full justify-between items-start">
-            <BasicsText :text="currentImage.caption" class="text-xs" />
+          <div class="flex overflow-hidden justify-between items-start gap-xs">
+            <BasicsText
+              :text="currentImage.caption"
+              class="text-xs font-sans mt-0.5"
+            />
             <BasicsCaption
-              :text="`${currentIndex}/${images.length}`"
-              class="ml-auto"
+              :text="`${currentIndex + 1}/${images.length}`"
+              class="ml-auto shrink-0 pt-0.5"
             />
           </div>
         </div>
@@ -36,7 +39,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 const imageStore = useImageStore();
 
 const props = defineProps({
@@ -48,6 +51,21 @@ const props = defineProps({
 });
 
 const currentIndex = ref(imageStore.currentIndex);
+
+// Watch for changes in the image store's currentIndex
+watch(
+  () => imageStore.currentIndex,
+  (newIndex) => {
+    currentIndex.value = newIndex;
+  }
+);
+
+// Also update the image store when this component changes the index
+watch(currentIndex, (newIndex) => {
+  if (imageStore.currentIndex !== newIndex) {
+    imageStore.setCurrentIndex(newIndex);
+  }
+});
 
 const currentImage = computed(() => {
   return props.images[currentIndex.value] || {};

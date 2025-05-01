@@ -1,12 +1,18 @@
 <template>
-  <BasicsHeading ag="h3" :text="section.addressTitle" />
-  <Blocks :blocks="section.address" />
+  <div>
+    <BasicsHeading tag="h4" :text="section.addressTitle" />
+    <Blocks :blocks="section.address" />
+  </div>
 
-  <BasicsHeading ag="h3" :text="section.openingTitle" />
-  <Blocks :blocks="section.opening" />
+  <div>
+    <BasicsHeading tag="h4" :text="section.openingTitle" />
+    <Blocks :blocks="section.opening" />
+  </div>
 
-  <BasicsHeading tag="h3" :text="section.hoursTitle" />
-  <Blocks :blocks="section.hours" />
+  <div>
+    <BasicsHeading tag="h4" :text="section.hoursTitle" />
+    <Blocks :blocks="section.hours" />
+  </div>
 </template>
 
 <script setup>

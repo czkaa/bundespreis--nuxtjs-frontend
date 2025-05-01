@@ -14,11 +14,23 @@
 
 body {
   font-family: 'SeasonVF';
-  @apply font-serif text-sm;
+  @apply font-serif text-root-md;
 }
 
 
 html,
 body {
   scroll-behavior: smooth;
+}
+
+
+:root {
+  --main: 60%;
+  --offset: 20%;
+}
+
+@media (max-width: 1000px) {
+  :root {
+      --main: 60%;
+    }
 }

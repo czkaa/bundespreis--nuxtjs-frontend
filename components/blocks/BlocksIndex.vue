@@ -3,7 +3,7 @@
     <BlocksText
       v-if="block.type === 'customtext'"
       :text="block.content.text"
-      :indent="block.content.text"
+      :indent="block.content.indent"
     />
     <BlocksLogos
       v-if="block.type === 'customlogos'"
