@@ -16,23 +16,23 @@ export default defineNuxtConfig({
   css: [
     '~/assets/css/main.css'
   ],
-  ssr: true,
+  // ssr: true,
 
-  nitro: {
-    preset: 'node-server',
-    prerender: {
-      crawlLinks: true,
-      routes: ['/']
-    }
-  },
+  // nitro: {
+  //   preset: 'node-server',
+  //   prerender: {
+  //     crawlLinks: true,
+  //     routes: ['/']
+  //   }
+  // },
   runtimeConfig: {
     public: {
-      apiUrl: 'https://bundespreis-backend.czkaa.site'
+      apiBaseUrl: 'https://bundespreis-backend.czkaa.site'
     }
   },
   app: {
     head: {
-      title: 'Bundespreis Data Viewer',
+      title: 'Bundespreis für Kunststudierende 2025',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },

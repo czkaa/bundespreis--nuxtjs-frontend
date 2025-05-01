@@ -1,6 +1,5 @@
 <template>
-  <div v-if="pending">loading</div>
-  <div v-else-if="data?.sections">
+  <div v-if="data?.sections">
     <SectionWrapper :section="data.sections.archiv">
       <SectionArchiv :section="data.sections.archiv" />
     </SectionWrapper>
@@ -23,11 +22,5 @@ import SectionDatenschutz from '~/components/sections/SectionDatenschutz.vue';
 import SectionImpressum from '~/components/sections/SectionImpressum.vue';
 import SectionArchiv from '~/components/sections/SectionArchiv.vue';
 
-const { data, pending, error } = await useFetch('/api/dynamic', {
-  server: false,
-  query: {
-    lang: currentLang,
-    slug: route.params.slug,
-  },
-});
+const { data: data } = await useFetch('/api/info');
 </script>

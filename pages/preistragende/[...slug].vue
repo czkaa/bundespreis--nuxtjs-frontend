@@ -1,6 +1,5 @@
 <template>
-  <div v-if="pending">loading</div>
-  <div v-else class="space-y-lg my-24">
+  <div v-if="data" class="space-y-lg my-24">
     <BasicsHeading tag="h2" :text="data.title" />
 
     <SnippetsSlider :images="data.gallery" />
@@ -28,11 +27,7 @@
 const route = useRoute();
 const { currentLang } = useLanguage();
 
-const { data, pending, error } = await useFetch('/api/preistragende', {
-  server: false,
-  query: {
-    lang: currentLang,
-    slug: route.params.slug,
-  },
-});
+const { data: data } = await useFetch(
+  `/api/preistragende/${route.params.slug}`
+);
 </script>

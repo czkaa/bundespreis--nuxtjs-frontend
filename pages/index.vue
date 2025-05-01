@@ -1,6 +1,5 @@
 <template>
-  <div v-if="pending">loading</div>
-  <div v-else-if="data?.sections">
+  <div v-if="data?.sections">
     <SectionWrapper :section="data.sections.ueber">
       <SectionUeber :section="data.sections.ueber" />
     </SectionWrapper>
@@ -32,10 +31,5 @@ import SectionNominierte from '~/components/sections/SectionNominierte.vue';
 import SectionKatalog from '~/components/sections/SectionKatalog.vue';
 import SectionAusstellung from '~/components/sections/SectionAusstellung.vue';
 
-const { data, pending, error } = await useFetch('/api/root', {
-  server: false,
-  query: {
-    lang: currentLang,
-  },
-});
+const { data: data } = await useFetch('/api');
 </script>

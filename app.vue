@@ -75,19 +75,14 @@ const handleMouseMove = () => {
     console.log('Mouse moved!', mouseMoveCounter);
 
     if (mouseMoveCounter > mouseMoveThreshold) {
-      if (introStore.isDone) introStore.setIntro(false);
+      introStore.setIntro(false);
     }
   } else {
     introStore.setDone(true);
   }
 };
 
-const { data: siteData } = await useFetch('/api/site', {
-  server: true,
-  query: {
-    lang: currentLang,
-  },
-});
+const { data: siteData } = await useFetch('/api/site');
 
 // Watch for changes in isGap
 watch(
