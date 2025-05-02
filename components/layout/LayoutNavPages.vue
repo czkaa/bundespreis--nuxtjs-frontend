@@ -1,25 +1,16 @@
 <template>
   <template v-for="page in siteData?.headerPages" :key="page.uri">
-    <KeepAlive>
+    <div>
       <NuxtLink
         :to="`${isHomePage ? '' : '/'}#${page.uri}`"
         @click="handleNavClick"
-        :class="[
-          'transition-transform duration-300 md:w-full',
-          route.fullPath.includes(page.uri)
-            ? 'translate-y-lg md:translate-y-0'
-            : 'translate-y-0',
-        ]"
       >
         <div
           class="absolute w-full h-lg bg-black top-0 transform -translate-y-full md:hidden"
         ></div>
-        <BasicsNavItem
-          :text="page.title"
-          class="t-tag flex justify-end flex-col -mt-[1px]"
-        />
+        <BasicsNavItem :text="page.title" class="items-end -mt-[1px]" />
       </NuxtLink>
-    </KeepAlive>
+    </div>
   </template>
 </template>
 
@@ -37,9 +28,6 @@ const props = defineProps({
 
 const route = useRoute();
 const hashStore = useHashStore();
-
-// Get current hash from the store
-const currentHash = computed(() => hashStore.currentHash);
 
 // Check if we're on the home page (/ or /en or /de)
 const isHomePage = computed(() => {

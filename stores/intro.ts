@@ -3,7 +3,9 @@ import { defineStore } from 'pinia'
 export const useIntroStore = defineStore('intro', {
   state: () => ({
     isIntro: true,
-    isDone: false
+    isDone: false,
+    isScaled: false
+
   }),
   actions: {
     toggle() {
@@ -17,6 +19,9 @@ export const useIntroStore = defineStore('intro', {
     },
     setDone(value: boolean) {
       this.isDone = value
+    },
+    setScaled(value: boolean) {
+      this.isScaled = value
     }
   }
 })

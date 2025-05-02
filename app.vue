@@ -1,13 +1,19 @@
 <template>
-  {{ isHomeRoute }}
-  <LayoutHeader v-if="siteData" :siteData="siteData" class="fixed top-0 z-50" />
-
-  <Transition name="slide-up">
-    <LayoutIntro v-if="introVisible" :siteData="siteData" />
+  <Transition name="fade" mode="out-in">
+    <LayoutHeader
+      v-if="siteData"
+      :siteData="siteData"
+      class="fixed top-0 z-50"
+      key="header"
+    />
   </Transition>
 
-  <Transition name="slide-in">
-    <div v-if="!introVisible" class="absolute w-full">
+  <Transition name="slide-up" mode="out-in">
+    <LayoutIntro v-if="introVisible" :siteData="siteData" key="intro" />
+  </Transition>
+
+  <Transition name="slide-in" mode="out-in">
+    <div v-if="!introVisible" class="absolute w-full" key="main-content">
       <div
         class="fixed top-0 h-frame-h w-full z-50"
         :class="{
@@ -23,10 +29,10 @@
       </div>
 
       <main
-        class="scroll-smooth transition-opacity duration-500"
+        class="transition-opacity duration-500"
         :class="{ 'opacity-0': !gap.isGap }"
       >
-        <div class="w-main mx-auto mb-24">
+        <div class="w-main mx-auto mb-outer px-lg md:px-0">
           <NuxtPage />
         </div>
       </main>
@@ -41,6 +47,7 @@ const gap = useGapStore();
 const introStore = useIntroStore();
 const scrollContainer = ref(null);
 const route = useRoute();
+const router = useRouter();
 
 const { data: siteData } = await useFetch(
   () => `/api/${locale.value === 'en' ? 'en/' : ''}site`
@@ -52,8 +59,6 @@ const scrollPosition = ref(0); // Store the scroll position
 const introVisible = computed(() => {
   return introStore.isIntro && localePath(route.path === '/');
 });
-
-// Initialize intro visibility based on initial route
 
 // Handle scroll event
 const handleScroll = () => {
@@ -72,7 +77,7 @@ const handleMouseMove = () => {
     mouseMoveCounter++;
     console.log('Mouse moved!', mouseMoveCounter);
 
-    if (mouseMoveCounter > mouseMoveThreshold) {
+    if (mouseMoveCounter > mouseMoveThreshold && introStore.isScaled) {
       introStore.setIntro(false);
     }
   } else {
@@ -87,6 +92,16 @@ watch(
     handleContainers(newIsGap);
   }
 );
+
+// // Watch for language changes
+// watch(
+//   () => locale.value,
+//   (newLocale, oldLocale) => {
+//     if (newLocale !== oldLocale) {
+//       handleLanguageChange();
+//     }
+//   }
+// );
 
 const handleContainers = (boolean) => {
   if (boolean === false) {
@@ -111,23 +126,38 @@ const handleContainers = (boolean) => {
   }
 };
 
-// // Reset scroll position when route changes
-// watch(
-//   () => route.path,
-//   () => {
-//     scrollPosition.value = 0;
-//     if (scrollContainer.value) {
-//       scrollContainer.value.scrollTop = 0;
-//     }
-//   }
-// );
+// Uncomment and modify the route watcher to handle language changes better
+watch(
+  () => route.path,
+  (newPath, oldPath) => {
+    // Don't reset scroll when only the language changes
+    const newPathBase = newPath.replace(/^\/(en|de)/, '');
+    const oldPathBase = oldPath.replace(/^\/(en|de)/, '');
+
+    // If it's just a language change on the same page, don't reset scroll
+    if (newPathBase === oldPathBase && newPath !== oldPath) {
+    } else {
+      document.body.style.scrollBehavior = 'auto';
+      document.documentElement.style.scrollBehavior = 'auto';
+
+      scrollPosition.value = 0;
+      if (scrollContainer.value) {
+        scrollContainer.value.scrollTop = 0;
+      }
+
+      setTimeout(() => {
+        document.documentElement.style.scrollBehavior = '';
+        document.body.style.scrollBehavior = '';
+      }, 100);
+    }
+  }
+);
 
 // Initialize all event listeners on mount
 onMounted(() => {
   const path = route.fullPath; // Remove hash from path
   const isHomeRoute = path === '/' || path === '/en' || path === '/de';
   if (!isHomeRoute) {
-    console.log('Noo');
     introStore.setIntro(false);
   }
 
@@ -144,12 +174,11 @@ body {
   @apply w-full;
 }
 /* Fixed fade transitions with matched durations */
-.fade-enter-active {
-  transition: opacity 1s ease;
-}
+.fade-enter-active,
 .fade-leave-active {
-  transition: opacity 1s ease;
+  transition: opacity 0.7s ease;
 }
+
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
@@ -159,11 +188,13 @@ body {
   opacity: 1;
 }
 /* Slide up transition for the intro */
-.slide-up-enter-active {
-  transition: transform 2s ease-out;
+.slide-up-enter-active,
+.slide-in-enter-active,
+.slide-in-leave-active {
+  transition: transform 1s linear;
 }
 .slide-up-leave-active {
-  transition: transform 2s ease-out;
+  transition: transform 1s linear;
   position: absolute;
   width: 100%;
 }
@@ -172,11 +203,6 @@ body {
 }
 .slide-up-leave-to {
   transform: translateY(-100dvh);
-}
-/* Slide in transition for the main content */
-.slide-in-enter-active,
-.slide-in-leave-active {
-  transition: transform 2s ease-out;
 }
 
 .slide-in-enter-from {

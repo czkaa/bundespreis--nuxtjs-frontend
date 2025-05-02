@@ -5,14 +5,13 @@
 
     <div class="flex justify-end items-start md:hidden transition">
       <LayoutNavDesktop
-        :class="[!introStore.isDone ? '-translate-y-full' : 'translate-y-0']"
+        :class="[!introStore.isDone ? '-translate-y-[150%]' : 'translate-y-0']"
         :siteData
         class="transition-transform duration-700 delay-1000 md:hidden"
       />
     </div>
+    <LayoutNavMobile :siteData />
   </header>
-
-  <LayoutNavMobile :siteData />
 </template>
 
 <script setup>

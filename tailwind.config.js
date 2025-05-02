@@ -7,7 +7,7 @@ module.exports = {
     },
     fontSize: {
       root: '1.1vw',
-      'root-md': '10px',
+      'root-md': 'max(2.5vw, 10px)',
 
       xs: ['1.16rem', { lineHeight: '1.14', letterSpacing: '0' }], // customized xs
       sm: ['1.66rem', { lineHeight: '1.1', letterSpacing: '0' }], // customized sm
@@ -21,8 +21,8 @@ module.exports = {
     },
     screens: {
       lg: { min: '1280px' },
-      sm: { max: '900px' },
-      md: { max: '1000px' },
+      sm: { max: '600px' },
+      md: { max: '900px' },
       'hover-hover': { raw: '(hover: hover)' },
     },
     extend: {
@@ -31,14 +31,16 @@ module.exports = {
         sm: '0.5rem',
         md: '1rem',
         lg: '2rem',
+        xl: '4rem',
 
         'indent-sm': '4rem',
         'indent-md': '8rem',
         'frame-h': 'min(100vh, 100dvh)',
         'frame-w': 'min(100vw, 100dvw)',
-        tag: '4rem',
+        tag: '4.5rem',
         main: 'var(--main)',
         column: 'calc((100vw - var(--main)) / 2)',
+        outer: '7.5rem',
       },
       transitionDuration: {
         intro: '2s',

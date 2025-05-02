@@ -1,7 +1,7 @@
 <template>
   <template v-for="page in siteData?.footerPages" :key="page.uri">
     <NuxtLink
-      :to="localePath(`${isInfoPage ? '' : '/'}info#${page.uri}`)"
+      :to="`${isInfoPage ? '' : '/'}info#${page.uri}`"
       @click="handleNavClick"
       class="md:w-full"
     >

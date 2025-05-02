@@ -1,8 +1,9 @@
 <template>
   <span
-    class="h-tag font-sans bg-black px-sm py-xs text-white text-md transition-transform duration-300 flex pointer-events-auto md:justify-center md:items-center"
+    class="h-tag font-sans bg-black px-md py-xs text-white text-md transition-transform duration-300 flex pointer-events-auto md:justify-center md:items-center"
   >
-    {{ text }}
+    <template v-if="text">{{ text }}</template>
+    <slot v-else></slot>
   </span>
 </template>
 
@@ -10,7 +11,6 @@
 const props = defineProps({
   text: {
     type: String,
-    required: true,
   },
   isBottom: {
     type: Boolean,

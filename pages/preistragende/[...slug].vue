@@ -1,5 +1,5 @@
 <template>
-  <div v-if="data" class="space-y-lg my-24">
+  <div v-if="data" class="space-y-lg my-outer">
     <BasicsHeading tag="h2" :text="data.title" />
 
     <SnippetsSlider :images="data.gallery" />

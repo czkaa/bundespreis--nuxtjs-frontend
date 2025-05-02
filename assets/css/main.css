@@ -29,6 +29,6 @@ body {
 
 @media (max-width: 1000px) {
   :root {
-      --main: 60%;
+      --main: 65%;
     }
 }

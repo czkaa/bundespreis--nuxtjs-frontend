@@ -1,12 +1,14 @@
 <template>
   <div
-    class="pointer-events-auto snap-start w-full transition-all duration-1000 overflow-hidden bg-white h-frame-h"
+    class="w-full transition-all duration-1000 overflow-hidden bg-white h-frame-h flex flex-col items-center justify-center"
     id="intro"
   >
     <div
-      class="flex flex-col items-center justify-center relative [&_div]:h-full [&_figure]:h-full [&_img]:object-cover [&_img]:h-full transition-all linear duration-intro"
+      class="relative [&_div]:h-full [&_figure]:h-full [&_img]:object-cover [&_img]:h-full transition-all linear duration-intro"
       :class="
-        !imageScaled ? 'w-20 h-10 p-0' : 'w-frame-w h-frame-h p-11 px-[7.6rem]'
+        !imageScaled
+          ? 'px-[46vw] py-[46vw]'
+          : 'w-frame-w h-frame-h py-tag px-[12.4rem] md:px-xl sm:py-[7.6rem]'
       "
     >
       <!-- Show portrait image on mobile (below md breakpoint) -->
@@ -14,11 +16,14 @@
         v-if="randomPortraitImage"
         class="w-full h-full hidden md:flex justify-center items-center relative"
       >
-        <BasicsImage :image="randomPortraitImage" class="relative z-10" />
+        <BasicsImage
+          :image="randomPortraitImage"
+          class="relative z-10 [&>img]:h-full [&>img]:w-auto"
+        />
         <BasicsCaption
           :text="randomPortraitImage.page.title"
-          class="absolute bottom-0 right-0 transition-translate duration-300"
-          :class="{ '-translate-y-full': !introStore.isDone }"
+          class="absolute bottom-0 right-0 transition-all duration-300"
+          :class="introStore.isScaled ? 'translate-y-full ' : 'opacity-0'"
         />
       </div>
 
@@ -27,11 +32,14 @@
         v-if="randomLandscapeImage"
         class="w-full h-full md:hidden flex justify-center items-center relative"
       >
-        <BasicsImage :image="randomLandscapeImage" class="relative z-10" />
+        <BasicsImage
+          :image="randomLandscapeImage"
+          class="relative z-10 [&>img]:h-auto [&>img]:w-full"
+        />
         <BasicsCaption
           :text="randomLandscapeImage.page.title"
-          class="absolute bottom-0 right-0 transition-translate duration-300"
-          :class="{ 'translate-y-full': introStore.isDone }"
+          class="absolute bottom-0 right-0 transition-all duration-300"
+          :class="introStore.isScaled ? 'translate-y-full ' : 'opacity-0'"
         />
       </div>
     </div>
@@ -82,9 +90,12 @@ onMounted(() => {
   // Select random images from the arrays
   selectRandomImages();
 
-  // Start image scaling animation immediately
   setTimeout(() => {
     imageScaled.value = true;
-  }, 100);
+  }, 1000);
+
+  setTimeout(() => {
+    introStore.setScaled(true);
+  }, 3000);
 });
 </script>

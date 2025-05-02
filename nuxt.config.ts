@@ -41,7 +41,7 @@ export default defineNuxtConfig({
     pages: {
       'info': {
         de: '/info',
-        en: '/info'
+        en: '/kr'
       }
     }
   },

@@ -18,7 +18,7 @@
       :style="{
         transform: `translateX(${getPosition(item, index)}%)`,
       }"
-      class="relative cursor-pointer transform hover:scale-[102%] hover:z-50 m-xs transition-transform duration-300 grid w-[max-content]"
+      class="relative cursor-pointer grid w-[max-content]"
       :class="{
         'pointer-events-none': gap.isGap,
         'pointer-events-auto': !gap.isGap,
@@ -27,7 +27,7 @@
     >
       <BasicsImage
         :image="item"
-        class="[&>img]:max-h-[60vh] [&>img]:max-w-[40vw]"
+        class="[&>img]:max-h-[50vh] [&>img]:max-w-[40vw] hover:scale-[102%] hover:z-50 transform transition-transform duration-300"
       />
       <BasicsCaption :text="item.page.title" class="ml-auto" />
     </NuxtLink>

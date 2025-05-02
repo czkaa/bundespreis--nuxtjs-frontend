@@ -12,8 +12,8 @@
     </Transition>
 
     <div
-      class="fixed top-0 right-0 z-[100] transition-transform duration-500 delay-1000 flex gap-xs"
-      :class="[!introStore.isDone ? '-translate-y-full' : 'translate-y-0']"
+      class="absolute top-0 right-0 z-[100] transition-transform duration-500 delay-1000 flex gap-xs"
+      :class="[!introStore.isDone ? '-translate-y-[150%]' : 'translate-y-0']"
     >
       <button
         class="relative w-tag h-tag bg-black pointer-events-auto z-[100]"

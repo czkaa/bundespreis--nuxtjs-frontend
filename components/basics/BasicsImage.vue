@@ -7,7 +7,7 @@
       :height="image.height"
       class="w-full h-auto object-contain"
       :class="[
-        'transition-opacity duration-300',
+        'transition-opacity duration-300 opject-center',
         isLoaded ? 'opacity-100' : 'opacity-0',
       ]"
       :style="{ aspectRatio: image.ratio }"
