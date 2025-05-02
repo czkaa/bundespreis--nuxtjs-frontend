@@ -27,7 +27,7 @@ const localePath = useLocalePath();
 const route = useRoute();
 const hashStore = useHashStore();
 const introStore = useIntroStore();
-const isInit = ref(false);
+const isInit = ref(introStore.isDone);
 
 const handleClick = () => {
   hashStore.setCurrentHash('');
