@@ -1,5 +1,4 @@
-import { defineStore } from 'pinia'
-import { durationIntro } from '~/utils/tailwind'
+const durationIntro = 1000;
 
 export const useIntroStore = defineStore('intro', {
   state: () => ({
