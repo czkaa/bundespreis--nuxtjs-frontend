@@ -28,7 +28,9 @@ export default defineNuxtConfig({
   // },
   runtimeConfig: {
     public: {
-      apiBaseUrl: 'http:/localhost:8000'
+      apiBaseUrl: 'https://bundespreis-backend.czkaa.site'
+      // apiBaseUrl: 'http:/localhost:8000'
+
     }
   },
 
