@@ -7,6 +7,7 @@
       :height="image.height"
       :style="{ aspectRatio: image.ratio ? image.ratio : '' }"
       class="w-full h-auto object-contain"
+      :class="['transition-opacity duration-300 opject-center']"
       @load="handleImageLoad"
     />
   </figure>

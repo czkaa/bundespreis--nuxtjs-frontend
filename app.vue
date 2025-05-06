@@ -10,87 +10,58 @@
 
   <SnippetsHomeLogo />
   <SnippetsHomeLogo :isTop="false" />
-  <div class="absolute w-full" key="main-content">
+  <div v-if="!introVisible" class="absolute w-full" key="main-content">
+    <!-- Gallery View -->
     <div
-      class="fixed top-0 h-frame-h w-full z-50"
+      style="scrollbar-gutter: stable"
+      class="absolute top-0 h-frame-h w-full z-50 overflow-y-auto"
       :class="{
-        'pointer-events-none overflow-hidden': gap.isGap,
-        'overflow-y-scroll': !gap.isGap,
+        'pointer-events-none': gap.isGap,
+        '': !gap.isGap,
       }"
-      @scroll="handleScroll"
+      :style="
+        gap.isGap
+          ? { transform: `translateY(-${galleryScrollPosition}px)` }
+          : {}
+      "
+      @scroll="handleGalleryScroll"
       @wheel="handleWheel"
-      ref="scrollContainer"
+      ref="galleryContainer"
     >
       <LayoutGallery :siteData="siteData" />
       <LayoutFooter :siteData="siteData" class="md:hidden" />
     </div>
 
+    <!-- Main Content View -->
     <main
-      class="transition-opacity duration-500"
-      :class="{ 'opacity-0': !gap.isGap }"
+      style="scrollbar-gutter: stable"
+      class="absolute h-frame-h transition-opacity duration-500 overflow-y-scroll"
+      :class="{ 'opacity-0': !gap.isGap, '': gap.isGap }"
+      @scroll="handleMainScroll"
+      ref="mainContainer"
     >
-      <div class="w-main mx-auto mb-outer my-offset-content px-xs">
+      <div class="w-main mx-auto my-offset-content px-xs">
         <NuxtPage />
       </div>
     </main>
   </div>
-  <!-- <Transition name="">
-    <LayoutIntro v-if="false" :siteData="siteData" key="intro" />
-    
-  </Transition> -->
 </template>
+
 <script setup>
 const { locale } = useI18n();
 const gap = useGapStore();
 const introStore = useIntroStore();
 const routeStore = useRouteStore();
 
-const scrollContainer = ref(null);
+const galleryContainer = ref(null);
+const mainContainer = ref(null);
 const route = useRoute();
+const introVisible = ref(false);
 
 const { data: siteData } = await useFetch(
   () => `/api/${locale.value === 'en' ? 'en/' : ''}site`
 );
 
-const scrollPosition = ref(0); // Store the scroll position
-
-// Handle scroll event
-const handleScroll = () => {
-  if (!gap.isGap && scrollContainer.value) {
-    scrollPosition.value = scrollContainer.value.scrollTop;
-  }
-};
-
-// Watch for changes in isGap
-watch(
-  () => gap.isGap,
-  (newIsGap, oldIsGap) => {
-    handleContainers(newIsGap);
-  }
-);
-
-const handleContainers = (boolean) => {
-  if (boolean === false) {
-    // Store the current body scroll position when moving to gallery view
-    if (document.body) {
-      document.body.style.height = 'min(100vh, 100dvh)';
-      // document.body.style.overflow = 'hidden';
-    }
-  } else {
-    // Restore scroll position when moving back to gap view
-    if (document.body) {
-      document.body.style.height = '';
-      document.body.style.overflow = '';
-
-      // Use nextTick to ensure the DOM has updated
-      nextTick(() => {
-        if (scrollContainer.value) {
-          scrollContainer.value.scrollTop = scrollPosition.value;
-        }
-      });
-    }
-  }
-};
 const headerKey = ref(0);
 
 watch(
@@ -100,15 +71,11 @@ watch(
   },
   { deep: true }
 );
-
-onMounted(() => {
-  handleContainers(gap.isGap);
-});
 </script>
 
 <style>
 body {
-  @apply w-full overflow-y-scroll;
+  @apply w-full overflow-hidden;
 }
 .fade-enter-active,
 .fade-leave-active {
