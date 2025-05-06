@@ -1,24 +1,27 @@
 <template>
-  <div class="gallery-slider relative">
-    <div class="h-[50vh] flex flex-col justify-center overflow-hidden">
-      <transition name="slide-fade" mode="out-in">
-        <div
-          :key="currentIndex"
-          class="grid w-[max-content] max-w-full mx-auto [&_img]:h-full overflow-hidden"
-        >
-          <BasicsImage :image="currentImage" />
-          <div class="flex overflow-hidden justify-between items-start gap-xs">
-            <BasicsText
-              :text="currentImage.caption"
-              class="text-xs font-sans mt-0.5"
-            />
-            <BasicsCaption
-              :text="`${currentIndex + 1}/${images.length}`"
-              class="ml-auto shrink-0 pt-0.5"
-            />
-          </div>
+  <div ref="sliderContainer" class="gallery-slider relative">
+    <div
+      class="flex flex-col h-content-h justify-center items-center overflow-hidden pb-xs"
+    >
+      <div
+        :key="currentIndex"
+        class="grid w-[max-content] max-w-full h-full mx-auto overflow-hidden"
+      >
+        <BasicsImage
+          :image="currentImage"
+          class="h-full [&_img]:h-full mx-auto flex items-end"
+        />
+        <div class="flex overflow-hidden justify-between items-start gap-xs">
+          <BasicsText
+            :text="currentImage.caption"
+            class="text-xs font-sans mt-0.5"
+          />
+          <BasicsCaption
+            :text="`${currentIndex + 1}/${images.length}`"
+            class="ml-auto shrink-0 pt-0.5"
+          />
         </div>
-      </transition>
+      </div>
     </div>
 
     <!-- Invisible click regions for touch/mobile navigation -->
@@ -39,7 +42,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 const imageStore = useImageStore();
 
 const props = defineProps({
@@ -51,6 +54,9 @@ const props = defineProps({
 });
 
 const currentIndex = ref(imageStore.currentIndex);
+const sliderContainer = ref(null);
+const maxHeight = ref(0);
+let resizeObserver = null;
 
 // Watch for changes in the image store's currentIndex
 watch(
@@ -79,6 +85,48 @@ function prevImage() {
   currentIndex.value =
     (currentIndex.value - 1 + props.images.length) % props.images.length;
 }
+
+// Calculate the maximum available height
+function calculateMaxHeight() {
+  if (!sliderContainer.value) return;
+
+  const rect = sliderContainer.value.getBoundingClientRect();
+  const topOffset = rect.top + window.scrollY;
+  const windowHeight = window.innerHeight;
+
+  const availableHeight = windowHeight - topOffset;
+
+  // Update the CSS variable
+  document.documentElement.style.setProperty(
+    '--content-h',
+    `${availableHeight}px`
+  );
+}
+
+onMounted(() => {
+  // Initial calculation
+  calculateMaxHeight();
+
+  // Set up resize observer to recalculate on resize or DOM changes
+  resizeObserver = new ResizeObserver(() => {
+    calculateMaxHeight();
+  });
+
+  if (sliderContainer.value) {
+    resizeObserver.observe(sliderContainer.value);
+  }
+
+  // Also listen for window resize events
+  window.addEventListener('resize', calculateMaxHeight);
+});
+
+onUnmounted(() => {
+  // Clean up observers and event listeners
+  if (resizeObserver) {
+    resizeObserver.disconnect();
+  }
+  window.removeEventListener('resize', calculateMaxHeight);
+});
 </script>
 
 <style scoped>

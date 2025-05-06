@@ -2,7 +2,7 @@
   <div
     basics-text
     v-if="formattedText"
-    class="w-full text-sm"
+    class="text-sm"
     v-html="formattedText"
   ></div>
 </template>

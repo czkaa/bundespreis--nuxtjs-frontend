@@ -1,7 +1,5 @@
 <template>
-  <nav
-    class="flex justify-end items-start gap-xs transition-transform duration-500 delay-1000 pointer-events-auto"
-  >
+  <nav class="flex justify-end items-start gap-xs pointer-events-auto">
     <LayoutNavPages :siteData />
     <SnippetsLanguageToggle />
   </nav>

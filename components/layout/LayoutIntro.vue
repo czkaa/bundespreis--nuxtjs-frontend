@@ -20,11 +20,6 @@
           :image="randomPortraitImage"
           class="relative z-10 [&>img]:h-full [&>img]:w-auto"
         />
-        <BasicsCaption
-          :text="randomPortraitImage.page.title"
-          class="absolute bottom-0 right-0 transition-all duration-300"
-          :class="introStore.isScaled ? 'translate-y-full ' : 'opacity-0'"
-        />
       </div>
 
       <!-- Show landscape image on md breakpoint and above -->
@@ -36,11 +31,6 @@
           :image="randomLandscapeImage"
           class="relative z-10 [&>img]:h-auto [&>img]:w-full"
         />
-        <BasicsCaption
-          :text="randomLandscapeImage.page.title"
-          class="absolute bottom-0 right-0 transition-all duration-300"
-          :class="introStore.isScaled ? 'translate-y-full ' : 'opacity-0'"
-        />
       </div>
     </div>
   </div>
@@ -49,6 +39,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 const introStore = useIntroStore();
+const route = useRoute();
 
 // Props
 const props = defineProps({
@@ -85,10 +76,24 @@ const selectRandomImages = () => {
   }
 };
 
-// Lifecycle hooks
+let mouseMoveCounter = 0;
+const mouseMoveThreshold = 10;
+
+const handleMouseMove = () => {
+  if (!introStore.isDone) {
+    mouseMoveCounter++;
+    if (mouseMoveCounter > mouseMoveThreshold && introStore.isScaled) {
+      introStore.setIntro(false);
+    }
+  } else {
+    introStore.setDone(true);
+  }
+};
+
 onMounted(() => {
-  // Select random images from the arrays
   selectRandomImages();
+
+  window.addEventListener('mousemove', handleMouseMove);
 
   setTimeout(() => {
     imageScaled.value = true;
@@ -97,5 +102,9 @@ onMounted(() => {
   setTimeout(() => {
     introStore.setScaled(true);
   }, 3000);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('mousemove', handleMouseMove);
 });
 </script>

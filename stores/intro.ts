@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia'
+import { durationIntro } from '~/utils/tailwind'
 
 export const useIntroStore = defineStore('intro', {
   state: () => ({
-    isIntro: true,
-    isDone: false,
+    isIntro: false,
+    isDone: true,
     isScaled: false
 
   }),
@@ -15,7 +16,7 @@ export const useIntroStore = defineStore('intro', {
       this.isIntro = value
       setTimeout(() => {
         this.setDone(true);
-      }, 2000);
+      }, durationIntro);
     },
     setDone(value: boolean) {
       this.isDone = value

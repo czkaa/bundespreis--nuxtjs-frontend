@@ -2,11 +2,11 @@
   <template v-for="page in siteData?.headerPages" :key="page.uri">
     <div>
       <NuxtLink
-        :to="`${isHomePage ? '' : '/'}#${page.uri}`"
-        @click="handleNavClick"
+        :to="`${isHomePage ? '' : '/'}${locale}/${page.uri}`"
+        class="inline-block [&.router-link-active]:translate-y-full md:[&.router-link-active]:translate-y-0 relative transition-transform duration-500"
       >
         <div
-          class="absolute w-full h-lg bg-black top-0 transform -translate-y-full md:hidden"
+          class="absolute w-full h-tag bg-black -translate-y-full transform md:hidden"
         ></div>
         <BasicsNavItem :text="page.title" class="items-end -mt-[1px]" />
       </NuxtLink>
@@ -15,10 +15,6 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { useRoute } from 'vue-router';
-import { useHashStore } from '~/stores/hash';
-
 const props = defineProps({
   siteData: {
     type: Object,
@@ -27,21 +23,10 @@ const props = defineProps({
 });
 
 const route = useRoute();
-const hashStore = useHashStore();
+const { locale } = useI18n();
 
-// Check if we're on the home page (/ or /en or /de)
 const isHomePage = computed(() => {
   const path = route.fullPath.split('#')[0];
   return path === '/' || path === '/en' || path === '/de';
 });
-
-// Handle navigation click - set isBlocked to true, then false after 1000ms
-const handleNavClick = (hash) => {
-  hashStore.setBlocked(true);
-  hashStore.setCurrentHash(hash);
-
-  setTimeout(() => {
-    hashStore.setBlocked(false);
-  }, 1000);
-};
 </script>

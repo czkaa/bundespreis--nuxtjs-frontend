@@ -1,17 +1,12 @@
 <template>
-  <figure class="relative w-full overflow-hidden">
+  <figure class="block relative w-full overflow-hidden">
     <img
       :src="image.url"
       :alt="image.alt || image.page?.title"
       :width="image.width"
       :height="image.height"
+      :style="{ aspectRatio: image.ratio ? image.ratio : '' }"
       class="w-full h-auto object-contain"
-      :class="[
-        'transition-opacity duration-300 opject-center',
-        isLoaded ? 'opacity-100' : 'opacity-0',
-      ]"
-      :style="{ aspectRatio: image.ratio }"
-      loading="lazy"
       @load="handleImageLoad"
     />
   </figure>

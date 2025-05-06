@@ -28,7 +28,7 @@ export default defineNuxtConfig({
   // },
   runtimeConfig: {
     public: {
-      apiBaseUrl: 'https://bundespreis-backend.czkaa.site'
+      apiBaseUrl: 'http:/localhost:8000'
     }
   },
 
@@ -37,13 +37,6 @@ export default defineNuxtConfig({
     locales: ['de', 'en'],
     detectBrowserLanguage: false,
     strategy: 'prefix',
-    rootRedirect: null,
-    pages: {
-      'info': {
-        de: '/info',
-        en: '/info'
-      }
-    }
   },
   
   app: {

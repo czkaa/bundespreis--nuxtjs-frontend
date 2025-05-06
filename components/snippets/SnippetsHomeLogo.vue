@@ -1,7 +1,7 @@
 <template>
   <NuxtLink
     :to="localePath('/')"
-    class="pointer-events-auto absolute w-fit h-[7.6rem] transition-all duration-intro"
+    class="pointer-events-auto fixed w-fit h-[7rem] transition-all duration-intro z-[100]"
     :class="[
       isTop
         ? !isInit
@@ -15,8 +15,6 @@
   >
     <img src="/assets/icons/logotype-tl.svg" class="h-full" v-if="isTop" />
     <img src="/assets/icons/logotype-br.svg" class="h-full" v-else />
-
-    <h1 class="hidden" v-if="isTop">{{ title }}</h1>
   </NuxtLink>
 </template>
 
@@ -27,7 +25,8 @@ const localePath = useLocalePath();
 const route = useRoute();
 const hashStore = useHashStore();
 const introStore = useIntroStore();
-const isInit = ref(introStore.isDone);
+// const isInit = ref(introStore.isDone);
+const isInit = ref(true);
 
 const handleClick = () => {
   hashStore.setCurrentHash('');
@@ -43,10 +42,6 @@ onMounted(() => {
 });
 
 defineProps({
-  title: {
-    type: String,
-    required: true,
-  },
   isTop: {
     default: true,
   },

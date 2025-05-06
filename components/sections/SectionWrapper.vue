@@ -1,5 +1,5 @@
 <template>
-  <section :id="section.slug" ref="sectionRef" class="pt-outer space-y-lg">
+  <section :id="section.slug" ref="sectionRef" class="space-y-lg">
     <BasicsHeading tag="h2" :text="section.title" />
     <slot />
   </section>

@@ -6,8 +6,9 @@ module.exports = {
       serif: ['SeasonVF', 'serif'],
     },
     fontSize: {
-      root: '1.1vw',
-      'root-md': 'max(2.5vw, 10px)',
+      root: '1vw',
+      'root-md': '1.5vw',
+      'root-sm': 'max(2vw, 11px)',
 
       xs: ['1.16rem', { lineHeight: '1.14', letterSpacing: '0' }], // customized xs
       sm: ['1.66rem', { lineHeight: '1.1', letterSpacing: '0' }], // customized sm
@@ -21,29 +22,32 @@ module.exports = {
     },
     screens: {
       lg: { min: '1280px' },
-      sm: { max: '600px' },
       md: { max: '900px' },
+      sm: { max: '700px' },
+
       'hover-hover': { raw: '(hover: hover)' },
     },
     extend: {
       spacing: {
-        xs: '0.25rem',
-        sm: '0.5rem',
-        md: '1rem',
-        lg: '2rem',
-        xl: '4rem',
+        xs: 'var(--spacing-xs)',
+        sm: 'var(--spacing-sm)',
+        md: 'var(--spacing-md)',
 
-        'indent-sm': '4rem',
+        'indent-sm': '4.18rem',
         'indent-md': '8rem',
         'frame-h': 'min(100vh, 100dvh)',
         'frame-w': 'min(100vw, 100dvw)',
-        tag: '4.5rem',
-        main: 'var(--main)',
-        column: 'calc((100vw - var(--main)) / 2)',
-        outer: '7.5rem',
+        tag: 'var(--tag-h)',
+        main: 'var(--main-w)',
+        column: 'var(--column-w)',
+        'translate-w': 'var(--translate-w)',
+        'content-h': 'var(--content-h)',
+        'image-w': 'var(--image-w)',
+        'offset-content': 'var(--offset-content)',
       },
       transitionDuration: {
-        intro: '2s',
+        intro: '1s',
+        gap: '1s',
       },
     },
   },

@@ -1,19 +1,16 @@
 <template>
   <ul class="space-y-xs">
     <li
-      v-for="(child, index) in section.children"
+      v-for="(child, index) in children"
       :class="[
         (index + 1) % 4 === 3 || (index + 1) % 4 === 0 ? 'ml-indent-sm' : '',
       ]"
     >
       <NuxtLink
         :to="localePath('/' + child.uri)"
-        class="block w-fit bg-black text-white pb-md"
+        class="block w-fit bg-black text-white pb-xs"
       >
-        <BasicsHeading
-          tag="h2"
-          :text="child.title"
-          class="h-[4.1rem] md:h-[2.25rem]"
+        <BasicsHeading tag="h2" :text="child.title"
       /></NuxtLink>
     </li>
   </ul>
@@ -21,10 +18,8 @@
 
 <script setup>
 const localePath = useLocalePath();
+
 const props = defineProps({
-  section: {
-    type: Object,
-    required: true,
-  },
+  children: Array,
 });
 </script>

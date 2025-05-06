@@ -1,5 +1,5 @@
 <template>
-  <section blocks>
+  <section blocks class="overflow-hidden">
     <BlocksIndex v-for="block in blocks" :key="block.key" :block="block" />
   </section>
 </template>

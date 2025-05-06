@@ -1,9 +1,9 @@
 <template>
   <span
-    class="h-tag font-sans bg-black px-md py-xs text-white text-md transition-transform duration-300 flex pointer-events-auto md:justify-center md:items-center"
+    class="h-tag font-sans bg-black px-sm py-xs text-white text-md transition-transform duration-300 flex pointer-events-auto md:justify-center md:items-center"
+    :class="{ '[&.router-link-active]:translate-y-full': !isBottom }"
   >
-    <template v-if="text">{{ text }}</template>
-    <slot v-else></slot>
+    {{ text }}
   </span>
 </template>
 
