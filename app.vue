@@ -45,12 +45,22 @@
 const { locale } = useI18n();
 const gap = useGapStore();
 const introStore = useIntroStore();
-const routeStore = useRouteStore();
-const route = useRoute();
 
 const { data: siteData } = await useFetch(
   () => `/api/${locale.value === 'en' ? 'en/' : ''}site`
 );
+
+const siteStore = useSiteStore();
+
+// watch(
+//   siteData,
+//   (newData) => {
+//     if (newData) {
+//       siteStore.setAllMetadata(newData);
+//     }
+//   },
+//   { immediate: true }
+// );
 </script>
 
 <style>

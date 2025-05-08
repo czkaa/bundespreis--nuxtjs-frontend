@@ -4,7 +4,7 @@
   >
     <div
       class="relative [&_div]:h-full [&_figure]:h-full [&_img]:object-cover [&_img]:h-full transition-transform ease-linear duration-intro w-frame-w h-frame-h py-tag pb-[5.4rem] md:py-logotype px-[11.4rem] md:px-sm"
-      :class="!introStore.isStart ? 'scale-[3.1%]' : 'scale-100'"
+      :class="!introStore.isStart ? 'scale-[3.1%] ' : 'scale-100'"
     >
       <!-- Show portrait image on mobile (below md breakpoint) -->
       <div
@@ -86,7 +86,7 @@ const handleScroll = () => {
   const currentScrollPosition = window.scrollY;
 
   // Only count as interaction if meaningful scroll occurred
-  if (Math.abs(currentScrollPosition - lastScrollPosition) > 10) {
+  if (Math.abs(currentScrollPosition - lastScrollPosition) > 1) {
     interactionCounter++;
     lastScrollPosition = currentScrollPosition;
 
@@ -137,7 +137,7 @@ const startIntro = () => {
       window.addEventListener('scroll', handleScroll);
 
       lastScrollPosition = window.scrollY;
-    }, 3000);
+    }, 2000);
   }, 1000);
 };
 </script>

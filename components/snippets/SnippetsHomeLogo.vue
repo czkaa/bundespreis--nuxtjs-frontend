@@ -6,10 +6,10 @@
       { 'transition-all duration-intro ease-linear': introStore.isIntro },
       isTop
         ? !introStore.isStart && introStore.isIntro
-          ? 'top-0 left-0 translate-y-[calc(50dvh-50%-1.3rem)] md:translate-y-[calc(50vh-50%-3rem)] translate-x-[calc(50vw-50%-3.55rem)] md:translate-x-[calc(50vw-50%-4rem)]'
+          ? 'top-0 left-0 translate-y-[calc(50dvh-50%-1.3rem)] md:translate-y-[calc(50vh-50%-1.3rem)] translate-x-[calc(50vw-50%-3.55rem)] md:translate-x-[calc(50vw-50%-3.55rem)]'
           : 'top-0 left-0 translate-0'
         : !introStore.isStart && introStore.isIntro
-        ? 'bottom-0 right-0 translate-y-[calc(-50dvh+100%-1rem)] md:translate-y-[calc(-50vh+50%+2rem)] translate-x-[calc(-50vw+50%-0rem)] md:translate-x-[calc(-50vw+50%+0.5rem)]'
+        ? 'bottom-0 right-0 translate-y-[calc(-50dvh+100%-1rem)] md:translate-y-[calc(-50vh+100%-1rem)] translate-x-[calc(-50vw+50%-0rem)] md:translate-x-[calc(-50vw+50%+0rem)]'
         : 'bottom-0 right-0 translate-0',
     ]"
     @click="handleClick()"
@@ -21,26 +21,8 @@
 </template>
 
 <script setup>
-import { useHashStore } from '~/stores/hash';
 const localePath = useLocalePath();
-
-const route = useRoute();
-const hashStore = useHashStore();
 const introStore = useIntroStore();
-// const isInit = ref(introStore.isDone);
-
-const handleClick = () => {
-  hashStore.setCurrentHash('');
-  if (route.path === '/' || route.path === '/de' || route.path === '/en') {
-    window.scrollTo(0, 0);
-  }
-};
-
-onMounted(() => {
-  setTimeout(() => {
-    isInit.value = true;
-  }, 1000);
-});
 
 defineProps({
   isTop: {
