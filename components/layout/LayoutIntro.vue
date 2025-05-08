@@ -4,7 +4,7 @@
   >
     <div
       class="relative [&_div]:h-full [&_figure]:h-full [&_img]:object-cover [&_img]:h-full transition-transform ease-linear duration-intro w-frame-w h-frame-h py-tag md:py-logotype px-[11.4rem] md:px-sm"
-      :class="!startScale ? 'scale-[9.8%]' : 'scale-100'"
+      :class="!introStore.isStart ? 'scale-[9.8%]' : 'scale-100'"
     >
       <!-- Show portrait image on mobile (below md breakpoint) -->
       <div
@@ -44,7 +44,6 @@ const props = defineProps({
   },
 });
 
-const startScale = ref(false);
 const randomPortraitImage = ref(null);
 const randomLandscapeImage = ref(null);
 
@@ -124,10 +123,10 @@ onUnmounted(() => {
 });
 
 const startIntro = () => {
-  if (startScale.value) return;
+  if (introStore.isStart) return;
 
   setTimeout(() => {
-    startScale.value = true;
+    introStore.setStart(true);
 
     setTimeout(() => {
       introStore.setScaled(true);

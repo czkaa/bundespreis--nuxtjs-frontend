@@ -5,6 +5,7 @@ export const useIntroStore = defineStore('intro', {
     isIntro: false,
     isScaled: false,
     isDone: false,
+    isStart: false,
   }),
   actions: {
     toggle() {
@@ -15,6 +16,9 @@ export const useIntroStore = defineStore('intro', {
     },
     setDone(value: boolean) {
       this.isDone = value
+    },
+    setStart(value: boolean) {
+      this.isStart = value
     },
     setScaled(value: boolean) {
       this.isScaled = value
