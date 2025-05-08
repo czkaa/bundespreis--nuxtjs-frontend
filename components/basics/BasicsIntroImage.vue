@@ -7,7 +7,7 @@
       :height="image.height"
       :src-set="image.srcset"
       :style="{ aspectRatio: image.ratio ? image.ratio : '' }"
-      class="w-full h-full object-cover transition-opacity duration-100 object-center ease-linear"
+      class="w-full h-full object-cover transition-opacity duration-200 object-center ease-linear"
       :class="[isLoaded ? 'opacity-100' : 'opacity-0']"
       @load="handleImageLoad"
     />

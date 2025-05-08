@@ -3,8 +3,8 @@
     class="w-full overflow-hidden bg-white h-frame-h flex flex-col items-center justify-center"
   >
     <div
-      class="relative [&_div]:h-full [&_figure]:h-full [&_img]:object-cover [&_img]:h-full transition-transform ease-linear duration-intro w-frame-w h-frame-h py-tag md:py-logotype px-[11.4rem] md:px-sm"
-      :class="!introStore.isStart ? 'scale-[9.8%]' : 'scale-100'"
+      class="relative [&_div]:h-full [&_figure]:h-full [&_img]:object-cover [&_img]:h-full transition-transform ease-linear duration-intro w-frame-w h-frame-h py-tag pb-[5.4rem] md:py-logotype px-[11.4rem] md:px-sm"
+      :class="!introStore.isStart ? 'scale-[3.1%]' : 'scale-100'"
     >
       <!-- Show portrait image on mobile (below md breakpoint) -->
       <div
