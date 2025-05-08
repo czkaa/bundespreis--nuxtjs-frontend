@@ -17,7 +17,7 @@
         <div
           @click="isMobileNav = false"
           v-if="isMobileNav"
-          class="w-full h-fit fixed top-1/2 left-0 flex flex-col justify-center items-center space-y-xs pointer-events-auto z-[100] md:grid md:justify-items-center md:justify-content-center -translate-y-1/2"
+          class="w-fit h-fit fixed top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 md:flex flex-col justify-center items-stretch space-y-xs pointer-events-auto z-[100] hidden"
         >
           <LayoutNavPages :siteData />
           <LayoutFooterPages :siteData />

@@ -1,16 +1,17 @@
 <template>
   <template v-for="page in siteData?.headerPages" :key="page.uri">
-    <div>
-      <NuxtLink
-        :to="`/${locale}/${page.uri}`"
-        class="inline-block [&.router-link-exact-active]:translate-y-full md:[&.router-link-exact-active]:translate-y-0 relative transition-transform duration-500"
-      >
-        <div
-          class="absolute w-full h-tag bg-black -translate-y-full transform md:hidden"
-        ></div>
-        <BasicsNavItem :text="page.title" class="items-end -mt-[1px]" />
-      </NuxtLink>
-    </div>
+    <NuxtLink
+      :to="`/${locale}/${page.uri}`"
+      class="inline-block relative transition-transform duration-500 md:h-tag"
+      :class="{
+        'translate-y-full md:translate-y-0': route.fullPath.includes(page.uri),
+      }"
+    >
+      <div
+        class="absolute w-full h-tag bg-black -translate-y-full transform md:hidden"
+      ></div>
+      <BasicsNavItem :text="page.title" class="items-end -mt-[1px]" />
+    </NuxtLink>
   </template>
 </template>
 
@@ -23,4 +24,5 @@ const props = defineProps({
 });
 
 const { locale } = useI18n();
+const route = useRoute();
 </script>
