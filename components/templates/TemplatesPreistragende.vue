@@ -1,27 +1,48 @@
 <template>
   <div v-if="data" class="space-y-sm">
     <BasicsHeading tag="h2" :text="data.title" />
-    <SnippetsSlider :images="data.gallery" />
+    <SnippetsSlider :images="data.gallery" v-if="data.gallery" />
     <BasicsImage
+      v-if="data.portrait"
       :image="data.portrait"
-      class="[&_img]:max-h-content-h [&>img]:object-left ml-indent-sm"
+      class="[&_img]:max-h-remaining-content [&>img]:object-left ml-indent-sm"
     />
-    <Blocks :blocks="data.bio" />
-    <Blocks :blocks="data.judging" />
-    <Blocks :blocks="data.bio" />
-    <Blocks :blocks="data.prizes" />
+    <Blocks :blocks="data.bio" v-if="data.bio" />
+    <Blocks :blocks="data.judging" v-if="data.judging" />
+    <Blocks :blocks="data.exhibitions" v-if="data.exhibitions" />
+    <Blocks :blocks="data.prizes" v-if="data.prizes" />
   </div>
 </template>
 
 <script setup>
+import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { computed } from 'vue';
+import { useGapStore } from '@/stores/gap'; // Adjust the import path as needed
+
+const props = defineProps({
+  data: {
+    type: Object,
+  },
+});
 
 const route = useRoute();
+const gap = useGapStore();
 
-const apiUrl = computed(() => `/api${route.fullPath}`);
+onMounted(() => {
+  setTimeout(() => {
+    gap.setGap(true);
+  }, 100);
 
-const { data } = await useFetch(apiUrl, {
-  key: route.fullPath,
+  const scrollToTop = () => {
+    const mainContainer = document.querySelector('main');
+    if (mainContainer) {
+      mainContainer.scrollTo({
+        top: 0,
+        behavior: 'instant',
+      });
+    }
+  };
+
+  setTimeout(scrollToTop, 50);
 });
 </script>

@@ -1,7 +1,9 @@
 <template>
   <nav class="flex justify-end items-start gap-xs pointer-events-auto">
     <LayoutNavPages :siteData />
-    <SnippetsLanguageToggle />
+    <div class="w-tag h-tag shrink-0 bg-black">
+      <SnippetsLanguageToggle />
+    </div>
   </nav>
 </template>
 

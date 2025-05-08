@@ -7,7 +7,7 @@
       :height="image.height"
       :src-set="image.srcset"
       :style="{ aspectRatio: image.ratio ? image.ratio : '' }"
-      class="w-full h-auto object-contain transition-opacity duration-100 object-center"
+      class="w-full h-full object-cover transition-opacity duration-100 object-center ease-linear"
       :class="[isLoaded ? 'opacity-100' : 'opacity-0']"
       @load="handleImageLoad"
     />
@@ -28,7 +28,10 @@ const props = defineProps({
 
 const isLoaded = ref(false);
 
+const emit = defineEmits(['loaded']);
+
 function handleImageLoad() {
   isLoaded.value = true;
+  emit('loaded', true);
 }
 </script>

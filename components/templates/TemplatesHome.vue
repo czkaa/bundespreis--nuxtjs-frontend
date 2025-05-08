@@ -3,16 +3,20 @@
 </template>
 
 <script setup>
-const { locale } = useI18n();
-const basePath = `/${locale.value}`;
-const { data: data } = await useFetch(() => `/api${basePath}`);
-const routeStore = useRouteStore();
+const props = defineProps({
+  data: {
+    type: Object,
+  },
+});
 
-// onMounted(() => {
-//   routeStore.setHome(true);
-// });
+const gap = useGapStore();
+const route = useRoute();
 
-// onUnmounted(() => {
-//   routeStore.setHome(false);
-// });
+onMounted(() => {
+  if (route.params.slug?.length > 0) {
+    setTimeout(() => {
+      gap.setGap(true);
+    });
+  }
+});
 </script>

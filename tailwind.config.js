@@ -44,9 +44,11 @@ module.exports = {
         'content-h': 'var(--content-h)',
         'image-w': 'var(--image-w)',
         'offset-content': 'var(--offset-content)',
+        'remaining-content': 'var(--remaining-content)',
+        logotype: '6.95rem',
       },
       transitionDuration: {
-        intro: '1s',
+        intro: '1500ms',
         gap: '1s',
       },
     },

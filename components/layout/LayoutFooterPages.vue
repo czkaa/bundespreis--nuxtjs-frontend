@@ -1,9 +1,6 @@
 <template>
   <template v-for="page in siteData?.footerPages" :key="page.uri">
-    <NuxtLink
-      :to="`${isInfoPage ? '' : '/'}${locale}/${page.uri}`"
-      class="md:w-full"
-    >
+    <NuxtLink :to="`/${locale}/${page.uri}`" class="md:w-full">
       <BasicsNavItem :text="page.title" class="items-end" />
     </NuxtLink>
   </template>
@@ -17,11 +14,5 @@ const props = defineProps({
   },
 });
 
-const route = useRoute();
 const { locale } = useI18n();
-
-const isInfoPage = computed(() => {
-  const path = route.fullPath.split('#')[0];
-  return path === '/info' || path === '/en/info' || path === '/de/info';
-});
 </script>

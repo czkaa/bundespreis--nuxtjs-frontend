@@ -1,24 +1,20 @@
 <template>
   <div
-    class="w-full transition-all duration-1000 overflow-hidden bg-white h-frame-h flex flex-col items-center justify-center"
-    id="intro"
+    class="w-full overflow-hidden bg-white h-frame-h flex flex-col items-center justify-center"
   >
     <div
-      class="relative [&_div]:h-full [&_figure]:h-full [&_img]:object-cover [&_img]:h-full transition-all linear duration-intro"
-      :class="
-        !imageScaled
-          ? 'px-[46vw] py-[46vw]'
-          : 'w-frame-w h-frame-h py-tag px-[12.4rem] md:px-xl sm:py-[7.6rem]'
-      "
+      class="relative [&_div]:h-full [&_figure]:h-full [&_img]:object-cover [&_img]:h-full transition-transform ease-linear duration-intro w-frame-w h-frame-h py-tag md:py-logotype px-[11.4rem] md:px-sm"
+      :class="!startScale ? 'scale-[9.8%]' : 'scale-100'"
     >
       <!-- Show portrait image on mobile (below md breakpoint) -->
       <div
         v-if="randomPortraitImage"
         class="w-full h-full hidden md:flex justify-center items-center relative"
       >
-        <BasicsImage
+        <BasicsIntroImage
+          @loaded="startIntro"
           :image="randomPortraitImage"
-          class="relative z-10 [&>img]:h-full [&>img]:w-auto"
+          class="relative z-10 [&>img]:h-full [&>img]:w-full flex justify-center"
         />
       </div>
 
@@ -27,9 +23,10 @@
         v-if="randomLandscapeImage"
         class="w-full h-full md:hidden flex justify-center items-center relative"
       >
-        <BasicsImage
+        <BasicsIntroImage
+          @loaded="startIntro"
           :image="randomLandscapeImage"
-          class="relative z-10 [&>img]:h-auto [&>img]:w-full"
+          class="relative z-10 [&>img]:h-auto [&>img]:w-full flex justify-center"
         />
       </div>
     </div>
@@ -39,9 +36,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 const introStore = useIntroStore();
-const route = useRoute();
 
-// Props
 const props = defineProps({
   siteData: {
     type: Object,
@@ -49,62 +44,101 @@ const props = defineProps({
   },
 });
 
-// Reactive state
-const imageScaled = ref(false);
+const startScale = ref(false);
 const randomPortraitImage = ref(null);
 const randomLandscapeImage = ref(null);
 
-// Computed properties
+// Event tracking variables
+let interactionCounter = 0;
+const interactionThreshold = 5; // Lower threshold for multiple types of interactions
+let lastScrollPosition = 0;
+let scrollTimeout = null;
+
 const introImages = computed(
   () => props.siteData?.introImages || { portrait: [], landscape: [] }
 );
 
-// Methods
 const selectRandomImages = () => {
   const { portrait, landscape } = introImages.value;
 
-  // Select random portrait image if available
   if (portrait && portrait.length > 0) {
     const randomIndex = Math.floor(Math.random() * portrait.length);
     randomPortraitImage.value = portrait[randomIndex];
   }
 
-  // Select random landscape image if available
   if (landscape && landscape.length > 0) {
     const randomIndex = Math.floor(Math.random() * landscape.length);
     randomLandscapeImage.value = landscape[randomIndex];
   }
 };
 
-let mouseMoveCounter = 0;
-const mouseMoveThreshold = 10;
+// Unified handler for all interactions
+const handleInteraction = (event) => {
+  interactionCounter++;
 
-const handleMouseMove = () => {
-  if (!introStore.isDone) {
-    mouseMoveCounter++;
-    if (mouseMoveCounter > mouseMoveThreshold && introStore.isScaled) {
-      introStore.setIntro(false);
-    }
-  } else {
+  if (interactionCounter > interactionThreshold) {
     introStore.setDone(true);
+    removeAllEventListeners();
   }
+};
+
+// Specific handler for scroll events to prevent too many firings
+const handleScroll = () => {
+  const currentScrollPosition = window.scrollY;
+
+  // Only count as interaction if meaningful scroll occurred
+  if (Math.abs(currentScrollPosition - lastScrollPosition) > 10) {
+    interactionCounter++;
+    lastScrollPosition = currentScrollPosition;
+
+    if (interactionCounter > interactionThreshold) {
+      introStore.setDone(true);
+      removeAllEventListeners();
+    }
+  }
+
+  // Debounce scroll events
+  if (scrollTimeout) {
+    clearTimeout(scrollTimeout);
+  }
+
+  scrollTimeout = setTimeout(() => {
+    lastScrollPosition = window.scrollY;
+  }, 100);
+};
+
+// Clean up function to remove all event listeners
+const removeAllEventListeners = () => {
+  window.removeEventListener('mousemove', handleInteraction);
+  window.removeEventListener('touchstart', handleInteraction);
+  window.removeEventListener('touchmove', handleInteraction);
+  window.removeEventListener('scroll', handleScroll);
 };
 
 onMounted(() => {
   selectRandomImages();
-
-  window.addEventListener('mousemove', handleMouseMove);
-
-  setTimeout(() => {
-    imageScaled.value = true;
-  }, 1000);
-
-  setTimeout(() => {
-    introStore.setScaled(true);
-  }, 3000);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('mousemove', handleMouseMove);
+  removeAllEventListeners();
 });
+
+const startIntro = () => {
+  if (startScale.value) return;
+
+  setTimeout(() => {
+    startScale.value = true;
+
+    setTimeout(() => {
+      introStore.setScaled(true);
+
+      window.addEventListener('mousemove', handleInteraction);
+      window.addEventListener('touchstart', handleInteraction);
+      window.addEventListener('touchmove', handleInteraction);
+      window.addEventListener('scroll', handleScroll);
+
+      lastScrollPosition = window.scrollY;
+    }, 3000);
+  }, 1000);
+};
 </script>

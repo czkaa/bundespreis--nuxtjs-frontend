@@ -8,7 +8,9 @@
       <img src="/assets/icons/menu.svg" class="w-full" v-else />
     </button>
 
-    <SnippetsLanguageToggle />
+    <div class="w-tag h-tag bg-black shrink-0">
+      <SnippetsLanguageToggle />
+    </div>
 
     <Teleport to="#teleports">
       <Transition name="fade">

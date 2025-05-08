@@ -1,5 +1,5 @@
 <template>
-  <TemplatesInfo v-if="data" :data="data" />
+  <TemplatesInfo :data="data" v-if="data" />
 </template>
 
 <script setup>
@@ -9,5 +9,9 @@ const route = useRoute();
 const basePath = `/${locale.value}/info`;
 
 const { data: data } = await useFetch(() => `/api${basePath}`);
-const slug = computed(() => route.params.slug);
+
+const routeStore = useRouteStore();
+onBeforeMount(() => {
+  routeStore.setView('info');
+});
 </script>

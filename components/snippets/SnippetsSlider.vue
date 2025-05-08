@@ -1,7 +1,7 @@
 <template>
   <div ref="sliderContainer" class="gallery-slider relative">
     <div
-      class="flex flex-col h-content-h justify-center items-center overflow-hidden pb-xs"
+      class="flex flex-col h-remaining-content justify-center items-center overflow-hidden pb-xs"
     >
       <div
         :key="currentIndex"
@@ -42,7 +42,6 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 const imageStore = useImageStore();
 
 const props = defineProps({
@@ -55,7 +54,6 @@ const props = defineProps({
 
 const currentIndex = ref(imageStore.currentIndex);
 const sliderContainer = ref(null);
-const maxHeight = ref(0);
 let resizeObserver = null;
 
 // Watch for changes in the image store's currentIndex
@@ -86,46 +84,63 @@ function prevImage() {
     (currentIndex.value - 1 + props.images.length) % props.images.length;
 }
 
-// Calculate the maximum available height
-function calculateMaxHeight() {
+// Calculate height based on the previous element
+function calculateHeight() {
   if (!sliderContainer.value) return;
 
-  const rect = sliderContainer.value.getBoundingClientRect();
-  const topOffset = rect.top + window.scrollY;
-  const windowHeight = window.innerHeight;
+  // Get the previous element (sibling that comes before the slider)
+  const previousElement = sliderContainer.value.previousElementSibling;
 
-  const availableHeight = windowHeight - topOffset;
+  if (!previousElement) return;
+
+  // Get the height of the previous element
+  const previousElementHeight = previousElement.offsetHeight;
 
   // Update the CSS variable
   document.documentElement.style.setProperty(
-    '--content-h',
-    `${availableHeight}px`
+    '--heading-h',
+    `${previousElementHeight}px`
   );
 }
 
 onMounted(() => {
-  // Initial calculation
-  calculateMaxHeight();
+  // Wait for next tick to ensure DOM is rendered
+  nextTick(() => {
+    // Initial calculation
+    calculateHeight();
 
-  // Set up resize observer to recalculate on resize or DOM changes
-  resizeObserver = new ResizeObserver(() => {
-    calculateMaxHeight();
+    // Set up resize observer on the previous element if it exists
+    const previousElement = sliderContainer.value?.previousElementSibling;
+
+    if (previousElement) {
+      resizeObserver = new ResizeObserver(() => {
+        calculateHeight();
+      });
+
+      resizeObserver.observe(previousElement);
+    }
+
+    // Also observe the slider container itself
+    if (sliderContainer.value) {
+      if (!resizeObserver) {
+        resizeObserver = new ResizeObserver(() => {
+          calculateHeight();
+        });
+      }
+      resizeObserver.observe(sliderContainer.value);
+    }
+
+    // Listen for window resize
+    window.addEventListener('resize', calculateHeight);
   });
-
-  if (sliderContainer.value) {
-    resizeObserver.observe(sliderContainer.value);
-  }
-
-  // Also listen for window resize events
-  window.addEventListener('resize', calculateMaxHeight);
 });
 
 onUnmounted(() => {
-  // Clean up observers and event listeners
+  // Clean up
   if (resizeObserver) {
     resizeObserver.disconnect();
   }
-  window.removeEventListener('resize', calculateMaxHeight);
+  window.removeEventListener('resize', calculateHeight);
 });
 </script>
 

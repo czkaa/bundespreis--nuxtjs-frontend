@@ -35,7 +35,9 @@ body {
   --spacing-sm: 1.875rem;
   --spacing-md: 3.75rem;
   --tag-h: 4.18rem;
+  --heading-h: 5.625rem;
   --offset-content: calc(var(--tag-h) + (var(--spacing-xs)));
+  --remaining-content: calc(100dvh - var(--heading-h) - var(--offset-content) - var(--spacing-sm) * 2);
 }
 
  

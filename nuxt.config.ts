@@ -34,12 +34,32 @@ export default defineNuxtConfig({
     }
   },
 
+  hooks: {
+    'pages:extend' (pages) {
+      const catchAllRoute = pages.find(page => page.path === '/:slug(.*)*')
+
+      if (catchAllRoute) {
+        catchAllRoute.alias = ['/preistragende', '/winners']
+      }
+    }
+  },
+
   i18n: {
     defaultLocale: 'de',
     locales: ['de', 'en'],
     detectBrowserLanguage: false,
     strategy: 'prefix',
+    customRoutes: 'config',
+    pages: {
+      'preistragende/[...slug]': {
+        en: '/winners/[slug]'
+      },
+      'info': {
+        en: '/info'
+      }
+    }
   },
+  
   
   app: {
     head: {

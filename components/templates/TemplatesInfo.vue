@@ -3,7 +3,17 @@
 </template>
 
 <script setup>
-const { locale } = useI18n();
-const basePath = `/${locale.value}/info`;
-const { data: data } = await useFetch(() => `/api${basePath}`);
+const props = defineProps({
+  data: {
+    type: Object,
+  },
+});
+const route = useRoute();
+const gap = useGapStore();
+
+onMounted(() => {
+  setTimeout(() => {
+    gap.setGap(true);
+  });
+});
 </script>
