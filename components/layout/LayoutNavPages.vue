@@ -4,11 +4,13 @@
       :to="`/${locale}/${page.uri}`"
       class="inline-block relative transition-transform duration-500 md:h-tag"
       :class="{
-        'translate-y-full md:translate-y-0': route.fullPath.includes(page.uri),
+        'translate-y-tag-top md:translate-y-0': route.fullPath.includes(
+          page.uri
+        ),
       }"
     >
       <div
-        class="absolute w-full h-[calc(var(--tag-h)+1px)] bg-black -translate-y-[calc(100%-1px)] transform md:hidden"
+        class="absolute w-full h-[calc(var(--tag-top)+1px)] bg-black -translate-y-[calc(100%-1px)] transform md:hidden"
       ></div>
       <BasicsNavItem
         :text="page.title"
