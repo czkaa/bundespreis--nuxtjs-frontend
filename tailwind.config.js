@@ -63,7 +63,7 @@ module.exports = {
     function ({ addBase }) {
       addBase({
         '.font-sans': {
-          'font-variation-settings': '"wght" 510, "SERF" 0',
+          'font-feature-settings:': '"ss" 02',
         },
         '.font-serif': {
           'font-variation-settings': '"wght" 500, "SERF" 100',

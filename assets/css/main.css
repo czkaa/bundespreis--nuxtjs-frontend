@@ -5,16 +5,19 @@
 
 @font-face {
   font-family: 'SeasonSans';
-  src: url('../fonts/SeasonSans-Medium.otf') format('truetype');
+  src: url('../fonts/SeasonSans-Medium.otf') format('truetype'),
+    url('../fonts/SeasonSans-Medium.woff') format('woff'),
+    url('../fonts/SeasonSans-Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
-
 @font-face {
   font-family: 'SeasonSans';
-  src: url('../fonts/SeasonSans-SemiBold.otf') format('truetype');
+  src: url('../fonts/SeasonSans-SemiBold.otf') format('truetype'),
+    url('../fonts/SeasonSans-SemiBold.woff') format('woff'),
+    url('../fonts/SeasonSans-SemiBold.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -22,16 +25,19 @@
 
 @font-face {
   font-family: 'SeasonSerif';
-  src: url('../fonts/SeasonSerif-Medium.otf') format('truetype');
+  src: url('../fonts/SeasonSerif-Medium.otf') format('truetype'),
+    url('../fonts/SeasonSerif-Medium.woff') format('woff'),
+    url('../fonts/SeasonSerif-Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
-
 @font-face {
-  font-family: 'SeasonSans';
-  src: url('../fonts/SeasonSerif-SemiBold.otf') format('truetype');
+  font-family: 'SeasonSerif';
+  src: url('../fonts/SeasonSerif-SemiBold.otf') format('truetype'),
+    url('../fonts/SeasonSerif-SemiBold.woff') format('woff'),
+    url('../fonts/SeasonSerif-SemiBold.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -54,22 +60,28 @@ body {
 
 
 :root {
+  /* COLUMNS LAYOUT GALLERY*/
   --column-l: 25.05vw;
   --column-r: 15vw;
   --main-w: calc(100% - var(--column-r) - var(--column-l));
   --column-l-translate: calc(50vw - var(--column-l));
   --column-r-translate: calc(50vw - var(--column-r));
+  
+  /*IMAGES*/
   --image-w: 75%;
   --remaining-w: calc(100% - var(--image-w));
-  --spacing-xs: 0.375rem;
-  --spacing-sm: 1.875rem;
-  --spacing-md: 3.75rem;
+
   --tag-h: 4.18rem;
   --tag-top: 2.8rem;
   --heading-h: 5.625rem;
   --offset-content: calc(var(--tag-h) + var(--spacing-xs) + var(--tag-top));
   --remaining-content: calc(100dvh - var(--heading-h) - var(--offset-content) - var(--spacing-sm) * 2);
   --logotype: 6.95rem;
+
+  /*SPACING*/
+  --spacing-xs: 0.375rem;
+  --spacing-sm: 1.875rem;
+  --spacing-md: 3.75rem;
 }
 
  
