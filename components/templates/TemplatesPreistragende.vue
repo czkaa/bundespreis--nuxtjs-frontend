@@ -1,5 +1,5 @@
 <template>
-  <div v-if="data" class="space-y-sm">
+  <div v-if="data" class="space-y-sm mt-offset-content">
     <BasicsHeading tag="h2" :text="data.title" />
     <SnippetsSlider :images="data.gallery" v-if="data.gallery" />
     <BasicsImage
