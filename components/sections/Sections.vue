@@ -15,6 +15,8 @@
 import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
+const gap = useGapStore();
+
 const props = defineProps({
   sections: {
     type: Array, // Changed from Object to Array since you're using v-for
@@ -52,16 +54,27 @@ const scrollToSection = (slug) => {
 
 watch(
   () => [route.path, route.params.slug],
-  ([newPath, newSlug]) => {
+  async ([newPath, newSlug]) => {
+    // Check if gap.isGap is true at the beginning and wait for 500ms
+    if (gap.isGap === false) {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+    }
+
     // Check if one of the aliased paths
     if (newPath.includes('preistragende')) {
       scrollToSection('preistragende');
+      setTimeout(() => {
+        gap.setGap(true);
+      }, 100);
     } else if (newPath.includes('winners')) {
       scrollToSection('winners');
+      setTimeout(() => {
+        gap.setGap(true);
+      }, 100);
     } else if (newSlug && newSlug.length > 0) {
       scrollToSection(newSlug[0]);
     }
   },
-  { immediate: true } // Consider setting to true to handle initial route
+  { immediate: true }
 );
 </script>

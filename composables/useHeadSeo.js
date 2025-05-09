@@ -1,19 +1,18 @@
 // composables/useHeadSeo.js
 export const useHeadSeo = () => {
-  // Set all metadata from site data
-  const setAllMetadata = (siteData) => {
-    // Get i18n inside this function to ensure proper context
-    const { locale } = useI18n();
+  // Get these values when the composable is called (inside setup)
+  const { locale } = useI18n();
+  const head = useHead({});
 
-    // Get site title and other metadata
+  // These functions don't call composition API functions directly
+  const setAllMetadata = (siteData) => {
     const siteTitle =
       siteData?.seo?.title ||
       (locale.value === 'en'
         ? 'Federal Award for Art Students'
         : 'Bundespreis für Kunststudierende');
 
-    // Set all metadata
-    useHead({
+    head.patch({
       title: siteTitle,
       meta: [
         {
@@ -22,14 +21,12 @@ export const useHeadSeo = () => {
             siteData?.seo?.description || 'Bundespreis data viewer application',
         },
         { name: 'keywords', content: siteData?.seo?.keywords || '' },
-        // Open Graph tags
         { property: 'og:title', content: siteTitle },
         {
           property: 'og:description',
           content:
             siteData?.seo?.description || 'Bundespreis data viewer application',
         },
-        // Add image if available
         ...(siteData?.seo?.image
           ? [{ property: 'og:image', content: siteData.seo.image }]
           : []),
@@ -37,20 +34,14 @@ export const useHeadSeo = () => {
     });
   };
 
-  // Just set the page title, keeping other metadata
   const setPageTitle = (pageTitle, siteData) => {
-    // Get i18n inside this function to ensure proper context
-    const { locale } = useI18n();
-
-    // Get site title
     const siteTitle =
       siteData?.seo?.title ||
       (locale.value === 'en'
         ? 'Federal Award for Art Students'
         : 'Bundespreis für Kunststudierende');
 
-    // Only update the title
-    useHead({
+    head.patch({
       title: pageTitle ? `${pageTitle} | ${siteTitle}` : siteTitle,
     });
   };

@@ -1,16 +1,26 @@
 <template>
-  <img
-    :src="isVisible ? image.url : ''"
-    :alt="image.alt"
-    :width="image.width"
-    :height="image.height"
-    :srcset="isVisible ? image.srcset : ''"
-    :style="{ aspectRatio: image.ratio ? image.ratio : '' }"
-    class="w-full h-auto object-contain transition-opacity duration-100"
-    :class="{ 'opacity-100': isLoaded, 'opacity-0': !isLoaded }"
-    @load="isLoaded = true"
-    ref="imageRef"
-  />
+  <figure class="block relative w-full overflow-hidden">
+    <img
+      v-if="loaded"
+      :alt="image.alt"
+      :width="image.width"
+      :height="image.height"
+      :srcset="image.srcset"
+      :style="{ aspectRatio: image.ratio ? image.ratio : '' }"
+      class="w-full h-auto object-contain transition-opacity duration-200 object-center"
+      :class="[isLoaded ? 'opacity-100' : 'opacity-0']"
+      @load="handleImageLoad"
+    />
+    <div
+      v-else
+      ref="observerTarget"
+      :style="{
+        height: image.height ? `${image.height}px` : '200px',
+        width: '100%',
+        aspectRatio: image.ratio || undefined,
+      }"
+    ></div>
+  </figure>
 </template>
 
 <script setup>
@@ -21,39 +31,65 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-  offset: {
+  caption: {
     type: String,
-    default: '600px',
+    default: '',
+  },
+  offset: {
+    type: Number,
+    default: 1000, // 1000px offset by default
   },
 });
 
-const imageRef = ref(null);
-const isVisible = ref(false);
+const observerTarget = ref(null);
+const loaded = ref(false);
 const isLoaded = ref(false);
 let observer = null;
 
-onMounted(() => {
-  if (process.client) {
-    observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          isVisible.value = true;
-          observer.disconnect();
-        }
-      },
-      {
-        rootMargin: `${props.offset} 0px 0px 0px`,
-      }
-    );
+function handleImageLoad() {
+  isLoaded.value = true;
+}
 
-    if (imageRef.value) observer.observe(imageRef.value);
+onMounted(() => {
+  // Skip in SSR
+  if (typeof window === 'undefined') {
+    loaded.value = true;
+    return;
+  }
+
+  // Use explicit pixel value for offset
+  const pixelOffset = props.offset + 'px';
+
+  // Create observer with a fixed distance of 1000px (or custom value)
+  observer = new IntersectionObserver(
+    (entries) => {
+      if (entries[0].isIntersecting) {
+        loaded.value = true;
+        if (observer) {
+          observer.disconnect();
+          observer = null;
+        }
+      }
+    },
+    {
+      rootMargin: `${pixelOffset} 0px ${pixelOffset} 0px`, // Apply offset to top and bottom
+      threshold: 0,
+    }
+  );
+
+  // Start observing as soon as the component is mounted
+  if (observerTarget.value) {
+    observer.observe(observerTarget.value);
   } else {
-    // Server-side or no IntersectionObserver
-    isVisible.value = true;
+    // Fallback
+    loaded.value = true;
   }
 });
 
 onBeforeUnmount(() => {
-  if (observer) observer.disconnect();
+  if (observer) {
+    observer.disconnect();
+    observer = null;
+  }
 });
 </script>

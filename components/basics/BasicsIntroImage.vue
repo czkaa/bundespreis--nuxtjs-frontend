@@ -10,11 +10,10 @@
       @load="thumbIsLoaded = true"
     />
     <img
-      :src="image.url"
       :alt="image.alt"
       :width="image.width"
       :height="image.height"
-      :src-set="image.srcset"
+      :srcset="image.srcsetIntro"
       :style="{ aspectRatio: image.ratio ? image.ratio : '' }"
       class="w-full h-full object-cover transition-opacity duration-100 object-center relative z-10"
       :class="[imageIsLoaded ? 'opacity-100' : 'opacity-0']"

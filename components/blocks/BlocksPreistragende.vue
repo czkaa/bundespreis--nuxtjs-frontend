@@ -1,5 +1,5 @@
 <template>
-  <ul class="space-y-xs">
+  <ul class="space-y-2">
     <li
       v-for="(child, index) in children"
       :class="[
@@ -8,10 +8,10 @@
     >
       <NuxtLink
         :to="localePath('/' + child.uri)"
-        class="block w-fit bg-black text-white pb-xs"
+        class="inline leading-[1.2] py-0 text-xl font-sans bg-black text-white relative"
       >
-        <BasicsHeading tag="h2" :text="child.title"
-      /></NuxtLink>
+        {{ child.title }}</NuxtLink
+      >
     </li>
   </ul>
 </template>

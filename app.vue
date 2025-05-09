@@ -1,13 +1,16 @@
 <template>
   <Transition name="slide" mode="out-in">
     <LayoutHeader
-      v-if="(siteData && introStore.isDone) || !introStore.isIntro"
+      v-if="
+        (siteData && introStore.isDone) || (!introStore.isIntro && siteData)
+      "
       :siteData="siteData"
       class="fixed top-0 w-full z-[100]"
     />
   </Transition>
   <SnippetsHomeLogo />
   <SnippetsHomeLogo :isTop="false" />
+
   <Transition name="slide-intro">
     <LayoutIntro v-if="introStore.isIntro && !introStore.isDone" :siteData />
 
@@ -23,7 +26,7 @@
         ref="galleryContainer"
       >
         <LayoutGallery :siteData="siteData" />
-        <LayoutFooter :siteData="siteData" class="md:hidden" />
+        <LayoutFooter v-if="siteData" :siteData="siteData" class="md:hidden" />
       </div>
 
       <!-- Main Content View -->
@@ -42,25 +45,31 @@
 </template>
 
 <script setup>
+import { useHeadSeo } from '~/composables/useHeadSeo';
+import { useSiteStore } from '~/stores/site';
+import { useI18n } from 'vue-i18n';
 const { locale } = useI18n();
 const gap = useGapStore();
 const introStore = useIntroStore();
+const { setAllMetadata, setPageTitle } = useHeadSeo(); // This calls useI18n inside a setup context
+const siteStore = useSiteStore();
 
+// Fetch data
 const { data: siteData } = await useFetch(
   () => `/api/${locale.value === 'en' ? 'en/' : ''}site`
 );
 
-const siteStore = useSiteStore();
-
-// watch(
-//   siteData,
-//   (newData) => {
-//     if (newData) {
-//       siteStore.setAllMetadata(newData);
-//     }
-//   },
-//   { immediate: true }
-// );
+// Watch and update
+watch(
+  siteData,
+  (newData) => {
+    if (newData) {
+      siteStore.setAllMetadata(newData);
+      setAllMetadata(newData); // Now this doesn't call useI18n or useHead
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <style>

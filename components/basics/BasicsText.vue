@@ -17,8 +17,7 @@ const formattedText = computed(() => {
 });
 </script>
 <style>
-/* Target elements with data-text="bold-link" */
-/* [basics-text] strong {
+[basics-text] strong {
   @apply text-sm-sans font-sans;
 }
 
@@ -28,5 +27,5 @@ const formattedText = computed(() => {
 
 [basics-text] a:hover {
   @apply underline;
-} */
+}
 </style>

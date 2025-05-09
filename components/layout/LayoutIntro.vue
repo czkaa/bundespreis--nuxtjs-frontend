@@ -70,7 +70,7 @@ onMounted(() => {
 onMounted(() => {
   setTimeout(() => {
     introStore.setStart(true);
-  }, 100);
+  }, 300);
 
   setTimeout(() => {
     introStore.setScaled(true);
