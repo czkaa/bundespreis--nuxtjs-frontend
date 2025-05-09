@@ -33,7 +33,7 @@
         :class="{ 'opacity-0': !gap.isGap, '': gap.isGap }"
         ref="mainContainer"
       >
-        <div class="w-main mx-auto my-offset-content px-xs">
+        <div class="w-main ml-column-l my-offset-content">
           <NuxtPage />
         </div>
       </main>

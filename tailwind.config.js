@@ -2,8 +2,8 @@ module.exports = {
   content: ['./site/**/*.php', './content/**/*.txt'],
   theme: {
     fontFamily: {
-      sans: ['SeasonVF', 'sans-serif'],
-      serif: ['SeasonVF', 'serif'],
+      sans: ['SeasonSans', 'sans-serif'],
+      serif: ['SeasonSerif', 'serif'],
     },
     fontSize: {
       root: '1vw',
@@ -15,10 +15,10 @@ module.exports = {
       'sm-sans': ['1.7rem', { lineHeight: '1.07', letterSpacing: '0' }], // customized sm
 
       md: ['2.25rem', { lineHeight: '1.2', letterSpacing: '0' }], // customized base
-      lg: ['3.75rem', { lineHeight: '0.866', letterSpacing: '-0.01em' }], // customized lg
-      'lg-md': ['2.5rem', { lineHeight: '0.866', letterSpacing: '-0.01em' }], // customized lg
-      xl: ['5.625rem', { lineHeight: '0.8', letterSpacing: '-0.02em' }], // customized xl
-      'xl-md': ['3.5rem', { lineHeight: '0.8', letterSpacing: '-0.02em' }], // customized xl
+      lg: ['3.4rem', { lineHeight: '0.866', letterSpacing: '-0.01em' }], // customized lg
+      // 'lg-md': ['2.5rem', { lineHeight: '0.866', letterSpacing: '-0.01em' }], // customized lg
+      xl: ['4.7rem', { lineHeight: '0.8', letterSpacing: '-0.02em' }], // customized xl
+      // 'xl-md': ['3.5rem', { lineHeight: '0.8', letterSpacing: '-0.02em' }], // customized xl
     },
     screens: {
       lg: { min: '1280px' },
@@ -38,17 +38,23 @@ module.exports = {
         'frame-h': 'min(100vh, 100dvh)',
         'frame-w': 'min(100vw, 100dvw)',
         tag: 'var(--tag-h)',
+        'tag-top': 'var(--tag-top)',
+
         main: 'var(--main-w)',
-        column: 'var(--column-w)',
+        'column-l': 'var(--column-l)',
+        'column-r': 'var(--column-r)',
+        'column-l-translate': 'var(--column-l-translate)',
+        'column-r-translate': 'var(--column-r-translate)',
+
         'translate-w': 'var(--translate-w)',
         'content-h': 'var(--content-h)',
         'image-w': 'var(--image-w)',
         'offset-content': 'var(--offset-content)',
         'remaining-content': 'var(--remaining-content)',
-        logotype: '6.95rem',
+        logotype: 'var(--logotype)',
       },
       transitionDuration: {
-        intro: '1500ms',
+        intro: '1200ms',
         gap: '1s',
       },
     },

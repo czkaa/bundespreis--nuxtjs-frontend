@@ -3,7 +3,7 @@
     <template v-for="(item, index) in items" :key="index">
       <BasicsText
         :text="item.year"
-        class="block font-sans text-sm-sans text-right whitespace-nowrap tabular-nums tracking-[-0.06em]"
+        class="block font-sans text-sm-sans text-right whitespace-nowrap tabular-nums tracking-[-0.02em]"
       />
       <BasicsText :text="item.text" />
     </template>

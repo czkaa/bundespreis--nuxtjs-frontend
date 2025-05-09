@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink :to="switchPath" class="block text-primary-600 center">
+  <NuxtLink :to="switchPath" class="sm:mt-0">
     <BasicsNavItem
       :text="targetLocale"
       class="items-end w-tag h-tag uppercase justify-center"

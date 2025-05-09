@@ -11,7 +11,7 @@
     "clean": "rm -rf .nuxt node_modules/.vite node_modules/.cache"
   },
   "dependencies": {
-    "@nuxt/image": "github:nuxt/image",
+    "@nuxt/image": "^1.10.0",
     "@nuxtjs/i18n": "^9.5.4",
     "@pinia/nuxt": "^0.5.1",
     "highlight.js": "^11.9.0",

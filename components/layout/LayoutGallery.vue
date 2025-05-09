@@ -1,7 +1,7 @@
 <template>
   <KeepAlive>
     <div
-      class="flex relative z-10 overflow-x-hidden pt-offset-content gap-xs min-h-frame-h"
+      class="flex relative z-10 overflow-x-hidden pt-offset-content pb-xs gap-xs min-h-frame-h"
     >
       <LayoutGalleryColumn :items="leftImages" :is-left="true" />
       <LayoutGalleryColumn :items="rightImages" />

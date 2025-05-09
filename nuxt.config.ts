@@ -9,11 +9,7 @@ export default defineNuxtConfig({
       { path: '~/components', pathPrefix: false, prefix: '', extensions: ['vue'] },
     ]
   },
-  modules: [
-    '@nuxtjs/tailwindcss',
-    '@pinia/nuxt',
-    '@nuxtjs/i18n'
-  ],
+  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@nuxtjs/i18n', '@nuxt/image'],
   css: [
     '~/assets/css/main.css'
   ],
@@ -28,9 +24,8 @@ export default defineNuxtConfig({
   // },
   runtimeConfig: {
     public: {
-      apiBaseUrl: 'https://bundespreis-backend.czkaa.site'
-      // apiBaseUrl: 'http:/localhost:8000'
-
+      // apiBaseUrl: 'https://bundespreis-backend.czkaa.site'
+      apiBaseUrl: 'http:/localhost:8000'
     }
   },
 

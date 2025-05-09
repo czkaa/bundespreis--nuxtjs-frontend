@@ -8,11 +8,11 @@
       'pointer-events-auto': !gap.isGap,
     }"
     @click.stop="handleImageClick(item)"
-    :style="{ left: `calc(var(--remaining-w) * ${position})` }"
+    :style="{ left: `calc(var(--remaining-w) * ${position}` }"
   >
     <BasicsImage
       :image="item"
-      class="hover-hover:hover:scale-[102%] hover-hover:hover:z-50 transform transition-transform duration-300"
+      class="hover-hover:hover:scale-[103%] hover-hover:hover:z-50 transform transition-transform duration-300"
     />
     <BasicsCaption :text="item.page.title" class="ml-auto" />
   </NuxtLink>
@@ -33,7 +33,9 @@ const props = defineProps({
 });
 
 const imageLink = ref(null);
-const position = Math.random().toFixed(2);
+let position = Math.random().toFixed(2);
+if (position < 0.2) position = 0;
+if (position > 0.7) position = 1;
 
 onMounted(async () => {
   await nextTick();

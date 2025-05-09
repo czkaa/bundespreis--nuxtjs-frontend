@@ -4,12 +4,39 @@
 
 
 @font-face {
-  font-family: 'SeasonVF';
-  src: url('../fonts/SeasonVFTRIALVF.ttf') format('truetype');
-  font-weight: 100 900;
+  font-family: 'SeasonSans';
+  src: url('../fonts/SeasonSans-Medium.otf') format('truetype');
+  font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
+
+
+@font-face {
+  font-family: 'SeasonSans';
+  src: url('../fonts/SeasonSans-SemiBold.otf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SeasonSerif';
+  src: url('../fonts/SeasonSerif-Medium.otf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+@font-face {
+  font-family: 'SeasonSans';
+  src: url('../fonts/SeasonSerif-SemiBold.otf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
 
 
 
@@ -27,24 +54,30 @@ body {
 
 
 :root {
-  --main-w: 59.7%;
+  --column-l: 25.05vw;
+  --column-r: 15vw;
+  --main-w: calc(100% - var(--column-r) - var(--column-l));
+  --column-l-translate: calc(50vw - var(--column-l));
+  --column-r-translate: calc(50vw - var(--column-r));
   --image-w: 75%;
-  --column-w: calc(100% - (100% - var(--main-w)));
   --remaining-w: calc(100% - var(--image-w));
   --spacing-xs: 0.375rem;
   --spacing-sm: 1.875rem;
   --spacing-md: 3.75rem;
   --tag-h: 4.18rem;
+  --tag-top: 2.8rem;
   --heading-h: 5.625rem;
-  --offset-content: calc(var(--tag-h) + (var(--spacing-xs)));
+  --offset-content: calc(var(--tag-h) + var(--spacing-xs) + var(--tag-top));
   --remaining-content: calc(100dvh - var(--heading-h) - var(--offset-content) - var(--spacing-sm) * 2);
+  --logotype: 6.95rem;
 }
 
  
 
 @media (max-width: 1000px) {
   :root {
-      --main-w: 80%;
-      --image-w: 80%;
+      --image-w: 85%;
+      --column-l: 8vw;
+      --column-r: 8vw
     }
 }

@@ -8,9 +8,13 @@
       }"
     >
       <div
-        class="absolute w-full h-tag bg-black -translate-y-full transform md:hidden"
+        class="absolute w-full h-[calc(var(--tag-h)+1px)] bg-black -translate-y-[calc(100%-1px)] transform md:hidden"
       ></div>
-      <BasicsNavItem :text="page.title" class="items-end -mt-[1px]" />
+      <BasicsNavItem
+        :text="page.title"
+        :translation="page.translatedTitle"
+        class="items-end"
+      />
     </NuxtLink>
   </template>
 </template>

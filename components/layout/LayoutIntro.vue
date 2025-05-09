@@ -3,7 +3,7 @@
     class="w-full overflow-hidden bg-white h-frame-h flex flex-col items-center justify-center"
   >
     <div
-      class="relative [&_div]:h-full [&_figure]:h-full [&_img]:object-cover [&_img]:h-full transition-transform ease-linear duration-intro w-frame-w h-frame-h py-tag pb-[5.4rem] md:py-logotype px-[11.4rem] md:px-sm"
+      class="relative [&_div]:h-full [&_figure]:h-full [&_img]:object-cover [&_img]:h-full transition-transform ease-linear duration-intro w-frame-w h-frame-h py-tag pb-[calc(5.4rem-1px)] md:py-[calc(var(--logotype)-1px)] pl-[11.4rem] pr-[11.85rem] md:px-xs -mt-[1px]"
       :class="!introStore.isStart ? 'scale-[3.1%] ' : 'scale-100'"
     >
       <!-- Show portrait image on mobile (below md breakpoint) -->
@@ -12,7 +12,6 @@
         class="w-full h-full hidden md:flex justify-center items-center relative"
       >
         <BasicsIntroImage
-          @loaded="startIntro"
           :image="randomPortraitImage"
           class="relative z-10 [&>img]:h-full [&>img]:w-full flex justify-center"
         />
@@ -24,7 +23,6 @@
         class="w-full h-full md:hidden flex justify-center items-center relative"
       >
         <BasicsIntroImage
-          @loaded="startIntro"
           :image="randomLandscapeImage"
           class="relative z-10 [&>img]:h-auto [&>img]:w-full flex justify-center"
         />
@@ -47,12 +45,6 @@ const props = defineProps({
 const randomPortraitImage = ref(null);
 const randomLandscapeImage = ref(null);
 
-// Event tracking variables
-let interactionCounter = 0;
-const interactionThreshold = 5; // Lower threshold for multiple types of interactions
-let lastScrollPosition = 0;
-let scrollTimeout = null;
-
 const introImages = computed(
   () => props.siteData?.introImages || { portrait: [], landscape: [] }
 );
@@ -71,73 +63,21 @@ const selectRandomImages = () => {
   }
 };
 
-// Unified handler for all interactions
-const handleInteraction = (event) => {
-  interactionCounter++;
-
-  if (interactionCounter > interactionThreshold) {
-    introStore.setDone(true);
-    removeAllEventListeners();
-  }
-};
-
-// Specific handler for scroll events to prevent too many firings
-const handleScroll = () => {
-  const currentScrollPosition = window.scrollY;
-
-  // Only count as interaction if meaningful scroll occurred
-  if (Math.abs(currentScrollPosition - lastScrollPosition) > 1) {
-    interactionCounter++;
-    lastScrollPosition = currentScrollPosition;
-
-    if (interactionCounter > interactionThreshold) {
-      introStore.setDone(true);
-      removeAllEventListeners();
-    }
-  }
-
-  // Debounce scroll events
-  if (scrollTimeout) {
-    clearTimeout(scrollTimeout);
-  }
-
-  scrollTimeout = setTimeout(() => {
-    lastScrollPosition = window.scrollY;
-  }, 100);
-};
-
-// Clean up function to remove all event listeners
-const removeAllEventListeners = () => {
-  window.removeEventListener('mousemove', handleInteraction);
-  window.removeEventListener('touchstart', handleInteraction);
-  window.removeEventListener('touchmove', handleInteraction);
-  window.removeEventListener('scroll', handleScroll);
-};
-
 onMounted(() => {
   selectRandomImages();
 });
 
-onUnmounted(() => {
-  removeAllEventListeners();
-});
-
-const startIntro = () => {
-  if (introStore.isStart) return;
-
+onMounted(() => {
   setTimeout(() => {
     introStore.setStart(true);
+  }, 100);
 
-    setTimeout(() => {
-      introStore.setScaled(true);
+  setTimeout(() => {
+    introStore.setScaled(true);
+  }, 1500);
 
-      window.addEventListener('mousemove', handleInteraction);
-      window.addEventListener('touchstart', handleInteraction);
-      window.addEventListener('touchmove', handleInteraction);
-      window.addEventListener('scroll', handleScroll);
-
-      lastScrollPosition = window.scrollY;
-    }, 2000);
-  }, 1000);
-};
+  setTimeout(() => {
+    introStore.setDone(true);
+  }, 2000);
+});
 </script>

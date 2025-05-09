@@ -5,8 +5,8 @@
     :class="[
       gap.isGap
         ? isLeft
-          ? '-translate-x-column'
-          : 'translate-x-column'
+          ? '-translate-x-column-l-translate'
+          : 'translate-x-column-r-translate'
         : 'translate-x-0',
       gap.isGap ? 'pointer-events-auto' : 'pointer-events-none',
     ]"

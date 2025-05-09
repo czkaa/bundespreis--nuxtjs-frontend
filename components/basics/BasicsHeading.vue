@@ -5,10 +5,9 @@
     basics-heading
     :class="[
       {
-        'font-sans text-xl md:text-xl-md first-letter:uppercase': tag === 'h2',
-        'font-sans text-lg md:text-lg-md md:hyphens-auto first-letter:uppercase':
-          tag === 'h3',
-        'text-sm-sans ml-indent-sm first-letter:uppercase': tag === 'h4',
+        'font-sans text-xl  first-letter:uppercase': tag === 'h2',
+        'font-sans text-lg   first-letter:uppercase': tag === 'h3',
+        'font-serif ml-indent-sm first-letter:uppercase': tag === 'h4',
       },
     ]"
     >{{ text }}
