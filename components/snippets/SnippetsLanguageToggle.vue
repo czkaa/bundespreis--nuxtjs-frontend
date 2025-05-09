@@ -1,12 +1,10 @@
 <template>
-  <div class="w-tag h-tag bg-black">
-    <NuxtLink :to="switchPath" class="sm:mt-0">
-      <BasicsNavItem
-        :text="targetLocale"
-        class="items-end w-tag h-tag uppercase justify-center"
-      />
-    </NuxtLink>
-  </div>
+  <NuxtLink :to="switchPath" class="sm:mt-0">
+    <BasicsNavItem
+      :text="targetLocale"
+      class="items-end w-tag h-tag uppercase justify-center"
+    />
+  </NuxtLink>
 </template>
 
 <script setup>

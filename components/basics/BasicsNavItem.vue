@@ -4,9 +4,11 @@
     :class="{ '[&.router-link-active]:translate-y-full': !isBottom }"
   >
     <span class="col-start-1 row-start-1">{{ text }}</span>
-    <span v-if="translation" class="col-start-1 row-start-1 invisible">{{
-      translation
-    }}</span>
+    <span
+      v-if="translation"
+      class="col-start-1 row-start-1 invisible md:hidden"
+      >{{ translation }}</span
+    >
   </span>
 </template>
 

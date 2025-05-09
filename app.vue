@@ -108,7 +108,6 @@ body {
   opacity: 0;
 }
 
-/* Explicitly define the visible states too */
 .slide-enter-to,
 .slide-leave-from {
   transform: translateY(0);

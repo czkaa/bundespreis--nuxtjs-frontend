@@ -8,6 +8,11 @@
       <img src="/assets/icons/menu.svg" class="w-full" v-else />
     </button>
 
+    <!-- WHY DOES THIS NEED A WRAPPER -->
+    <div class="w-tag h-tag bg-black">
+      <SnippetsLanguageToggle />
+    </div>
+
     <Teleport to="#teleports">
       <Transition name="fade">
         <div

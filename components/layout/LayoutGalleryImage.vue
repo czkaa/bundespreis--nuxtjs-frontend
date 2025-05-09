@@ -1,7 +1,12 @@
 <template>
   <NuxtLink
     ref="imageLink"
-    :to="localePath(`/${item.page.uri}`)"
+    :to="
+      localePath({
+        name: 'preistragende-slug',
+        params: { slug: item.page.slug },
+      })
+    "
     class="relative cursor-pointer overflow-hidden w-image-w"
     :class="{
       'pointer-events-none': gap.isGap,

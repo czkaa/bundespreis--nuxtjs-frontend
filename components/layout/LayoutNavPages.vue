@@ -1,7 +1,7 @@
 <template>
   <template v-for="page in siteData?.headerPages" :key="page.uri">
     <NuxtLink
-      :to="`/${locale}/${page.uri}`"
+      :to="localePath(`/${page.uri}`)"
       class="inline-block relative transition-transform duration-500 md:h-tag"
       :class="{
         'translate-y-tag-top md:translate-y-0': route.fullPath.includes(
@@ -28,7 +28,6 @@ const props = defineProps({
     required: true,
   },
 });
-
-const { locale } = useI18n();
+const localePath = useLocalePath();
 const route = useRoute();
 </script>

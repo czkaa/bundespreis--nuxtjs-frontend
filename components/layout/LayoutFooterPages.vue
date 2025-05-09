@@ -1,6 +1,6 @@
 <template>
   <template v-for="page in siteData?.footerPages" :key="page.uri">
-    <NuxtLink :to="`/${locale}/${page.uri}`" class="grow-1 block md:h-tag">
+    <NuxtLink :to="localePath(`/${page.uri}`)" class="grow-1 block md:h-tag">
       <BasicsNavItem :text="page.title" class="items-end" />
     </NuxtLink>
   </template>
@@ -14,5 +14,5 @@ const props = defineProps({
   },
 });
 
-const { locale } = useI18n();
+const localePath = useLocalePath();
 </script>

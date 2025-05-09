@@ -48,8 +48,8 @@
 
 html,
 body {
-  /* scroll-behavior: smooth; */
   font-family: 'SeasonVF';
+  font-feature-settings: "ss02" on;
   @apply font-serif text-root md:text-root-md sm:text-root-sm;
 }
 
@@ -64,8 +64,8 @@ body {
   --column-l: 25.05vw;
   --column-r: 15vw;
   --main-w: calc(100% - var(--column-r) - var(--column-l));
-  --column-l-translate: calc(50vw - var(--column-l));
-  --column-r-translate: calc(50vw - var(--column-r));
+  --column-l-translate: calc(50vw - var(--column-l) + var(--spacing-xs) / 2);
+  --column-r-translate: calc(50vw - var(--column-r) + var(--spacing-xs) / 2);
   
   /*IMAGES*/
   --image-w: 75%;

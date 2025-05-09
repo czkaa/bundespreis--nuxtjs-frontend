@@ -38,33 +38,30 @@ onMounted(() => {
   }
 });
 
-// Function to handle scrolling within main element
 const scrollToSection = (slug) => {
-  if (!document || !main.value) return;
+  if (!slug || !main.value) return;
 
-  const section = document.querySelector(`#${slug}`);
+  const section = document.getElementById(slug);
   if (section) {
-    // Calculate the position relative to the main element
-    const mainRect = main.value.getBoundingClientRect();
-    const sectionRect = section.getBoundingClientRect();
-    const scrollTop = sectionRect.top - mainRect.top + main.value.scrollTop;
-
-    // Scroll the main element
     main.value.scrollTo({
-      top: scrollTop,
+      top: section.offsetTop,
       behavior: 'smooth',
     });
   }
 };
 
-// Watch for route changes
 watch(
-  () => route.params.slug,
-  (newSlug) => {
-    if (newSlug && newSlug.length > 0) {
+  () => [route.path, route.params.slug],
+  ([newPath, newSlug]) => {
+    // Check if one of the aliased paths
+    if (newPath.includes('preistragende')) {
+      scrollToSection('preistragende');
+    } else if (newPath.includes('winners')) {
+      scrollToSection('winners');
+    } else if (newSlug && newSlug.length > 0) {
       scrollToSection(newSlug[0]);
     }
   },
-  { immediate: false }
+  { immediate: true } // Consider setting to true to handle initial route
 );
 </script>

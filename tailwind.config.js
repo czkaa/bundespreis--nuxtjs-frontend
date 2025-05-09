@@ -59,16 +59,4 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    function ({ addBase }) {
-      addBase({
-        '.font-sans': {
-          'font-feature-settings:': '"ss" 02',
-        },
-        '.font-serif': {
-          'font-variation-settings': '"wght" 500, "SERF" 100',
-        },
-      });
-    },
-  ],
 };
