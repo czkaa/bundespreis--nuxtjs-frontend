@@ -32,7 +32,7 @@
       <!-- Main Content View -->
       <main
         style="scrollbar-gutter: stable"
-        class="w-full absolute h-frame-h transition-opacity duration-500 overflow-y-scroll"
+        class="w-full absolute h-frame-h transition-opacity duration-500 overflow-y-scroll pb-offset-content"
         :class="{ 'opacity-0': !gap.isGap, '': gap.isGap }"
         ref="mainContainer"
       >

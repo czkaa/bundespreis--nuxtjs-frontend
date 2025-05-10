@@ -1,30 +1,36 @@
 <template>
-  <div ref="sliderContainer" class="gallery-slider relative">
-    <div
-      class="flex flex-col h-remaining-content justify-center items-center overflow-hidden pb-xs"
-    >
+  <div
+    ref="sliderContainer"
+    class="gallery-slider relative flex flex-col overflow-hidden"
+  >
+    <div class="grid grid-cols-1">
       <div
-        :key="currentIndex"
-        class="grid w-[max-content] max-w-full h-full mx-auto overflow-hidden"
+        v-for="(image, index) in images"
+        :style="{ aspectRatio: image.ratio }"
+        class="row-start-1 col-start-1 flex flex-col h-full max-w-full max-h-remaining-content overflow-hidden relative"
+        :class="{ 'opacity-0': index !== currentIndex }"
       >
-        <BasicsImage
-          :image="currentImage"
-          class="h-full [&_img]:h-full mx-auto flex items-end"
-        />
-        <div class="flex overflow-hidden justify-between items-start gap-xs">
-          <BasicsText
-            :text="currentImage.caption"
-            class="text-xs font-sans mt-0.5"
+        <div class="flex flex-col items-center min-h-0">
+          <BasicsImage
+            :image="image"
+            class="[&_img]:max-h-remaining-content [&_img]:object-contain [&_img]:block"
           />
-          <BasicsCaption
-            :text="`${currentIndex + 1}/${images.length}`"
-            class="ml-auto shrink-0 pt-0.5"
-          />
+          <div
+            class="flex overflow-hidden justify-between items-start gap-xs shrink-0 w-full"
+          >
+            <BasicsText
+              :text="currentImage.caption"
+              class="text-xs font-sans mt-0.5"
+            />
+            <BasicsCaption
+              :text="`${currentIndex + 1}/${images.length}`"
+              class="ml-auto shrink-0 pt-0.5"
+            />
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Invisible click regions for touch/mobile navigation -->
     <div
       v-if="images.length > 1"
       @click="prevImage"
@@ -36,7 +42,6 @@
       v-if="images.length > 1"
       @click="nextImage"
       class="absolute right-0 top-0 w-1/2 h-full cursor-e-resize md:cursor-default"
-      aria-label="Next image"
     ></div>
   </div>
 </template>
@@ -143,15 +148,3 @@ onUnmounted(() => {
   window.removeEventListener('resize', calculateHeight);
 });
 </script>
-
-<style scoped>
-.slide-fade-enter-active,
-.slide-fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-  opacity: 0;
-}
-</style>
