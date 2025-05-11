@@ -4,7 +4,7 @@
       :tabindex="index + 2"
       :aria-label="`${$t('viewSubpage')} ${page.title}`"
       :to="localePath(`/${page.uri}`)"
-      class="inline-block relative transition-transform duration-500 md:h-tag"
+      class="inline-block relative transition-transform duration-500 md:h-tag hover-hover:hover:translate-y-tag-top md:hover-hover:hover:translate-y-0"
       :class="{
         'translate-y-tag-top md:translate-y-0': route.fullPath.includes(
           page.uri

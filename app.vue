@@ -21,7 +21,7 @@
         :class="{ 'opacity-0': !gap.isGap }"
         ref="mainContainer"
       >
-        <div class="w-main ml-column-l mb-xs">
+        <div class="w-main ml-column-l mb-xs overflow-x-hidden">
           <NuxtPage />
         </div>
       </main>

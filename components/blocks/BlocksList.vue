@@ -1,5 +1,5 @@
 <template>
-  <ul class="list-none grid [grid-template-columns:max-content_1fr] gap-x-md">
+  <ul class="list-none grid [grid-template-columns:max-content_1fr] gap-x-sm">
     <template v-for="(item, index) in items" :key="index">
       <BasicsText
         :text="item.year"
