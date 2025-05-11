@@ -1,6 +1,8 @@
 <template>
   <a
     :href="localePath('/')"
+    :tabindex="isTop ? 1 : -1"
+    :aria-label="$t('reloadPage')"
     class="pointer-events-auto fixed w-fit h-logotype z-[100]"
     :class="[
       { 'transition-all duration-intro ease-linear': !introStore.isDone },
@@ -15,8 +17,18 @@
     @click="handleClick()"
   >
     <h1 v-if="isTop" class="hidden">Bundespreis für Kunststudierende 2025</h1>
-    <img src="/assets/icons/logotype-tl.svg" class="h-full" v-if="isTop" />
-    <img src="/assets/icons/logotype-br.svg" class="h-full" v-else />
+    <img
+      alt="Logo Bundespreis für Kunststudierende 2025"
+      src="/assets/icons/logotype-tl.svg"
+      class="h-full"
+      v-if="isTop"
+    />
+    <img
+      alt="Logo Bundespreis für Kunststudierende 2025"
+      src="/assets/icons/logotype-br.svg"
+      class="h-full"
+      v-else
+    />
   </a>
 </template>
 

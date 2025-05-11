@@ -9,9 +9,4 @@ const route = useRoute();
 const basePath = `/${locale.value}/info`;
 
 const { data: data } = await useFetch(() => `/api${basePath}`);
-
-const routeStore = useRouteStore();
-onBeforeMount(() => {
-  routeStore.setView('info');
-});
 </script>

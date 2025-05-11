@@ -5,7 +5,7 @@
     <BasicsImage
       v-if="data.portrait"
       :image="data.portrait"
-      class="[&_img]:max-h-remaining-content [&>img]:object-left ml-indent-sm"
+      class="max-h-remaining-content [&>img]:object-left ml-indent-sm"
     />
     <Blocks :blocks="data.bio" v-if="data.bio" />
     <Blocks :blocks="data.judging" v-if="data.judging" />
@@ -31,7 +31,7 @@ const gap = useGapStore();
 onMounted(() => {
   setTimeout(() => {
     gap.setGap(true);
-  }, 100);
+  }, 10);
 
   const scrollToTop = () => {
     const mainContainer = document.querySelector('main');

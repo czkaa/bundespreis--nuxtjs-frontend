@@ -1,27 +1,13 @@
 <template>
-  <Transition name="slide" mode="out-in">
-    <LayoutHeader
-      v-if="
-        (siteData && introStore.isDone) || (!introStore.isIntro && siteData)
-      "
-      :siteData="siteData"
-      class="fixed top-0 w-full z-[100]"
-    />
-  </Transition>
-  <SnippetsHomeLogo />
-  <SnippetsHomeLogo :isTop="false" />
-
   <Transition name="slide-intro">
-    <LayoutIntro v-if="introStore.isIntro && !introStore.isDone" :siteData />
+    <LayoutIntro v-if="showIntro" :siteData />
 
     <div v-else class="absolute w-full" key="main-content">
-      <!-- Gallery View -->
       <div
         style="scrollbar-gutter: stable"
         class="absolute top-0 h-frame-h w-full z-50 overflow-y-auto"
         :class="{
           'pointer-events-none': gap.isGap,
-          '': !gap.isGap,
         }"
         ref="galleryContainer"
       >
@@ -29,11 +15,10 @@
         <LayoutFooter v-if="siteData" :siteData="siteData" class="md:hidden" />
       </div>
 
-      <!-- Main Content View -->
       <main
         style="scrollbar-gutter: stable"
         class="w-full absolute h-frame-h transition-opacity duration-500 overflow-y-scroll pb-offset-content"
-        :class="{ 'opacity-0': !gap.isGap, '': gap.isGap }"
+        :class="{ 'opacity-0': !gap.isGap }"
         ref="mainContainer"
       >
         <div class="w-main ml-column-l mb-xs">
@@ -42,6 +27,16 @@
       </main>
     </div>
   </Transition>
+
+  <Transition name="slide" mode="out-in">
+    <LayoutHeader
+      v-show="showHeader"
+      :siteData="siteData"
+      class="fixed top-0 w-full z-[100]"
+    />
+  </Transition>
+  <SnippetsHomeLogo />
+  <SnippetsHomeLogo :isTop="false" />
 </template>
 
 <script setup>
@@ -49,15 +44,32 @@ import { useHeadSeo } from '~/composables/useHeadSeo';
 import { useSiteStore } from '~/stores/site';
 import { useI18n } from 'vue-i18n';
 const { locale } = useI18n();
+const { setAllMetadata, setPageTitle } = useHeadSeo(); // This calls useI18n inside a setup context
 const gap = useGapStore();
 const introStore = useIntroStore();
-const { setAllMetadata, setPageTitle } = useHeadSeo(); // This calls useI18n inside a setup context
 const siteStore = useSiteStore();
+const isLangChange = ref(false);
+
+const showHeader = computed(() => {
+  return (introStore.isDone || !introStore.isIntro) && !isLangChange.value;
+});
+
+const showIntro = computed(() => {
+  return introStore.isIntro && !introStore.isDone;
+});
 
 // Fetch data
-const { data: siteData } = await useFetch(
-  () => `/api/${locale.value === 'en' ? 'en/' : ''}site`
-);
+const { data: siteDataDe } = await useFetch(() => `/api/site`);
+const { data: siteDataEn } = await useFetch(() => `/api/en/site`);
+
+const siteData = computed(() => {
+  if (locale.value === 'de') {
+    return siteDataDe.value;
+  } else if (locale.value === 'en') {
+    return siteDataEn.value;
+  }
+  return null;
+});
 
 // Watch and update
 watch(
@@ -66,6 +78,10 @@ watch(
     if (newData) {
       siteStore.setAllMetadata(newData);
       setAllMetadata(newData); // Now this doesn't call useI18n or useHead
+      isLangChange.value = true;
+      setTimeout(() => {
+        isLangChange.value = false;
+      }, 200);
     }
   },
   { immediate: true }
@@ -78,7 +94,7 @@ body {
 }
 .fade-enter-active,
 .fade-leave-active {
-  @apply duration-500 transition-opacity ease-linear;
+  @apply duration-fade transition-opacity ease-linear;
 }
 
 .fade-enter-from,
@@ -92,7 +108,7 @@ body {
 
 .slide-intro-leave-active,
 .slide-intro-enter-active {
-  @apply duration-intro transition-transform ease-linear;
+  @apply duration-page transition-transform ease-linear;
   position: absolute;
   width: 100%;
 }

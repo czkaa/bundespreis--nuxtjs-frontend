@@ -34,6 +34,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 const introStore = useIntroStore();
+import { INTRO_DURATION } from '../utils/tailwind';
 
 const props = defineProps({
   siteData: {
@@ -70,14 +71,11 @@ onMounted(() => {
 onMounted(() => {
   setTimeout(() => {
     introStore.setStart(true);
+
+    setTimeout(() => {
+      introStore.setScaled(true);
+      introStore.setDone(true);
+    }, INTRO_DURATION);
   }, 300);
-
-  setTimeout(() => {
-    introStore.setScaled(true);
-  }, 1500);
-
-  setTimeout(() => {
-    introStore.setDone(true);
-  }, 2000);
 });
 </script>

@@ -1,9 +1,15 @@
+import { GAP_DURATION } from '../utils/tailwind';
+
 export default defineNuxtRouteMiddleware(async (to, from) => {
   const gap = useGapStore();
   const intro = useIntroStore();
 
   if (to.fullPath === from.fullPath && to.params?.slug?.length === 0) {
-    intro.setIntro(true);
+    const { disableAnimations } = useUserSettings();
+
+    if (!disableAnimations.value) {
+      intro.setIntro(true);
+    }
     return;
   }
 
@@ -21,6 +27,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
   if (toTemplate !== fromTemplate || toTemplate === 'preistragende') {
     gap.setGap(false);
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, GAP_DURATION));
   }
 });

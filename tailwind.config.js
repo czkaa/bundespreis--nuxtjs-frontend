@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   content: ['./site/**/*.php', './content/**/*.txt'],
   theme: {
     fontFamily: {
@@ -54,7 +54,10 @@ module.exports = {
         logotype: 'var(--logotype)',
       },
       transitionDuration: {
-        intro: '1200ms',
+        intro: '1000ms',
+        gap: '500ms',
+        page: '900ms',
+        fade: '500ms',
         gap: '1s',
       },
     },

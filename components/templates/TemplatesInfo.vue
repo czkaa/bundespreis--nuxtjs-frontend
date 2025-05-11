@@ -8,7 +8,6 @@ const props = defineProps({
     type: Object,
   },
 });
-const route = useRoute();
 const gap = useGapStore();
 
 onMounted(() => {

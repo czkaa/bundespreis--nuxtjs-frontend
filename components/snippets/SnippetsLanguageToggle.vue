@@ -1,10 +1,20 @@
 <template>
-  <NuxtLink :to="switchPath" class="sm:mt-0">
+  <NuxtLink
+    :to="switchPath"
+    class="sm:mt-0"
+    :aria-label="`${
+      targetLocale === 'en'
+        ? $t('changeLanguageToEn')
+        : $t('changeLanguageToDe')
+    }`"
+  >
     <BasicsNavItem
       :text="targetLocale"
       class="items-end w-tag h-tag uppercase justify-center"
     />
   </NuxtLink>
+
+  <!-- <div class="bg-white absolute p-3">{{ pathWithoutLocale }}</div> -->
 </template>
 
 <script setup>
@@ -16,18 +26,20 @@ const { data: translations } = await useFetch('/api/language');
 const targetLocale = computed(() => (locale.value === 'de' ? 'en' : 'de'));
 
 const pathWithoutLocale = computed(() => {
-  return route.path.replace(new RegExp(`^\\/${locale.value}\\/?`), '');
+  return route.path
+    .replace(new RegExp(`^\\/${locale.value}\\/?`), '')
+    .replace(/^\/+/, '');
 });
 
 const switchPath = computed(() => {
   if (pathWithoutLocale.value === '') {
-    return `/${targetLocale.value}`;
+    return `${targetLocale.value === 'de' ? '/' : '/en'}`;
   }
   const routes = translations.value?.[locale.value]?.routes || {};
   const translation = routes[pathWithoutLocale.value]?.[targetLocale.value];
 
   return translation
-    ? `/${targetLocale.value}/${translation}`
-    : `/${targetLocale.value}/${pathWithoutLocale.value}`;
+    ? `${targetLocale.value === 'de' ? '' : '/en'}/${translation}`
+    : `${targetLocale.value === 'de' ? '' : '/en'}/${pathWithoutLocale.value}`;
 });
 </script>

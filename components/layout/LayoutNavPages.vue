@@ -1,6 +1,8 @@
 <template>
-  <template v-for="page in siteData?.headerPages" :key="page.uri">
+  <template v-for="(page, index) in siteData?.headerPages" :key="page.uri">
     <NuxtLink
+      :tabindex="index + 2"
+      :aria-label="`${$t('viewSubpage')} ${page.title}`"
       :to="localePath(`/${page.uri}`)"
       class="inline-block relative transition-transform duration-500 md:h-tag"
       :class="{

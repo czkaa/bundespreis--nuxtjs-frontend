@@ -13,15 +13,22 @@ export default defineNuxtConfig({
   css: [
     '~/assets/css/main.css'
   ],
-  // ssr: true,
+  ssr: true,
 
-  // nitro: {
-  //   preset: 'node-server',
-  //   prerender: {
-  //     crawlLinks: true,
-  //     routes: ['/']
-  //   }
-  // },
+  nitro: {
+    preset: 'static',
+    prerender: {
+      crawlLinks: true,
+      routes: ['/', 
+        '/en',
+       '/api/site',
+       '/api/de/site', 
+      '/api/en/site', 
+      '/api/language',
+      ], 
+      
+    }
+  },
   runtimeConfig: {
     public: {
       apiBaseUrl: 'https://bundespreis-backend.czkaa.site'
@@ -31,19 +38,45 @@ export default defineNuxtConfig({
 
   hooks: {
     'pages:extend' (pages) {
-      const catchAllRoute = pages.find(page => page.path === '/:slug(.*)*')
-
+       const catchAllRoute = pages.find(page => page.path === '/:slug(.*)*')
+      
       if (catchAllRoute) {
-        catchAllRoute.alias = ['/preistragende', '/winners']
+        // Create new routes that will properly handle the slug parameter
+        pages.push({
+          name: 'preistragende-catch-all',
+          path: '/preistragende',
+          file: catchAllRoute.file,
+          meta: { isAlias: true, prefix: 'preistragende' }
+        }, {
+          name: 'winners-catch-all',  
+          path: '/winners',
+          file: catchAllRoute.file,
+          meta: { isAlias: true, prefix: 'winners' }
+        })
       }
-    }
+    },
+    
   },
 
   i18n: {
     defaultLocale: 'de',
-    locales: ['de', 'en'],
-    detectBrowserLanguage: false,
-    strategy: 'prefix',
+    locales: [  {
+        code: 'de',
+        file: 'de-DE.json'
+      },
+      {
+        code: 'en',
+        file: 'en-US.json'
+      },
+    ],
+    detectBrowserLanguage: {
+      useCookie: false,
+      redirectOn: 'root', 
+      alwaysRedirect: false,
+      fallbackLocale: 'de'
+    },
+    differentDomains: false,
+    strategy: 'prefix_except_default',
     customRoutes: 'config',
     pages: {
       'preistragende/[...slug]': {
@@ -54,22 +87,5 @@ export default defineNuxtConfig({
       }
     }
   },
-  
-  
-  app: {
-    head: {
-      title: 'Bundespreis für Kunststudierende 2025',
-      meta: [
-        { charset: 'utf-8' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'format-detection', content: 'telephone=no' },
-        { name: 'robots', content: 'index, follow' },
-        { name: 'description', content: 'Bundespreis data viewer application' }
-      ],
-      link: [
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap' },
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-      ]
-    }
-  }
+
 })

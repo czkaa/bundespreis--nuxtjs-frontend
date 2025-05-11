@@ -1,6 +1,10 @@
 <template>
   <template v-for="page in siteData?.footerPages" :key="page.uri">
-    <NuxtLink :to="localePath(`/${page.uri}`)" class="grow-1 block md:h-tag">
+    <NuxtLink
+      :aria-label="`${$t('viewSubpage')} ${page.title}`"
+      :to="localePath(`/${page.uri}`)"
+      class="grow-1 block md:h-tag"
+    >
       <BasicsNavItem :text="page.title" class="items-end" />
     </NuxtLink>
   </template>

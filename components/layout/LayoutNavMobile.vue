@@ -3,9 +3,15 @@
     <button
       class="relative w-tag h-tag bg-black pointer-events-auto z-[100]"
       @click="isMobileNav = !isMobileNav"
+      :aria-label="`${isMobileNav ? $t('closeMenu') : $t('openMenu')}`"
     >
-      <img src="/assets/icons/close.svg" class="w-full" v-if="isMobileNav" />
-      <img src="/assets/icons/menu.svg" class="w-full" v-else />
+      <img
+        src="/assets/icons/close.svg"
+        alt="X-Icon"
+        class="w-full"
+        v-if="isMobileNav"
+      />
+      <img alt="Menu-Icon" src="/assets/icons/menu.svg" class="w-full" v-else />
     </button>
 
     <!-- WHY DOES THIS NEED A WRAPPER -->

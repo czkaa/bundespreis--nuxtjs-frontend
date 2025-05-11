@@ -1,14 +1,16 @@
 <template>
   <div
     @click.stop="toggleGap"
-    class="w-1/2 transition-all duration-1000 ease-in-out transform cursor-pointer overflow-hidden space-y-xs flex flex-col relative"
+    class="w-1/2 transition-all duration-gap ease-in-out transform cursor-pointer overflow-hidden space-y-xs flex flex-col relative"
     :class="[
       gap.isGap
         ? isLeft
           ? '-translate-x-column-l-translate'
           : 'translate-x-column-r-translate'
         : 'translate-x-0',
-      gap.isGap ? 'pointer-events-auto' : 'pointer-events-none',
+      gap.isGap || !gap.isTransitioning
+        ? 'pointer-events-auto'
+        : 'pointer-events-none',
     ]"
   >
     <LayoutGalleryImage v-for="(item, index) in items" :item="item" />
@@ -31,7 +33,7 @@ const props = defineProps({
 });
 
 const toggleGap = () => {
-  if (gap.isGap) {
+  if (gap.isGap && !gap.isTransitioning) {
     gap.setGap(false);
   }
 };

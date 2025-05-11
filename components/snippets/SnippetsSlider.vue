@@ -34,14 +34,15 @@
     <div
       v-if="images.length > 1"
       @click="prevImage"
-      class="absolute left-0 top-0 w-1/2 h-full cursor-w-resize md:cursor-default"
-      aria-label="Previous image"
+      class="absolute left-0 top-0 w-1/2 h-full cursor-w-resize"
+      :aria-label="$t('showPreviousImage')"
     ></div>
 
     <div
       v-if="images.length > 1"
       @click="nextImage"
-      class="absolute right-0 top-0 w-1/2 h-full cursor-e-resize md:cursor-default"
+      class="absolute right-0 top-0 w-1/2 h-full cursor-e-resize"
+      :aria-label="$t('showNextImage')"
     ></div>
   </div>
 </template>

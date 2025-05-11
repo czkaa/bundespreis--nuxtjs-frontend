@@ -8,8 +8,6 @@
 </template>
 
 <script setup>
-import { useIntroStore } from '~/stores/intro';
-
 const props = defineProps({
   siteData: {
     type: Object,
