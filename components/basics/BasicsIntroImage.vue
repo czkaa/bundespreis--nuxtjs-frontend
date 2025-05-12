@@ -5,7 +5,7 @@
       :width="image.width"
       :height="image.height"
       :style="{ aspectRatio: image.ratio ? image.ratio : '' }"
-      class="absolute w-full h-full object-cover transition-opacity duration-100 object-center"
+      class="absolute w-full h-full object-cover transition-opacity duration-200 object-center"
       :class="[thumbIsLoaded ? 'opacity-100' : 'opacity-0']"
       @load="thumbIsLoaded = true"
     />

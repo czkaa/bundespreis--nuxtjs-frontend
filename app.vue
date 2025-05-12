@@ -31,7 +31,8 @@
   <Transition name="slide" mode="out-in">
     <LayoutHeader
       v-show="showHeader"
-      :siteData="siteData"
+      :siteData
+      :languageData
       class="fixed top-0 w-full z-[100]"
     />
   </Transition>
@@ -61,6 +62,7 @@ const showIntro = computed(() => {
 // Fetch data
 const { data: siteDataDe } = await useFetch(() => `/api/site`);
 const { data: siteDataEn } = await useFetch(() => `/api/en/site`);
+const { data: languageData } = await useFetch('/api/language');
 
 const siteData = computed(() => {
   if (locale.value === 'de') {

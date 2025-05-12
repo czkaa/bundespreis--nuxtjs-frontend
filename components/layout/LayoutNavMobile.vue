@@ -16,7 +16,7 @@
 
     <!-- WHY DOES THIS NEED A WRAPPER -->
     <div class="w-tag h-tag bg-black">
-      <SnippetsLanguageToggle />
+      <SnippetsLanguageToggle :languageData />
     </div>
 
     <Teleport to="#teleports">
@@ -39,6 +39,10 @@ const isMobileNav = ref(false);
 
 const props = defineProps({
   siteData: {
+    type: Object,
+    required: true,
+  },
+  languageData: {
     type: Object,
     required: true,
   },

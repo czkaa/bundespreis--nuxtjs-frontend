@@ -15,7 +15,6 @@
       v-else
       ref="observerTarget"
       :style="{
-        height: image.height ? `${image.height}px` : '200px',
         width: '100%',
         aspectRatio: image.ratio || undefined,
       }"
@@ -37,7 +36,7 @@ const props = defineProps({
   },
   offset: {
     type: Number,
-    default: 1000, // 1000px offset by default
+    default: 2000, // 1000px offset by default
   },
 });
 

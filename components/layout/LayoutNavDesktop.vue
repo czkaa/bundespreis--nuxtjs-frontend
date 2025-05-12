@@ -4,7 +4,7 @@
 
     <!-- WHY DOES THIS NEED A WRAPPER -->
     <div class="w-tag h-tag bg-black">
-      <SnippetsLanguageToggle />
+      <SnippetsLanguageToggle :languageData />
     </div>
   </nav>
 </template>
@@ -12,6 +12,10 @@
 <script setup>
 const props = defineProps({
   siteData: {
+    type: Object,
+    required: true,
+  },
+  languageData: {
     type: Object,
     required: true,
   },
