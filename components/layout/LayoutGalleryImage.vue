@@ -7,19 +7,26 @@
         params: { slug: item.page.slug },
       })
     "
-    class="relative cursor-pointer overflow-hidden w-image-w"
+    class="relative cursor-pointer overflow-hidden"
     :class="{
       'pointer-events-none': gap.isGap,
       'pointer-events-auto': !gap.isGap,
     }"
     @click.stop="handleImageClick(item)"
-    :style="{ left: `calc(var(--remaining-w) * ${position}` }"
+    :style="positionStyle"
   >
-    <BasicsImage
-      :image="item"
-      class="hover-hover:hover:scale-[103%] hover-hover:hover:z-50 transform transition-transform duration-300"
-    />
-    <BasicsCaption :text="item.page.title" class="ml-auto" />
+    <div
+      class="w-full flex flex-col items-end"
+      :style="{
+        maxWidth: `min(var(--image-w), calc(65vh * ${item.ratio}))`,
+      }"
+    >
+      <BasicsImage
+        :image="item"
+        class="hover-hover:hover:scale-[103%] hover-hover:hover:z-50 transform transition-transform duration-300"
+      />
+      <BasicsCaption :text="item.page.title" class="-mt-[0.5px]" />
+    </div>
   </NuxtLink>
 </template>
 
@@ -35,12 +42,11 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  positionStyle: {
+    type: Object,
+    default: () => ({}),
+  },
 });
-
-const imageLink = ref(null);
-let position = Math.random().toFixed(2);
-if (position < 0.2) position = 0;
-if (position > 0.7) position = 1;
 
 onMounted(async () => {
   await nextTick();

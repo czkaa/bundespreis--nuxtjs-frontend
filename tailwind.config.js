@@ -34,7 +34,7 @@ export default {
         md: 'var(--spacing-md)',
 
         'indent-sm': '4.18rem',
-        'indent-md': '8rem',
+        'indent-md': '8.3rem',
         'frame-h': 'min(100vh, 100dvh)',
         'frame-w': 'min(100vw, 100dvw)',
         tag: 'var(--tag-h)',
@@ -53,10 +53,14 @@ export default {
         'remaining-content': 'var(--remaining-content)',
         logotype: 'var(--logotype)',
       },
+      padding: {
+        intro: 'var(--intro)',
+        'intro-md': 'var(--intro-md)',
+      },
       transitionDuration: {
-        intro: '1000ms',
+        intro: '1400ms',
         gap: '500ms',
-        page: '900ms',
+        page: '1000ms',
         fade: '500ms',
         gap: '1s',
       },

@@ -15,6 +15,7 @@
       v-else
       ref="observerTarget"
       :style="{
+        height: image.height ? `${image.height}px` : '200px',
         width: '100%',
         aspectRatio: image.ratio || undefined,
       }"

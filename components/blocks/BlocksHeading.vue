@@ -6,7 +6,7 @@
       'ml-indent-sm': indent === 'small',
       'ml-indent-md': indent === 'medium',
       'mb-md ': level === 'medium',
-      'mb-sm ': level === 'large',
+      'mb-sm pt-offset-content': level === 'large',
       'mt-sm': level === 'small',
     }"
   />

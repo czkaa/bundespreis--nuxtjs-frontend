@@ -11,6 +11,8 @@
       :items="block.content.items"
     />
 
+    <BlocksGap v-if="block.type === 'customgap'" />
+
     <BlocksHeading
       v-if="block.type === 'customheading'"
       :text="block.content.text"

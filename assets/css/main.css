@@ -61,9 +61,10 @@ body {
 
 :root {
   /* COLUMNS LAYOUT GALLERY*/
-  --column-l: 25.05vw;
-  --column-r: 15vw;
-  --main-w: calc(100% - var(--column-r) - var(--column-l));
+  --column-l: 22.75vw;
+  --column-r: 11vw;
+  --main-w: calc(100% - var(--column-r) - var(--column-l) - var(--spacing-sm));
+  
   --column-l-translate: calc(50vw - var(--column-l) + var(--spacing-xs) / 2);
   --column-r-translate: calc(50vw - var(--column-r) + var(--spacing-xs) / 2);
   
@@ -75,19 +76,23 @@ body {
   --tag-top: 2.8rem;
   --heading-h: 5.625rem;
   --offset-content: calc(var(--tag-h) + var(--spacing-xs) + var(--tag-top));
-  --remaining-content: calc(100dvh - var(--heading-h) - var(--offset-content) - var(--spacing-sm) * 2);
+  --remaining-content: calc(100dvh - var(--heading-h) - var(--offset-content) - var(--tag-h) - var(--tag-top) - var(--spacing-sm));
   --logotype: 6.95rem;
 
   /*SPACING*/
   --spacing-xs: 0.375rem;
   --spacing-sm: 1.875rem;
   --spacing-md: 3.75rem;
+
+  --intro: 0;
+  --intro-md: 
 }
 
  
 
 @media (max-width: 1000px) {
   :root {
+      --main-w: calc(100% - var(--column-r) - var(--column-l));
       --image-w: 85%;
       --column-l: 8vw;
       --column-r: 8vw

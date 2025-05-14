@@ -5,12 +5,9 @@
     <BasicsImage
       v-if="data.portrait"
       :image="data.portrait"
-      class="max-h-remaining-content [&>img]:object-left ml-indent-sm"
+      class="h-remaining-content [&>img]:h-full [&>img]:w-auto [&>img]:object-left ml-indent-sm"
     />
-    <Blocks :blocks="data.bio" v-if="data.bio" />
-    <Blocks :blocks="data.judging" v-if="data.judging" />
-    <Blocks :blocks="data.exhibitions" v-if="data.exhibitions" />
-    <Blocks :blocks="data.prizes" v-if="data.prizes" />
+    <Blocks :blocks="data.blocks" v-if="data.blocks" />
   </div>
 </template>
 

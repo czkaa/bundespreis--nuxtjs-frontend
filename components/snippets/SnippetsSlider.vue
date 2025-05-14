@@ -6,27 +6,27 @@
     <div class="grid grid-cols-1">
       <div
         v-for="(image, index) in images"
-        :style="{ aspectRatio: image.ratio }"
-        class="row-start-1 col-start-1 flex flex-col h-full max-w-full max-h-remaining-content overflow-hidden relative"
+        class="w-full row-start-1 col-start-1 flex flex-col mx-auto overflow-hidden relative"
         :class="{ 'opacity-0': index !== currentIndex }"
       >
-        <div class="flex flex-col items-center min-h-0">
-          <BasicsImage
-            :image="image"
-            class="[&_img]:max-h-remaining-content [&_img]:object-contain [&_img]:block"
+        <BasicsImage
+          :image="image"
+          class="w-full grow-1 [&_img]:w-full [&_img]:max-h-remaining-content"
+        />
+        <div
+          :style="{
+            maxWidth: `calc(var(--remaining-content) * ${image.ratio})`,
+          }"
+          class="flex mx-auto overflow-hidden justify-between items-start gap-xs shrink-0 w-full"
+        >
+          <BasicsText
+            :text="currentImage.caption"
+            class="text-xs font-sans mt-0.5 [&_strong]:!text-xs [&_a]:!text-xs"
           />
-          <div
-            class="flex overflow-hidden justify-between items-start gap-xs shrink-0 w-full"
-          >
-            <BasicsText
-              :text="currentImage.caption"
-              class="text-xs font-sans mt-0.5"
-            />
-            <BasicsCaption
-              :text="`${currentIndex + 1}/${images.length}`"
-              class="ml-auto shrink-0 pt-0.5"
-            />
-          </div>
+          <BasicsCaption
+            :text="`${currentIndex + 1}/${images.length}`"
+            class="ml-auto shrink-0 pt-0.5"
+          />
         </div>
       </div>
     </div>

@@ -13,23 +13,23 @@ export default defineNuxtConfig({
   css: [
     '~/assets/css/main.css'
   ],
-  
-  // ssr: true,
 
-  // nitro: {
-  //   preset: 'static',
-  //   prerender: {
-  //     crawlLinks: true,
-  //     routes: ['/', 
-  //       '/en',
-  //      '/api/site',
-  //      '/api/de/site', 
-  //     '/api/en/site', 
-  //     '/api/language',
-  //     ], 
+  ssr: true,
+
+  nitro: {
+    preset: 'static',
+    prerender: {
+      crawlLinks: true,
+      routes: ['/', 
+        '/en',
+       '/api/site',
+       '/api/de/site', 
+      '/api/en/site', 
+      '/api/language',
+      ], 
       
-  //   }
-  // },
+    }
+  },
   runtimeConfig: {
     public: {
       apiBaseUrl: 'https://bundespreis-backend.czkaa.site'
