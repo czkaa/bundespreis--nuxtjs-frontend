@@ -28,7 +28,7 @@ const gap = useGapStore();
 onMounted(() => {
   setTimeout(() => {
     gap.setGap(true);
-  }, 10);
+  }, 500);
 
   const scrollToTop = () => {
     const mainContainer = document.querySelector('main');
