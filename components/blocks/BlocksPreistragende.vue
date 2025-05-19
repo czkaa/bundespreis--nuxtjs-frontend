@@ -1,5 +1,5 @@
 <template>
-  <ul class="space-y-2 pt-offset-content">
+  <ul class="space-y-2">
     <li
       v-for="(child, index) in children"
       :class="[
