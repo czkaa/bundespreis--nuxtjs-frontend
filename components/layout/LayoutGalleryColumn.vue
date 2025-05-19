@@ -41,32 +41,59 @@ const calculateWellDistributedPositions = (items) => {
   const numItems = items.length;
   if (numItems === 0) return [];
 
-  // Create segments based on number of items
-  const segments = Math.max(3, Math.min(8, numItems)); // Limit segments between 3-8
-  const segmentSize = 1 / segments;
+  // Edge threshold - items within this distance of edges will snap to edge
+  const edgeThreshold = 0.2;
 
-  // Create an array of available positions
-  const availablePositions = [];
-  for (let i = 0; i < segments; i++) {
-    // Add multiple positions per segment for variety
-    availablePositions.push(i * segmentSize + 0.1); // Left of segment
-    availablePositions.push(i * segmentSize + segmentSize * 0.5); // Middle of segment
-    availablePositions.push(i * segmentSize + segmentSize * 0.9); // Right of segment
+  // Generate positions with balanced distribution
+  const positions = [];
+  let leftSideConsecutive = 0;
+  let rightSideConsecutive = 0;
+
+  for (let i = 0; i < numItems; i++) {
+    // Generate a random position between 0 and 1
+    let position = Math.random();
+
+    // Check if we need to force a position to avoid more than 2 consecutive on same side
+    if (position < 0.5) {
+      // This would be on the left side
+      if (leftSideConsecutive >= 2) {
+        // Force to right side
+        position = Math.random() * 0.5 + 0.5;
+        leftSideConsecutive = 0;
+        rightSideConsecutive = 1;
+      } else {
+        leftSideConsecutive++;
+        rightSideConsecutive = 0;
+      }
+    } else {
+      // This would be on the right side
+      if (rightSideConsecutive >= 2) {
+        // Force to left side
+        position = Math.random() * 0.5;
+        rightSideConsecutive = 0;
+        leftSideConsecutive = 1;
+      } else {
+        rightSideConsecutive++;
+        leftSideConsecutive = 0;
+      }
+    }
+
+    // Apply the edge threshold rule
+    if (position < edgeThreshold) {
+      position = 0; // Snap to left edge
+    } else if (position > 1 - edgeThreshold) {
+      position = 1; // Snap to right edge
+    }
+
+    positions.push(position);
   }
 
-  // Shuffle the positions array
-  const shuffledPositions = [...availablePositions].sort(
-    () => Math.random() - 0.5
-  );
+  // Shuffle the positions slightly to avoid predictable patterns
+  // but maintain the left/right balance
+  const shuffledItems = [...items].sort(() => Math.random() - 0.5);
 
-  return items.map((item, index) => {
-    let position = shuffledPositions[index % shuffledPositions.length];
-
-    // Add slight randomization to avoid perfect grid
-    position += (Math.random() - 0.5) * 0.05;
-
-    // Ensure boundaries
-    position = Math.max(0.05, Math.min(0.95, position));
+  return shuffledItems.map((item, index) => {
+    const position = positions[index];
 
     return {
       ...item,

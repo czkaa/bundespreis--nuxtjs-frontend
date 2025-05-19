@@ -66,6 +66,7 @@ onMounted(() => {
 });
 
 const handleImageLoaded = (image) => {
+  console.log('Image loaded');
   setTimeout(() => {
     introStore.setStart(true);
     setTimeout(() => {
