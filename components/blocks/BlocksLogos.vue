@@ -1,7 +1,7 @@
 <template>
-  <ul class="flex grid-cols-3">
-    <li v-for="logo in logos">
-      <BasicsImage :image="logo" />
+  <ul class="grid grid-cols-3 gap-sm">
+    <li v-for="logo in logos" class="flex flec-col items-center justify-center">
+      <BasicsImage :image="logo" class="my-auto" />
     </li>
   </ul>
 </template>

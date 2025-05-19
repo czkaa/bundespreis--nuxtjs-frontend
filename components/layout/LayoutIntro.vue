@@ -14,11 +14,13 @@
         <BasicsIntroImage
           v-if="randomPortraitImage"
           :image="randomPortraitImage"
+          @imageLoaded="handleImageLoaded"
           class="hidden relative z-10 [&>img]:h-full [&>img]:w-full md:flex justify-center"
         />
         <BasicsIntroImage
           v-if="randomLandscapeImage"
           :image="randomLandscapeImage"
+          @imageLoaded="handleImageLoaded"
           class="md:hidden relative z-10 [&>img]:h-auto [&>img]:w-full flex justify-center"
         />
       </div>
@@ -63,13 +65,13 @@ onMounted(() => {
   selectRandomImages();
 });
 
-onMounted(() => {
+const handleImageLoaded = (image) => {
   setTimeout(() => {
     introStore.setStart(true);
     setTimeout(() => {
       introStore.setScaled(true);
       introStore.setDone(true);
     }, INTRO_DURATION);
-  }, 300);
-});
+  }, 500);
+};
 </script>

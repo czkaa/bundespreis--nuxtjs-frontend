@@ -3,7 +3,7 @@
     <NuxtLink
       :aria-label="`${$t('viewSubpage')} ${page.title}`"
       :to="localePath(`/${page.uri}`)"
-      class="grow-1 block md:h-tag"
+      class="grow-1 block relative h-tag"
     >
       <BasicsNavItem :text="page.title" class="items-end" />
     </NuxtLink>

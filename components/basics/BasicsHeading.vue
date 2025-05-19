@@ -7,7 +7,8 @@
       {
         'font-sans text-xl first-letter:uppercase': tag === 'h2',
         'font-sans text-lg first-letter:uppercase': tag === 'h3',
-        'font-serif text-sm ml-indent-sm first-letter:uppercase': tag === 'h4',
+        'font-serif text-sm ml-indent-sm first-letter:uppercase':
+          tag === 'h4' || tag === undefined,
       },
     ]"
   >
@@ -17,8 +18,6 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
-
 const props = defineProps({
   text: {
     type: String,

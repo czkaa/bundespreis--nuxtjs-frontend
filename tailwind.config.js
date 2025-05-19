@@ -58,7 +58,7 @@ export default {
         'intro-md': 'var(--intro-md)',
       },
       transitionDuration: {
-        intro: '1400ms',
+        intro: '1000ms',
         gap: '500ms',
         page: '1000ms',
         fade: '500ms',

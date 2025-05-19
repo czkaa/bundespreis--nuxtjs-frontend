@@ -35,5 +35,8 @@
 <script setup>
 const props = defineProps({
   block: Object,
+  isSection: {
+    type: Boolean,
+  },
 });
 </script>

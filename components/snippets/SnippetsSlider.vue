@@ -7,12 +7,28 @@
       <div
         v-for="(image, index) in images"
         class="w-full row-start-1 col-start-1 flex flex-col mx-auto overflow-hidden relative"
-        :class="{ 'opacity-0': index !== currentIndex }"
+        :class="{ 'opacity-0 pointer-events-none': index !== currentIndex }"
       >
-        <BasicsImage
-          :image="image"
-          class="w-full grow-1 [&_img]:w-full [&_img]:max-h-remaining-content"
-        />
+        <div class="relative">
+          <BasicsImage
+            :image="image"
+            class="w-full grow-1 [&_img]:w-full [&_img]:max-h-remaining-content"
+          />
+          <div
+            v-if="images.length > 1"
+            @click="prevImage"
+            class="absolute left-0 top-0 z-50 w-1/2 h-full cursor-w-resize overflow-hidden"
+            :aria-label="$t('showPreviousImage')"
+          ></div>
+
+          <div
+            v-if="images.length > 1"
+            @click="nextImage"
+            class="absolute right-0 top-0 z-50 w-1/2 h-full cursor-e-resize"
+            :aria-label="$t('showNextImage')"
+          ></div>
+        </div>
+
         <div
           :style="{
             maxWidth: `calc(var(--remaining-content) * ${image.ratio})`,
@@ -30,20 +46,6 @@
         </div>
       </div>
     </div>
-
-    <div
-      v-if="images.length > 1"
-      @click="prevImage"
-      class="absolute left-0 top-0 w-1/2 h-full cursor-w-resize"
-      :aria-label="$t('showPreviousImage')"
-    ></div>
-
-    <div
-      v-if="images.length > 1"
-      @click="nextImage"
-      class="absolute right-0 top-0 w-1/2 h-full cursor-e-resize"
-      :aria-label="$t('showNextImage')"
-    ></div>
   </div>
 </template>
 

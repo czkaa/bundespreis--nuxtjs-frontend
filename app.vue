@@ -9,7 +9,7 @@
         :class="{
           'pointer-events-none': gap.isGap,
         }"
-        ref="galleryContainer"
+        id="galleryContainer"
       >
         <LayoutGallery :siteData="siteData" />
         <LayoutFooter v-if="siteData" :siteData="siteData" class="md:hidden" />
@@ -19,7 +19,6 @@
         style="scrollbar-gutter: stable"
         class="w-full absolute h-frame-h transition-opacity duration-500 overflow-y-scroll pb-offset-content"
         :class="{ 'opacity-0': !gap.isGap }"
-        ref="mainContainer"
       >
         <div class="w-main ml-column-l mb-xs overflow-x-hidden px-sm md:px-0">
           <NuxtPage />

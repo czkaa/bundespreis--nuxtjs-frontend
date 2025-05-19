@@ -8,10 +8,10 @@
       { 'transition-all duration-intro ease-linear': !introStore.isDone },
       isTop
         ? !introStore.isStart && introStore.isIntro
-          ? 'top-0 z-10 left-0 translate-y-[calc(50dvh-100%+2.8rem-0.75rem)] translate-x-[calc(50dvw-100%+6.8rem-1.2rem)]'
+          ? 'top-0 z-10 left-0 translate-y-[calc(50dvh-100%+2.8rem-0.7rem)] translate-x-[calc(50dvw-100%+6.8rem-1.2rem)]'
           : 'top-0 left-0 translate-0'
         : !introStore.isStart && introStore.isIntro
-        ? 'bottom-0 right-0 translate-y-[calc(-50dvh+100%-1.5rem+0.75rem)]  translate-x-[calc(-50vw+100%-14.2rem+1.2rem)]'
+        ? 'bottom-0 right-0 translate-y-[calc(-50dvh+100%-1.5rem+0.7rem)]  translate-x-[calc(-50vw+100%-14.2rem+1.2rem)]'
         : 'bottom-0 right-0 translate-0',
     ]"
     @click="handleClick()"

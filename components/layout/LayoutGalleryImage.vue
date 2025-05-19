@@ -21,7 +21,7 @@
         maxWidth: `min(var(--image-w), calc(65vh * ${item.ratio}))`,
       }"
     >
-      <BasicsImage
+      <BasicsGalleryImage
         :image="item"
         class="hover-hover:hover:scale-[103%] hover-hover:hover:z-50 transform transition-transform duration-300"
       />

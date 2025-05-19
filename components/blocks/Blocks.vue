@@ -7,5 +7,9 @@
 <script setup>
 const props = defineProps({
   blocks: Array,
+  isSection: {
+    type: Boolean,
+    default: false,
+  },
 });
 </script>

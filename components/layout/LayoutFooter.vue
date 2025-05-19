@@ -1,8 +1,7 @@
 <template>
   <footer
     ref="footerEl"
-    class="footer z-50 relative pointer-events-auto"
-    id="dynamic-footer"
+    class="footer z-50 relative pointer-events-auto h-tag sm:h-auto overflow-hidden"
   >
     <div
       class="transition-all duration-700 ease-in-out flex justify-start items-end gap-2"

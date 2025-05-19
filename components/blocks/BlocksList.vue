@@ -1,5 +1,5 @@
 <template>
-  <ul class="list-none space-y-xs">
+  <ul class="list-none space-y-xs" blocks-list>
     <li class="flex gap-sm" v-for="(item, index) in items" :key="index">
       <BasicsText
         :text="item.year"

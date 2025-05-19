@@ -5,9 +5,10 @@
     :class="{
       'ml-indent-sm': indent === 'small',
       'ml-indent-md': indent === 'medium',
-      'mb-md ': level === 'medium',
-      'mb-sm pt-offset-content': level === 'large',
-      'mt-sm': level === 'small',
+      'mb-md ': size === 'medium',
+      'mb-sm': size === 'large',
+      'mt-sm': size === 'small',
+      'mt-offset-content': level === 'h2',
     }"
   />
 </template>
@@ -16,6 +17,7 @@
 const props = defineProps({
   text: String,
   indent: String,
+  size: String,
   level: String,
 });
 </script>

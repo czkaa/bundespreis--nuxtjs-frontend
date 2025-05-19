@@ -1,6 +1,6 @@
 // utils/tailwind.js
 let GAP_DURATION = 500 + 100;
-let INTRO_DURATION = 1500 + 100;
+let INTRO_DURATION = 1000 + 100;
 
 // In Nuxt/Vite environments, you can use this
 if (import.meta.env) {
