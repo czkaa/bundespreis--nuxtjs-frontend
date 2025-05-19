@@ -4,17 +4,15 @@
       :alt="image.alt"
       :width="image.width"
       :height="image.height"
-      :srcset="loaded ? image.srcset : ''"
+      :srcset="image.srcset"
       :style="{ aspectRatio: image.ratio ? image.ratio : '' }"
       class="w-full h-auto object-contain transition-opacity duration-200 object-center"
-      :class="[loaded ? 'opacity-100' : 'opacity-0']"
+      :class="[loaded ? 'opacity-100' : 'opacity-100']"
     />
   </figure>
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
-
 const props = defineProps({
   image: {
     type: Object,

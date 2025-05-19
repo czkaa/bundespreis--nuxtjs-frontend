@@ -27,7 +27,7 @@ const props = defineProps({
 const imageRef = ref(null);
 const loaded = ref(false);
 const isNearViewport = ref(false);
-const THRESHOLD = 1000;
+const THRESHOLD = 2000;
 let galleryContainer = null;
 
 function checkPosition() {
@@ -43,7 +43,7 @@ function checkPosition() {
     rect.left <= containerRect.right + THRESHOLD;
 
   if (isNearViewport.value) {
-    console.log('yey');
+    console.log('Loading i mage at' + rect.top);
   }
 }
 

@@ -1,7 +1,6 @@
 <template>
   <figure class="block relative w-full overflow-hidden">
     <img
-      :alt="image.alt"
       :width="image.width"
       :height="image.height"
       :srcset="image.srcsetIntro"
