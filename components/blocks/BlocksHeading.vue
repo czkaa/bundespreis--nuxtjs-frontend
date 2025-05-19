@@ -1,7 +1,7 @@
 <template>
   <BasicsHeading
     :kirbytext="text"
-    :tag="level === 'large' ? 'h2' : level === 'medium' ? 'h3' : 'h4'"
+    :tag="level === 'H2' ? 'h2' : level === 'H3' ? 'h3' : 'h4'"
     :class="{
       'ml-indent-sm': indent === 'small',
       'ml-indent-md': indent === 'medium',
