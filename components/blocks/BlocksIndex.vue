@@ -18,6 +18,7 @@
       :text="block.content.text"
       :level="block.content.level"
       :indent="block.content.indent"
+      :size="block.content.size"
     />
 
     <BlocksPreistragende

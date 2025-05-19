@@ -5,10 +5,10 @@
     basics-heading
     :class="[
       {
-        'font-sans text-xl first-letter:uppercase': tag === 'h2',
-        'font-sans text-lg first-letter:uppercase': tag === 'h3',
+        'font-sans text-xl first-letter:uppercase': size === 'large',
+        'font-sans text-lg first-letter:uppercase': size === 'medium',
         'font-serif text-sm ml-indent-sm first-letter:uppercase':
-          tag === 'h4' || tag === undefined,
+          size === 'small' || size === undefined,
       },
     ]"
   >
@@ -28,6 +28,10 @@ const props = defineProps({
   tag: {
     type: String,
     default: 'h3',
+  },
+  size: {
+    type: String,
+    default: 'small',
   },
 });
 </script>

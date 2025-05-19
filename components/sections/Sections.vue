@@ -1,11 +1,6 @@
 <template>
   <div class="">
-    <section
-      v-for="section in sections"
-      :key="section.slug"
-      :id="section.slug"
-      class="pt-offset-content"
-    >
+    <section v-for="section in sections" :key="section.slug" :id="section.slug">
       <Blocks :blocks="section.blocks" :isSection="true" />
     </section>
   </div>
