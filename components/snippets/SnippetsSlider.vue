@@ -4,47 +4,18 @@
     class="gallery-slider relative flex flex-col overflow-hidden"
   >
     <div class="grid grid-cols-1">
-      <div
+      <SnippetsSliderImage
         v-for="(image, index) in images"
-        class="w-full row-start-1 col-start-1 flex flex-col mx-auto overflow-hidden relative"
-        :class="{ 'opacity-0 pointer-events-none': index !== currentIndex }"
-      >
-        <div class="relative">
-          <BasicsImage
-            :image="image"
-            class="w-full grow-1 [&_img]:w-full [&_img]:max-h-remaining-content"
-          />
-          <div
-            v-if="images.length > 1"
-            @click="prevImage"
-            class="absolute left-0 top-0 z-50 w-1/2 h-full cursor-w-resize overflow-hidden"
-            :aria-label="$t('showPreviousImage')"
-          ></div>
-
-          <div
-            v-if="images.length > 1"
-            @click="nextImage"
-            class="absolute right-0 top-0 z-50 w-1/2 h-full cursor-e-resize"
-            :aria-label="$t('showNextImage')"
-          ></div>
-        </div>
-
-        <div
-          :style="{
-            maxWidth: `calc(var(--remaining-content) * ${image.ratio})`,
-          }"
-          class="flex mx-auto overflow-hidden justify-between items-start gap-xs shrink-0 w-full"
-        >
-          <BasicsText
-            :text="currentImage.caption"
-            class="text-xs font-sans mt-0.5 [&_strong]:!text-xs [&_a]:!text-xs"
-          />
-          <BasicsCaption
-            :text="`${currentIndex + 1}/${images.length}`"
-            class="ml-auto shrink-0 pt-0.5"
-          />
-        </div>
-      </div>
+        class="relative"
+        :class="{
+          'opacity-0 pointer-events-auto -z-50':
+            index !== imageStore.currentIndex,
+          'z-50 oapcity-50': index === imageStore.currentIndex,
+        }"
+        :imagesLength="images.length"
+        :image="image"
+        :index="index"
+      />
     </div>
   </div>
 </template>
@@ -60,91 +31,42 @@ const props = defineProps({
   },
 });
 
-const currentIndex = ref(imageStore.currentIndex);
 const sliderContainer = ref(null);
 let resizeObserver = null;
 
-// Watch for changes in the image store's currentIndex
-watch(
-  () => imageStore.currentIndex,
-  (newIndex) => {
-    currentIndex.value = newIndex;
-  }
-);
+// Height calculation
+const calculateHeight = () => {
+  const element = sliderContainer.value;
+  if (!element || !element.previousElementSibling) return;
 
-// Also update the image store when this component changes the index
-watch(currentIndex, (newIndex) => {
-  if (imageStore.currentIndex !== newIndex) {
-    imageStore.setCurrentIndex(newIndex);
-  }
-});
-
-const currentImage = computed(() => {
-  return props.images[currentIndex.value] || {};
-});
-
-function nextImage() {
-  currentIndex.value = (currentIndex.value + 1) % props.images.length;
-}
-
-function prevImage() {
-  currentIndex.value =
-    (currentIndex.value - 1 + props.images.length) % props.images.length;
-}
-
-// Calculate height based on the previous element
-function calculateHeight() {
-  if (!sliderContainer.value) return;
-
-  // Get the previous element (sibling that comes before the slider)
-  const previousElement = sliderContainer.value.previousElementSibling;
-
-  if (!previousElement) return;
-
-  // Get the height of the previous element
-  const previousElementHeight = previousElement.offsetHeight;
-
-  // Update the CSS variable
   document.documentElement.style.setProperty(
     '--heading-h',
-    `${previousElementHeight}px`
+    `${element.previousElementSibling.offsetHeight}px`
   );
-}
+};
 
+// Lifecycle hooks
 onMounted(() => {
-  // Wait for next tick to ensure DOM is rendered
   nextTick(() => {
-    // Initial calculation
     calculateHeight();
 
-    // Set up resize observer on the previous element if it exists
-    const previousElement = sliderContainer.value?.previousElementSibling;
+    // Set up a single ResizeObserver for both elements
+    resizeObserver = new ResizeObserver(calculateHeight);
 
-    if (previousElement) {
-      resizeObserver = new ResizeObserver(() => {
-        calculateHeight();
-      });
-
-      resizeObserver.observe(previousElement);
-    }
-
-    // Also observe the slider container itself
     if (sliderContainer.value) {
-      if (!resizeObserver) {
-        resizeObserver = new ResizeObserver(() => {
-          calculateHeight();
-        });
-      }
       resizeObserver.observe(sliderContainer.value);
+
+      const previousElement = sliderContainer.value.previousElementSibling;
+      if (previousElement) {
+        resizeObserver.observe(previousElement);
+      }
     }
 
-    // Listen for window resize
     window.addEventListener('resize', calculateHeight);
   });
 });
 
 onUnmounted(() => {
-  // Clean up
   if (resizeObserver) {
     resizeObserver.disconnect();
   }

@@ -1,12 +1,16 @@
 <template>
-  <div v-if="data" class="space-y-sm">
+  <div v-if="data" class="space-y-sm mt-offset-content">
     <BasicsHeading tag="h2" :text="data.title" size="large" />
-    <SnippetsSlider :images="data.gallery" v-if="data.gallery" />
-    <BasicsImage
-      v-if="data.portrait"
-      :image="data.portrait"
-      class="h-remaining-content [&>img]:h-full [&>img]:w-auto [&>img]:object-left ml-indent-sm"
-    />
+
+    <SnippetsSlider v-if="data.gallery?.length > 0" :images="data.gallery" />
+
+    <template v-if="data.portrait">
+      <BasicsImage
+        :image="data.portrait"
+        class="h-remaining-content [&>img]:h-full [&>img]:w-auto [&>img]:object-left ml-indent-sm" />
+      <BasicsCaption v-if="data.portrait.caption" :text="data.portrait.caption"
+    /></template>
+
     <Blocks :blocks="data.blocks" v-if="data.blocks" />
   </div>
 </template>

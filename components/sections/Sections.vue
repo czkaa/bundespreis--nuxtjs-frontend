@@ -14,7 +14,7 @@ const gap = useGapStore();
 
 const props = defineProps({
   sections: {
-    type: Array, // Changed from Object to Array since you're using v-for
+    type: Array,
     required: true,
   },
 });
@@ -22,15 +22,14 @@ const props = defineProps({
 const route = useRoute();
 const main = ref(null);
 
-onMounted(() => {
+onMounted(async () => {
   if (document) {
     main.value = document.querySelector('main');
 
-    // Handle initial scroll if needed
     if (route.params.slug && route.params.slug.length > 0) {
-      setTimeout(() => {
+      nextTick(() => {
         scrollToSection(route.params.slug[0]);
-      }, 100); // Small delay to ensure DOM is ready
+      });
     }
   }
 });
@@ -42,7 +41,7 @@ const scrollToSection = (slug) => {
   if (section) {
     main.value.scrollTo({
       top: section.offsetTop,
-      behavior: 'smooth',
+      behavior: 'auto',
     });
   }
 };

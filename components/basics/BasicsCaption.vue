@@ -1,9 +1,9 @@
 <template>
   <span
-    class="w-fit block text-xs font-sans bg-black px-xs text-white transition-transform duration-300 pointer-events-auto"
+    class="w-fit block text-xs font-sans bg-black px-xs text-white transition-transform duration-300 pointer-events-auto -mt-[0.5px] -z-1"
+    v-html="text"
   >
-    {{ text }}</span
-  >
+  </span>
 </template>
 
 <script setup>

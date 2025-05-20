@@ -92,6 +92,9 @@ watch(
 <style>
 body {
   @apply w-full overflow-hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 .fade-enter-active,
 .fade-leave-active {
