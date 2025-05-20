@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full row-start-1 col-start-1 relative">
+  <div class="w-full row-start-1 col-start-1 relative" [snippets-slider-image]>
     <div
       :style="{ aspectRatio: image.ratio }"
       class="relative max-h-remaining-content overflow-hidden mx-auto"
@@ -20,12 +20,12 @@
       </template>
 
       <div
-        class="absolute top-0 p-xs bg-black bg-opacity-80 h-full"
+        class="absolute top-0 p-xs bg-black bg-opacity-70 h-full"
         v-if="image.hasShowmore && image.showmore.length > 0 && showShowmore"
       >
         <BasicsText
           :text="image.showmore"
-          class="text-white font-sans text-xs"
+          class="text-white font-sans text-xs [&_strong]:!text-xs [&_a]:!text-xs"
         />
       </div>
     </div>
