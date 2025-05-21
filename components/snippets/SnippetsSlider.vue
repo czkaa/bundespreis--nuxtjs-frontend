@@ -6,11 +6,11 @@
     <div class="grid grid-cols-1">
       <SnippetsSliderImage
         v-for="(image, index) in images"
+        :key="index"
         class="relative"
+        v-show="index === currentIndex"
         :class="{
-          'opacity-0 pointer-events-auto -z-50':
-            index !== imageStore.currentIndex,
-          'z-50 oapcity-50': index === imageStore.currentIndex,
+          'opacity-0 pointer-events-none -z-50': index !== currentIndex,
         }"
         :imagesLength="images.length"
         :image="image"
@@ -22,6 +22,17 @@
 
 <script setup>
 const imageStore = useImageStore();
+const currentIndex = ref(0); // Create a local ref or use computed to get from store
+
+// Watch for store changes if needed
+import { watch } from 'vue';
+watch(
+  () => imageStore.currentIndex,
+  (newIndex) => {
+    currentIndex.value = newIndex;
+  },
+  { immediate: true }
+);
 
 const props = defineProps({
   images: {

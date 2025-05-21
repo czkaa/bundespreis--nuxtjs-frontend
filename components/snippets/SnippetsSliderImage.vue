@@ -5,22 +5,8 @@
       class="relative max-h-remaining-content overflow-hidden mx-auto"
     >
       <BasicsImage :image="image" class="w-full [&>img]:object-cover" />
-
-      <template v-if="imagesLength > 1">
-        <div
-          @click="prevImage"
-          class="absolute left-0 top-0 z-50 w-1/2 h-full cursor-w-resize overflow-hidden"
-          :aria-label="$t('showPreviousImage')"
-        ></div>
-        <div
-          @click="nextImage"
-          class="absolute right-0 top-0 z-50 w-1/2 h-full cursor-e-resize"
-          :aria-label="$t('showNextImage')"
-        ></div>
-      </template>
-
       <div
-        class="absolute top-0 p-xs bg-black bg-opacity-70 h-full"
+        class="absolute top-0 p-xs bg-black bg-opacity-70 h-full pointer-events-none"
         v-if="image.hasShowmore && image.showmore.length > 0 && showShowmore"
       >
         <BasicsText
@@ -28,6 +14,18 @@
           class="text-white font-sans text-xs [&_strong]:!text-xs [&_a]:!text-xs"
         />
       </div>
+      <template v-if="imagesLength > 1">
+        <div
+          @click="prevImage"
+          class="absolute left-0 top-0 z-[100] w-1/2 h-full !cursor-w-resize"
+          :aria-label="$t('showPreviousImage')"
+        ></div>
+        <div
+          @click="nextImage"
+          class="absolute right-0 top-0 z-[100] w-1/2 h-full !cursor-e-resize"
+          :aria-label="$t('showNextImage')"
+        ></div>
+      </template>
     </div>
 
     <div
@@ -78,13 +76,26 @@ const props = defineProps({
   },
 });
 
-// Navigation methods
-const nextImage = () =>
-  imageStore.setCurrentIndex(
-    (imageStore.currentIndex + 1) % props.imagesLength
-  );
-const prevImage = () =>
-  imageStore.setCurrentIndex(
-    (imageStore.currentIndex - 1) % props.imagesLength
-  );
+// Navigation methods - Fixed to properly handle wrap-around
+const nextImage = () => {
+  // Use modulo arithmetic with adjustment for proper wrap-around
+  const nextIndex = (imageStore.currentIndex + 1) % props.imagesLength;
+  imageStore.setCurrentIndex(nextIndex);
+};
+
+const prevImage = () => {
+  // Fix: Calculate the previous index with proper wrap-around for negative values
+  const prevIndex =
+    (imageStore.currentIndex - 1 + props.imagesLength) % props.imagesLength;
+  imageStore.setCurrentIndex(prevIndex);
+};
+
+watch(
+  () => imageStore.currentIndex,
+  (newIndex) => {
+    if (newIndex !== props.index) {
+      showShowmore.value = false;
+    }
+  }
+);
 </script>
