@@ -40,8 +40,8 @@
         @click="showShowmore = !showShowmore"
         class="relative z-50 cursor-pointer font-sans"
       >
-        <BasicsText text="[+]" class="text-xs" v-if="!showShowmore" />
-        <BasicsText text="[–]" class="text-xs" v-else />
+        <BasicsCaption text="+" class="text-xs" v-if="!showShowmore" />
+        <BasicsCaption text="–" class="text-xs" v-else />
       </button>
 
       <BasicsText
