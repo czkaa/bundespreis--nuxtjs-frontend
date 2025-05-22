@@ -1,7 +1,7 @@
 <template>
   <span
     basics-caption
-    class="w-fit block text-xs font-sans bg-black px-xs text-white transition-transform duration-300 pointer-events-auto -mt-[0.5px] -z-1"
+    class="w-fit block text-xs font-sans bg-black px-xs text-white transition-transform duration-300 pointer-events-auto -z-1"
     v-html="text"
   >
   </span>

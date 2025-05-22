@@ -14,7 +14,7 @@
           class="text-white font-sans text-xs [&_strong]:!text-xs [&_a]:!text-xs"
         />
       </div>
-      <template v-if="imagesLength > 1">
+      <template v-if="imagesLength > 1 && !showShowmore">
         <div
           @click="prevImage"
           class="absolute left-0 top-0 z-[100] w-1/2 h-full !cursor-w-resize"
@@ -40,8 +40,16 @@
         @click="showShowmore = !showShowmore"
         class="relative z-50 cursor-pointer font-sans"
       >
-        <BasicsCaption text="+" class="text-xs" v-if="!showShowmore" />
-        <BasicsCaption text="–" class="text-xs" v-else />
+        <BasicsCaption
+          text="+"
+          class="text-xs pt-0.5 !w-6 overflow-hidden"
+          v-if="!showShowmore"
+        />
+        <BasicsCaption
+          text="–"
+          class="text-xs pt-0.25 !pb-0.5 !w-6 overflow-hidden"
+          v-else
+        />
       </button>
 
       <BasicsText
