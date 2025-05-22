@@ -1,6 +1,48 @@
 <template>
   <Transition name="slide-intro">
     <LayoutIntro v-if="showIntro" :siteData />
+
+    <div v-else class="absolute w-full" key="main-content">
+      <div
+        style="scrollbar-gutter: stable"
+        class="absolute top-0 h-frame-h w-full z-50 overflow-y-auto"
+        :class="{
+          'pointer-events-none': gap.isGap,
+        }"
+        id="galleryContainer"
+        ref="galleryContainer"
+      >
+        <LayoutGallery :siteData="siteData" />
+      </div>
+
+      <main
+        style="scrollbar-gutter: stable"
+        class="w-full absolute h-frame-h transition-opacity duration-500 overflow-y-scroll pb-offset-content"
+        :class="{ 'opacity-0': !gap.isGap }"
+        ref="mainContainer"
+      >
+        <div class="w-main ml-column-l mb-xs overflow-x-hidden px-sm md:px-0">
+          <NuxtPage />
+        </div>
+      </main>
+    </div>
+  </Transition>
+
+  <Transition name="slide-header" mode="out-in">
+    <LayoutHeader
+      v-show="showHeader"
+      :siteData
+      :languageData
+      class="fixed top-0 w-full z-[100]"
+    />
+  </Transition>
+
+  <Transition name="slide-footer" mode="out-in">
+    <LayoutFooter
+      v-show="showFooter"
+      :siteData
+      class="fixed bottom-0 left-0 z-[100] md:hidden"
+    />
   </Transition>
 
   <SnippetsHomeLogo />
@@ -11,10 +53,11 @@
 import { useHeadSeo } from '~/composables/useHeadSeo';
 import { useSiteStore } from '~/stores/site';
 import { useI18n } from 'vue-i18n';
+import throttle from 'lodash.throttle';
 
 const { locale } = useI18n();
-const { setAllMetadata } = useHeadSeo();
-
+const { setAllMetadata, setPageTitle } = useHeadSeo();
+const gap = useGapStore();
 const introStore = useIntroStore();
 const siteStore = useSiteStore();
 const isLangChange = ref(false);
@@ -30,6 +73,24 @@ const showHeader = computed(() => {
 const showIntro = computed(() => {
   return introStore.isIntro && !introStore.isDone;
 });
+
+// Function to check if element is scrolled to bottom
+const isScrolledToBottom = (element) => {
+  if (!element) return false;
+  const threshold = 10; // Small threshold to account for sub-pixel scrolling
+  return (
+    element.scrollTop + element.clientHeight >= element.scrollHeight - threshold
+  );
+};
+
+// Throttled scroll handler
+const handleScroll = throttle(() => {
+  const galleryAtBottom = isScrolledToBottom(galleryContainer.value);
+  const mainAtBottom = isScrolledToBottom(mainContainer.value);
+
+  // Show footer if either container is scrolled to bottom
+  showFooter.value = galleryAtBottom || mainAtBottom;
+}, 100); // Throttle to 100ms
 
 // Setup scroll listeners
 onMounted(() => {
@@ -54,6 +115,7 @@ onUnmounted(() => {
 // Fetch data
 const { data: siteDataDe } = await useFetch(() => `/api/site`);
 const { data: siteDataEn } = await useFetch(() => `/api/en/site`);
+const { data: languageData } = await useFetch('/api/language');
 
 const siteData = computed(() => {
   if (locale.value === 'de') {
