@@ -55,6 +55,8 @@ import { useSiteStore } from '~/stores/site';
 import { useI18n } from 'vue-i18n';
 import throttle from 'lodash.throttle';
 
+import Template from './components/templates/Template.vue';
+
 const { locale } = useI18n();
 const { setAllMetadata, setPageTitle } = useHeadSeo();
 const gap = useGapStore();

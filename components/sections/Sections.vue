@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
 import { GAP_DURATION } from '../utils/tailwind';
 
@@ -23,15 +23,9 @@ const props = defineProps({
 const route = useRoute();
 const main = ref(null);
 
-onMounted(async () => {
+onMounted(() => {
   if (document) {
     main.value = document.querySelector('main');
-
-    if (route.params.slug && route.params.slug.length > 0) {
-      nextTick(() => {
-        scrollToSection(route.params.slug[0]);
-      });
-    }
   }
 });
 
@@ -47,22 +41,18 @@ const scrollToSection = (slug) => {
   }
 };
 
-watch(
-  () => [route.path, route.params.slug],
-  async ([newPath, newSlug]) => {
-    // Check if one of the aliased paths
-    if (newPath.includes('preistragende')) {
+const handleRouteChange = () => {
+  nextTick(() => {
+    if (route.params.slug && route.params.slug.length > 0) {
+      scrollToSection(route.params.slug[0]);
+    } else if (route.path.includes('preistragende')) {
       scrollToSection('preistragende');
-      setTimeout(() => {
-        gap.setGap(true);
-      }, 100);
-    } else if (newPath.includes('winners')) {
+    } else if (route.path.includes('winners')) {
       scrollToSection('winners');
-      setTimeout(() => {
-        gap.setGap(true);
-      }, 100);
     }
-  },
-  { immediate: true }
-);
+  });
+};
+
+// Watch route changes with immediate: true to handle both initial load and route changes
+watch(route, handleRouteChange, { immediate: true });
 </script>

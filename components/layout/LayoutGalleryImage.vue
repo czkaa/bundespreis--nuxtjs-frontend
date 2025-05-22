@@ -12,7 +12,7 @@
       'pointer-events-none': gap.isGap,
       'pointer-events-auto': !gap.isGap,
     }"
-    @click.stop="handleImageClick(item)"
+    @click="handleImageClick(item)"
     :style="positionStyle"
   >
     <div
@@ -54,9 +54,5 @@ onMounted(async () => {
 
 const handleImageClick = (item) => {
   imageStore.setCurrentIndex(item.imageIndex);
-
-  if (route.fullPath.includes(item.page.uri)) {
-    gap.setGap(true);
-  }
 };
 </script>

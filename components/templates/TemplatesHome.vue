@@ -1,22 +1,19 @@
 <template>
-  <Sections v-if="data?.sections" :sections="data.sections" />
+  <Sections
+    v-if="data?.sections"
+    :sections="data.sections"
+    class="bg-blue-200"
+  />
 </template>
 
 <script setup>
-const props = defineProps({
-  data: {
-    type: Object,
-  },
-});
+const { locale } = useI18n();
+const { data: data } = await useFetch(() => `/api/${locale.value}`);
 
 const gap = useGapStore();
 const route = useRoute();
 
 onMounted(() => {
-  if (route.params.slug?.length > 0) {
-    setTimeout(() => {
-      gap.setGap(true);
-    });
-  }
+  console.log('MoUNI');
 });
 </script>

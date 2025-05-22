@@ -6,10 +6,10 @@ export default defineNuxtConfig({
     dirs: [
       '~/components',
       { path: '~/components/global', global: true },
-      { path: '~/components', pathPrefix: false, prefix: '', extensions: ['vue'] },
+      { path: '~/components', pathPrefix: false, prefix: '', extensions: ['vue'], },
     ]
   },
-  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@nuxtjs/i18n', '@nuxt/image'],
+  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@nuxtjs/i18n', '@nuxt/image', ],
   css: [
     '~/assets/css/main.css'
   ],
@@ -37,23 +37,39 @@ export default defineNuxtConfig({
     }
   },
 
+  
+
   hooks: {
     'pages:extend' (pages) {
-       const catchAllRoute = pages.find(page => page.path === '/:slug(.*)*')
+      const catchAllRoute = pages.find(page => page.path === '/:slug(.*)*')
       
       if (catchAllRoute) {
-        // Create new routes that will properly handle the slug parameter
-        pages.push({
-          name: 'preistragende-catch-all',
-          path: '/preistragende',
-          file: catchAllRoute.file,
-          meta: { isAlias: true, prefix: 'preistragende' }
-        }, {
-          name: 'winners-catch-all',  
-          path: '/winners',
-          file: catchAllRoute.file,
-          meta: { isAlias: true, prefix: 'winners' }
-        })
+        // Create aliases that all redirect to home (/)
+        const aliases = [
+          'preistragende',
+          'winners', 
+          'nominierte',
+          'nominees',
+          'exhibition',
+          'ausstellung', 
+          'catalog',
+          'katalog',
+          'about',
+          'ueber'
+        ];
+
+        aliases.forEach(alias => {
+          pages.push({
+            name: `${alias}-alias`,
+            path: `/${alias}`,
+            file: catchAllRoute.file,
+            meta: { 
+              isAlias: true, 
+              aliasFor: '/',
+              originalPath: alias 
+            }
+          });
+        });
       }
     },
   },

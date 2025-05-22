@@ -1,6 +1,5 @@
 <template>
   <footer
-    ref="footerEl"
     class="footer z-50 pointer-events-auto h-tag sm:h-auto overflow-hidden flex justify-start items-end gap-2"
   >
     <LayoutFooterPages :siteData="siteData" />

@@ -1,8 +1,20 @@
+<!-- pages/[...slug].vue -->
 <template>
-  <TemplatesHome :data v-if="data" :key="data.title" />
+  <KeepAlive>
+    <TemplatesHome v-if="template === 'home'" key="home" />
+  </KeepAlive>
+
+  <TemplatesPreistragende
+    v-if="template === 'preistragende'"
+    :key="route.fullPath"
+  />
 </template>
 
 <script setup>
-const { locale } = useI18n();
-const { data: data } = await useFetch(() => `/api/${locale.value}`);
+const route = useRoute();
+const routeStore = useRouteStore();
+
+const template = computed(() => {
+  return routeStore.template;
+});
 </script>

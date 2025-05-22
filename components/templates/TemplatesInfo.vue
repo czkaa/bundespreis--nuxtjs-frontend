@@ -1,5 +1,5 @@
 <template>
-  <Sections :sections="data.sections" />
+  <Sections :sections="data.sections" v-if="data.sections" class="bg-red-300" />
 </template>
 
 <script setup>
@@ -9,10 +9,7 @@ const props = defineProps({
   },
 });
 const gap = useGapStore();
+const localePath = useLocalePath();
 
-onMounted(() => {
-  setTimeout(() => {
-    gap.setGap(true);
-  });
-});
+const { data: data } = await useFetch(() => `/api${localePath('/info')}`);
 </script>

@@ -39,7 +39,7 @@ const pathWithoutLocale = computed(() => {
 
 const switchPath = computed(() => {
   if (pathWithoutLocale.value === '') {
-    return `${targetLocale.value === 'de' ? '/' : '/en'}`;
+    return `/`;
   }
   const routes = props.languageData?.[locale.value]?.routes || {};
   const translation = routes[pathWithoutLocale.value]?.[targetLocale.value];

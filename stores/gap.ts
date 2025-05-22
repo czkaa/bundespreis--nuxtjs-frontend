@@ -12,10 +12,6 @@ export const useGapStore = defineStore('gap', {
     },
     setGap(value: boolean) {
        this.isGap = value
-       this.isTransitioning = true;
-       setTimeout(() => {
-         this.isTransitioning = false
-       }, GAP_DURATION)
     }
   }
 })

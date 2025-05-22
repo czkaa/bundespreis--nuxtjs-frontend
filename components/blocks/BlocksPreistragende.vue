@@ -8,7 +8,7 @@
     >
       <NuxtLink
         :to="localePath('/' + child.uri)"
-        class="inline leading-[1.2] py-0 text-xl font-sans bg-black text-white relative"
+        class="inline leading-[1.2] py-0 px-xs text-xl font-sans bg-black text-white relative"
       >
         {{ child.title }}</NuxtLink
       >

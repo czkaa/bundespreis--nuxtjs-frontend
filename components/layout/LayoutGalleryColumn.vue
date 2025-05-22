@@ -111,9 +111,6 @@ const itemsWithPositions = computed(() => {
 });
 
 const toggleGap = () => {
-  if (gap.isGap && !gap.isTransitioning) {
-    gap.setGap(false);
-    navigateTo(localePath('/'));
-  }
+  navigateTo(localePath('/'));
 };
 </script>

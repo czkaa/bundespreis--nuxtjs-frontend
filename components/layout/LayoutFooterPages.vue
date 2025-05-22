@@ -2,8 +2,8 @@
   <template v-for="page in siteData?.footerPages" :key="page.uri">
     <NuxtLink
       :aria-label="`${$t('viewSubpage')} ${page.title}`"
-      :to="localePath(`/${page.uri}`)"
-      class="grow-1 block relative h-tag"
+      :to="localePath(`/info/${page.slug}`)"
+      class="grow-1 block relative h-tag pointer-events-auto"
     >
       <BasicsNavItem :text="page.title" class="items-end" />
     </NuxtLink>

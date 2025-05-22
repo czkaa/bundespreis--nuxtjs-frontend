@@ -1,5 +1,5 @@
 <template>
-  <div v-if="data" class="space-y-sm mt-offset-content">
+  <div v-if="data" class="space-y-sm mt-offset-content bg-yellow-200">
     <BasicsHeading tag="h2" :text="data.title" size="large" />
 
     <SnippetsSlider v-if="data.gallery?.length > 0" :images="data.gallery" />
@@ -15,7 +15,11 @@
         :image="data.portrait"
         class="hover-hover:hover:scale-[103%] hover-hover:hover:z-50 transform transition-transform duration-300"
       />
-      <BasicsCaption :text="data.portrait.caption" class="-mt-[0.5px]" />
+      <BasicsCaption
+        v-if="data.portrait.caption"
+        :text="data.portrait.caption"
+        class="-mt-[0.5px]"
+      />
     </div>
 
     <Blocks :blocks="data.blocks" v-if="data.blocks" />
@@ -23,34 +27,40 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
-import { useRoute } from 'vue-router';
-import { useGapStore } from '@/stores/gap'; // Adjust the import path as needed
+const route = useRoute();
 
-const props = defineProps({
-  data: {
-    type: Object,
-  },
+const { data } = await useFetch(() => `/api${route.fullPath}`, {
+  key: () => route.fullPath,
 });
 
-const route = useRoute();
-const gap = useGapStore();
+const scrollToTop = () => {
+  const mainContainer = document.querySelector('main');
+  if (mainContainer) {
+    mainContainer.scrollTo({
+      top: 0,
+      behavior: 'instant',
+    });
+  }
+};
 
-onMounted(() => {
-  setTimeout(() => {
-    gap.setGap(true);
-  }, 500);
-
-  const scrollToTop = () => {
-    const mainContainer = document.querySelector('main');
-    if (mainContainer) {
-      mainContainer.scrollTo({
-        top: 0,
-        behavior: 'instant',
-      });
+// Watch the data change instead of route change
+// Since useFetch key is tied to route.fullPath, data will change when route changes
+watch(
+  data,
+  async (newData) => {
+    if (newData) {
+      console.log('data updated for route', route.fullPath);
+      await nextTick();
+      scrollToTop();
     }
-  };
+  },
+  { immediate: false }
+);
 
-  setTimeout(scrollToTop, 50);
+// Handle initial page load
+onMounted(async () => {
+  console.log('mounted', route.fullPath);
+  await nextTick();
+  scrollToTop();
 });
 </script>
