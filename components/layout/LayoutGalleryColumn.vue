@@ -24,6 +24,8 @@
 
 <script setup>
 import { useGapStore } from '../stores/gap';
+const localePath = useLocalePath();
+
 const gap = useGapStore();
 
 const props = defineProps({
@@ -111,6 +113,7 @@ const itemsWithPositions = computed(() => {
 const toggleGap = () => {
   if (gap.isGap && !gap.isTransitioning) {
     gap.setGap(false);
+    navigateTo(localePath('/'));
   }
 };
 </script>

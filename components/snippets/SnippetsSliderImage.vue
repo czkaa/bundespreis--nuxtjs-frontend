@@ -6,7 +6,7 @@
     >
       <BasicsImage :image="image" class="w-full [&>img]:object-cover" />
       <div
-        class="absolute top-0 p-xs bg-black bg-opacity-70 h-full pointer-events-none"
+        class="absolute top-0 p-xs bg-black bg-opacity-70 h-full"
         v-if="image.hasShowmore && image.showmore.length > 0 && showShowmore"
       >
         <BasicsText

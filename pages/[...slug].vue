@@ -1,5 +1,5 @@
 <template>
-  <TemplatesHome :data v-if="data" />
+  <TemplatesHome :data v-if="data" :key="data.title" />
 </template>
 
 <script setup>

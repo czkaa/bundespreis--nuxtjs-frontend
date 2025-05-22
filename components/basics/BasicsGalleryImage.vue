@@ -43,10 +43,6 @@ function checkPosition() {
     rect.top <= containerRect.bottom + THRESHOLD &&
     rect.right >= containerRect.left - THRESHOLD &&
     rect.left <= containerRect.right + THRESHOLD;
-
-  if (isNearViewport.value) {
-    console.log('Loading i mage at' + rect.top);
-  }
 }
 
 // Create a throttled version of checkPosition that runs at most every 200ms
