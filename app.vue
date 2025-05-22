@@ -1,48 +1,6 @@
 <template>
   <Transition name="slide-intro">
     <LayoutIntro v-if="showIntro" :siteData />
-
-    <div v-else class="absolute w-full" key="main-content">
-      <div
-        style="scrollbar-gutter: stable"
-        class="absolute top-0 h-frame-h w-full z-50 overflow-y-auto"
-        :class="{
-          'pointer-events-none': gap.isGap,
-        }"
-        id="galleryContainer"
-        ref="galleryContainer"
-      >
-        <LayoutGallery :siteData="siteData" />
-      </div>
-
-      <main
-        style="scrollbar-gutter: stable"
-        class="w-full absolute h-frame-h transition-opacity duration-500 overflow-y-scroll pb-offset-content"
-        :class="{ 'opacity-0': !gap.isGap }"
-        ref="mainContainer"
-      >
-        <div class="w-main ml-column-l mb-xs overflow-x-hidden px-sm md:px-0">
-          <NuxtPage />
-        </div>
-      </main>
-    </div>
-  </Transition>
-
-  <Transition name="slide-header" mode="out-in">
-    <LayoutHeader
-      v-show="showHeader"
-      :siteData
-      :languageData
-      class="fixed top-0 w-full z-[100]"
-    />
-  </Transition>
-
-  <Transition name="slide-footer" mode="out-in">
-    <LayoutFooter
-      v-show="showFooter"
-      :siteData
-      class="fixed bottom-0 left-0 z-[100] md:hidden"
-    />
   </Transition>
 
   <SnippetsHomeLogo />
