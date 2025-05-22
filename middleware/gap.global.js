@@ -24,8 +24,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   const fromTemplate = findTemplate(from);
   const toTemplate = findTemplate(to);
 
-  console.log(GAP_DURATION);
-
   if (toTemplate !== fromTemplate || toTemplate === 'preistragende') {
     if (gap.isGap) {
       gap.setGap(false);

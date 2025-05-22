@@ -8,6 +8,6 @@
 
 <script setup>
 const props = defineProps({
-  logos: String,
+  logos: Array,
 });
 </script>
