@@ -11,11 +11,10 @@
 import { useHeadSeo } from '~/composables/useHeadSeo';
 import { useSiteStore } from '~/stores/site';
 import { useI18n } from 'vue-i18n';
-import { throttle } from 'lodash';
 
 const { locale } = useI18n();
-const { setAllMetadata, setPageTitle } = useHeadSeo();
-const gap = useGapStore();
+const { setAllMetadata } = useHeadSeo();
+
 const introStore = useIntroStore();
 const siteStore = useSiteStore();
 const isLangChange = ref(false);
@@ -31,24 +30,6 @@ const showHeader = computed(() => {
 const showIntro = computed(() => {
   return introStore.isIntro && !introStore.isDone;
 });
-
-// Function to check if element is scrolled to bottom
-const isScrolledToBottom = (element) => {
-  if (!element) return false;
-  const threshold = 10; // Small threshold to account for sub-pixel scrolling
-  return (
-    element.scrollTop + element.clientHeight >= element.scrollHeight - threshold
-  );
-};
-
-// Throttled scroll handler
-const handleScroll = throttle(() => {
-  const galleryAtBottom = isScrolledToBottom(galleryContainer.value);
-  const mainAtBottom = isScrolledToBottom(mainContainer.value);
-
-  // Show footer if either container is scrolled to bottom
-  showFooter.value = galleryAtBottom || mainAtBottom;
-}, 100); // Throttle to 100ms
 
 // Setup scroll listeners
 onMounted(() => {
@@ -73,7 +54,6 @@ onUnmounted(() => {
 // Fetch data
 const { data: siteDataDe } = await useFetch(() => `/api/site`);
 const { data: siteDataEn } = await useFetch(() => `/api/en/site`);
-const { data: languageData } = await useFetch('/api/language');
 
 const siteData = computed(() => {
   if (locale.value === 'de') {
