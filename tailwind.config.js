@@ -8,11 +8,14 @@ export default {
     fontSize: {
       root: '1vw',
       'root-md': '1.5vw',
-      'root-sm': 'max(2vw, 11px)',
+      'root-sm': '2.25vw',
 
-      xs: ['1.16rem', { lineHeight: '1.14', letterSpacing: '0' }], // customized xs
-      sm: ['1.66rem', { lineHeight: '1.1', letterSpacing: '0' }], // customized sm
-      'sm-sans': ['1.7rem', { lineHeight: '1.07', letterSpacing: '0' }], // customized sm
+      xs: ['max(1.16rem, 12px)', { lineHeight: '1.14', letterSpacing: '0' }], // customized xs
+      sm: ['max(1.66rem, 14px)', { lineHeight: '1.1', letterSpacing: '0' }], // customized sm
+      'sm-sans': [
+        'max(1.7rem, 14.5px)',
+        { lineHeight: '1.07', letterSpacing: '0' },
+      ], // customized sm
 
       md: ['2.25rem', { lineHeight: '1.2', letterSpacing: '0' }], // customized base
       lg: ['3.4rem', { lineHeight: '0.866', letterSpacing: '-0.01em' }], // customized lg
@@ -46,6 +49,9 @@ export default {
         'column-l-translate': 'var(--column-l-translate)',
         'column-r-translate': 'var(--column-r-translate)',
 
+        'intro-container-w': 'var(--intro-container-w)',
+        'intro-container-h': 'var(--intro-container-h)',
+
         'translate-w': 'var(--translate-w)',
         'content-h': 'var(--content-h)',
         'image-w': 'var(--image-w)',
@@ -58,7 +64,7 @@ export default {
         'intro-md': 'var(--intro-md)',
       },
       transitionDuration: {
-        intro: '1000ms',
+        intro: '1200ms',
         gap: '500ms',
         page: '1000ms',
         fade: '500ms',

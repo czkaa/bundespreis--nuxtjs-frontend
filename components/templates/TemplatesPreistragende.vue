@@ -4,12 +4,19 @@
 
     <SnippetsSlider v-if="data.gallery?.length > 0" :images="data.gallery" />
 
-    <template v-if="data.portrait">
-      <BasicsImage
+    <div
+      v-if="data.portrait"
+      class="w-full flex flex-col items-end"
+      :style="{
+        maxWidth: `min(var(--image-w), calc(65vh * ${data.portrait.ratio}))`,
+      }"
+    >
+      <BasicsGalleryImage
         :image="data.portrait"
-        class="h-remaining-content [&>img]:h-full [&>img]:w-auto [&>img]:object-left ml-indent-sm" />
-      <BasicsCaption v-if="data.portrait.caption" :text="data.portrait.caption"
-    /></template>
+        class="hover-hover:hover:scale-[103%] hover-hover:hover:z-50 transform transition-transform duration-300"
+      />
+      <BasicsCaption :text="data.portrait.caption" class="-mt-[0.5px]" />
+    </div>
 
     <Blocks :blocks="data.blocks" v-if="data.blocks" />
   </div>

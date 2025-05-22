@@ -1,5 +1,5 @@
 <template>
-  <figure class="block relative w-full overflow-hidden">
+  <figure class="block relative w-full h-full overflow-hidden">
     <img
       :width="image.width"
       :height="image.height"

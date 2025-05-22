@@ -1,12 +1,14 @@
 <template>
-  <figure ref="imageRef" class="block relative w-full overflow-hidden">
+  <figure
+    ref="imageRef"
+    class="block relative w-full overflow-hidden max-h-[65vh]"
+  >
     <img
       :alt="image.alt"
       :width="image.width"
       :height="image.height"
       :srcset="isNearViewport ? image.srcset : ''"
-      :style="{ aspectRatio: image.ratio ? image.ratio : '' }"
-      class="w-full h-auto object-contain transition-opacity duration-200 object-center"
+      class="w-full h-auto object-cover transition-opacity duration-200 object-center"
       :class="[isNearViewport && loaded ? 'opacity-100' : 'opacity-0']"
       @load="loaded = true"
     />

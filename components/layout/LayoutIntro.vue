@@ -1,27 +1,24 @@
 <template>
   <div
-    class="w-full overflow-hidden bg-white h-frame-h flex flex-col items-center justify-center"
+    class="w-full h-frame-h overflow-hidden bg-white flex flex-col items-center justify-center"
   >
     <div
-      class="relative [&_div]:h-full [&_figure]:h-full [&_img]:object-cover [&_img]:h-full transition-[padding] ease-linear duration-intro w-frame-w h-frame-h -mt-[1px]"
-      :class="
-        !introStore.isStart
-          ? 'px-[calc(50%-1.5rem)] py-[calc(50vh-0.8rem)]'
-          : 'py-[calc(var(--tag-h)-1px)] md:py-[calc(var(--logotype)-1px)] pl-[11.4rem] pr-[11.85rem] md:px-xs'
-      "
+      ref="introContainer"
+      class="absolute top-[var(--intro-pt)] left-[var(--intro-pl)] w-intro-container-w h-intro-container-h transition-transform ease-linear duration-intro -mt-[1px] transform-gpu"
+      :class="!introStore.isStart ? 'scale-[4%]' : 'w-full h-full'"
     >
       <div class="w-full h-full flex justify-center items-center relative">
         <BasicsIntroImage
-          v-if="randomPortraitImage"
+          v-if="randomPortraitImage && showPortrait"
           :image="randomPortraitImage"
           @imageLoaded="handleImageLoaded"
-          class="hidden relative z-10 [&>img]:h-full [&>img]:w-full md:flex justify-center"
+          class="relative z-10 [&>img]:h-full [&>img]:w-full flex justify-center"
         />
         <BasicsIntroImage
-          v-if="randomLandscapeImage"
+          v-if="randomLandscapeImage && !showPortrait"
           :image="randomLandscapeImage"
           @imageLoaded="handleImageLoaded"
-          class="md:hidden relative z-10 [&>img]:h-auto [&>img]:w-full flex justify-center"
+          class="relative z-10 [&>img]:h-auto [&>img]:w-full flex justify-center"
         />
       </div>
     </div>
@@ -31,7 +28,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 const introStore = useIntroStore();
-import { INTRO_DURATION } from '../utils/tailwind';
+import { INTRO_DURATION, BREAKPOINT_MD } from '../utils/tailwind';
 
 const props = defineProps({
   siteData: {
@@ -42,6 +39,8 @@ const props = defineProps({
 
 const randomPortraitImage = ref(null);
 const randomLandscapeImage = ref(null);
+const introContainer = ref(null);
+const showPortrait = ref(false);
 
 const introImages = computed(
   () => props.siteData?.introImages || { portrait: [], landscape: [] }
@@ -61,18 +60,25 @@ const selectRandomImages = () => {
   }
 };
 
+const checkViewportSize = () => {
+  showPortrait.value = window.innerWidth <= BREAKPOINT_MD;
+};
+
 onMounted(() => {
   selectRandomImages();
+  checkViewportSize();
 });
 
-const handleImageLoaded = (image) => {
+const handleImageLoaded = async (image) => {
   console.log('Image loaded');
   setTimeout(() => {
-    introStore.setStart(true);
+    // introStore.setStart(true);
     setTimeout(() => {
-      introStore.setScaled(true);
-      introStore.setDone(true);
+      // introStore.setScaled(true);
+      // setTimeout(() => {
+      //   introStore.setDone(true);
+      // }, 1000);
     }, INTRO_DURATION);
-  }, 500);
+  }, 1000);
 };
 </script>

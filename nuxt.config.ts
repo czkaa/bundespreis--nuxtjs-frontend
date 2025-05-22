@@ -56,7 +56,6 @@ export default defineNuxtConfig({
         })
       }
     },
-    
   },
 
   i18n: {
@@ -70,22 +69,15 @@ export default defineNuxtConfig({
         file: 'en-US.json'
       },
     ],
-    detectBrowserLanguage: {
-      useCookie: false,
-      redirectOn: 'root', 
-      alwaysRedirect: false,
-      fallbackLocale: 'de'
-    },
-    differentDomains: false,
     strategy: 'prefix_except_default',
     customRoutes: 'config',
     pages: {
-      'preistragende/[slug]': {
+      'preistragende-slug': {
         en: '/winners/[slug]'
       },
-      'info': {
-        en: '/info'
-      }
+      'info-slug': {
+        en: '/info/[slug]'
+      },
     }
   },
 

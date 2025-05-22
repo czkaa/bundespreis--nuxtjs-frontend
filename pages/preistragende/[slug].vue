@@ -1,5 +1,5 @@
 <template>
-  <TemplatesPreistragende :data="data" v-if="data" />
+  <TemplatesPreistragende :data="data" v-if="data" :key="route.fullPath" />
 </template>
 
 <script setup>

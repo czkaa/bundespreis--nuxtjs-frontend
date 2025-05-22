@@ -1,6 +1,7 @@
 // utils/tailwind.js
 let GAP_DURATION = 500 + 100;
-let INTRO_DURATION = 1000 + 100;
+let INTRO_DURATION = 1200;
+let BREAKPOINT_MD = 900;
 
 // In Nuxt/Vite environments, you can use this
 if (import.meta.env) {
@@ -21,4 +22,4 @@ if (import.meta.env) {
     });
 }
 
-export { GAP_DURATION, INTRO_DURATION };
+export { GAP_DURATION, INTRO_DURATION, BREAKPOINT_MD };
