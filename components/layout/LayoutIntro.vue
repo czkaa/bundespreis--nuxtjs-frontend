@@ -72,12 +72,12 @@ onMounted(() => {
 const handleImageLoaded = async (image) => {
   console.log('Image loaded');
   setTimeout(() => {
-    // introStore.setStart(true);
+    introStore.setStart(true);
     setTimeout(() => {
-      // introStore.setScaled(true);
-      // setTimeout(() => {
-      //   introStore.setDone(true);
-      // }, 1000);
+      introStore.setScaled(true);
+      setTimeout(() => {
+        introStore.setDone(true);
+      }, 1000);
     }, INTRO_DURATION);
   }, 1000);
 };
