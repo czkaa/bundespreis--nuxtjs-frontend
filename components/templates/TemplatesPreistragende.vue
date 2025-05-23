@@ -1,39 +1,37 @@
 <template>
-  <Transition name="fade">
-    <div v-if="data" class="space-y-sm mt-offset-content">
-      <BasicsHeading tag="h2" :text="data.title" size="large" />
+  <div v-if="data" class="space-y-sm mt-offset-content">
+    <BasicsHeading tag="h2" :text="data.title" size="large" />
 
-      <SnippetsSlider v-if="data.gallery?.length > 0" :images="data.gallery" />
+    <SnippetsSlider v-if="data.gallery?.length > 0" :images="data.gallery" />
 
-      <div
-        v-if="data.portrait"
-        class="w-full flex flex-col items-end"
-        :style="{
-          maxWidth: `min(var(--image-w), calc(65vh * ${data.portrait.ratio}))`,
-        }"
-      >
-        <BasicsGalleryImage
-          :image="data.portrait"
-          class="hover-hover:hover:scale-[103%] hover-hover:hover:z-50 transform transition-transform duration-300"
-        />
-        <BasicsCaption
-          v-if="data.portrait.caption"
-          :text="data.portrait.caption"
-          class="-mt-[0.5px]"
-        />
-      </div>
-
-      <Blocks :blocks="data.blocks" v-if="data.blocks" />
+    <div
+      v-if="data.portrait"
+      class="w-full flex flex-col items-end"
+      :style="{
+        maxWidth: `min(var(--image-w), calc(65vh * ${data.portrait.ratio}))`,
+      }"
+    >
+      <BasicsGalleryImage
+        :image="data.portrait"
+        class="hover-hover:hover:scale-[103%] hover-hover:hover:z-50 transform transition-transform duration-300"
+      />
+      <BasicsCaption
+        v-if="data.portrait.caption"
+        :text="data.portrait.caption"
+        class="-mt-[0.5px]"
+      />
     </div>
-  </Transition>
+
+    <Blocks :blocks="data.blocks" v-if="data.blocks" />
+  </div>
 </template>
 
 <script setup>
 const routeStore = useRouteStore();
 const gap = useGapStore();
 
-const { data } = await useFetch(() => `/api${routeStore.route.fullPath}`, {
-  key: () => routeStore.route.fullPath,
+const { data } = await useFetch(() => `/api${routeStore.route}`, {
+  key: () => routeStore.routeh,
 });
 
 const scrollToTop = () => {
