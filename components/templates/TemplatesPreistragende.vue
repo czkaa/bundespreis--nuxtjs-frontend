@@ -50,7 +50,6 @@ watch(
   data,
   async (newData) => {
     if (newData) {
-      console.log('data updated for route', routeStore.route.fullPath);
       await nextTick();
       scrollToTop();
     }
@@ -60,7 +59,6 @@ watch(
 
 // Handle initial page load
 onMounted(async () => {
-  console.log('MOUNTING TEMPLATE PREISTRAGENDE');
   await nextTick();
   scrollToTop();
 });

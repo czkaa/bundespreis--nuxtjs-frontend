@@ -25,10 +25,6 @@ const formattedText = computed(() => {
   @apply text-sm-sans font-sans;
 }
 
-[basics-text] number {
-  @apply tabular-nums tracking-tighter;
-}
-
 [basics-text] a:hover {
   @apply underline;
 }

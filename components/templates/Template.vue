@@ -16,11 +16,4 @@
 
 <script setup>
 const routeStore = useRouteStore();
-
-watch(
-  () => routeStore.template,
-  (newVal, oldVal) => {
-    console.log('🔄 Template changed:', oldVal, '->', newVal);
-  }
-);
 </script>
