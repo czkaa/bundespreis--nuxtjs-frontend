@@ -50,13 +50,9 @@
 </template>
 
 <script setup>
-import { useHeadSeo } from '~/composables/useHeadSeo';
-import { useSiteStore } from '~/stores/site';
+import Template from './components/templates/Template.vue';
 import { useI18n } from 'vue-i18n';
 import throttle from 'lodash.throttle';
-
-import Template from './components/templates/Template.vue';
-
 const { locale } = useI18n();
 const { setAllMetadata, setPageTitle } = useHeadSeo();
 const gap = useGapStore();
@@ -64,7 +60,6 @@ const introStore = useIntroStore();
 const siteStore = useSiteStore();
 const isLangChange = ref(false);
 
-const showFooter = ref(false);
 const galleryContainer = ref(null);
 const mainContainer = ref(null);
 
@@ -76,10 +71,19 @@ const showIntro = computed(() => {
   return introStore.isIntro && !introStore.isDone;
 });
 
+const showFooter = computed(() => {
+  return (
+    (galleryAtBottom.value && !gap.isGap) || (mainAtBottom.value && gap.isGap)
+  );
+});
+
+const galleryAtBottom = ref(false);
+const mainAtBottom = ref(false);
+
 // Function to check if element is scrolled to bottom
 const isScrolledToBottom = (element) => {
   if (!element) return false;
-  const threshold = 10; // Small threshold to account for sub-pixel scrolling
+  const threshold = 100; // Small threshold to account for sub-pixel scrolling
   return (
     element.scrollTop + element.clientHeight >= element.scrollHeight - threshold
   );
@@ -87,11 +91,8 @@ const isScrolledToBottom = (element) => {
 
 // Throttled scroll handler
 const handleScroll = throttle(() => {
-  const galleryAtBottom = isScrolledToBottom(galleryContainer.value);
-  const mainAtBottom = isScrolledToBottom(mainContainer.value);
-
-  // Show footer if either container is scrolled to bottom
-  showFooter.value = galleryAtBottom || mainAtBottom;
+  galleryAtBottom.value = isScrolledToBottom(galleryContainer.value);
+  mainAtBottom.value = isScrolledToBottom(mainContainer.value);
 }, 100); // Throttle to 100ms
 
 // Setup scroll listeners

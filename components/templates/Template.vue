@@ -5,7 +5,7 @@
   />
   <TemplatesPreistragende
     v-else-if="routeStore.template === 'preistragende'"
-    :key="routeStore.fullPath"
+    :key="routeStore.route"
   />
   <TemplatesLanding
     v-else-if="routeStore.template === 'landing'"

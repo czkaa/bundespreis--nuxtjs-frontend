@@ -12,7 +12,6 @@
 
 <script setup>
 import { ref, onMounted, watch } from 'vue';
-import throttle from 'lodash.throttle';
 import Section from './Section.vue';
 
 const routeStore = useRouteStore();
@@ -63,7 +62,7 @@ onMounted(() => {
 });
 
 const scrollToSection = (route, behavior) => {
-  const slug = route?.fullPath?.split('/').pop();
+  const slug = route?.split('/').pop();
   if (!slug || !main.value) return;
 
   const section = document.getElementById(slug);

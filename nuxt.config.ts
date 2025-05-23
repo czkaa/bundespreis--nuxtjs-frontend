@@ -14,12 +14,24 @@ export default defineNuxtConfig({
     '~/assets/css/main.css'
   ],
 
-  ssr: false,
 
   runtimeConfig: {
     public: {
       apiBaseUrl: 'https://bundespreis-backend.czkaa.site'
       // apiBaseUrl: 'http://localhost:8000'
+    }
+  },
+
+  ssr: true,
+
+  nitro: {
+    preset: 'static',
+    prerender: {
+      crawlLinks: true,
+      routes: 
+      [
+      ], 
+      
     }
   },
 
@@ -63,13 +75,6 @@ export default defineNuxtConfig({
     ],
     strategy: 'prefix_except_default',
     customRoutes: 'config',
-    pages: {
-      'preistragende-slug': {
-        en: '/winners/[slug]'
-      },
-      'info-slug': {
-        en: '/info/[slug]'
-      },
-    }
+
   },
 })
