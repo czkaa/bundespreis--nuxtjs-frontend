@@ -1,5 +1,5 @@
 <template>
-  <div v-if="data" class="space-y-sm mt-offset-content bg-yellow-200">
+  <div v-if="data" class="space-y-sm mt-offset-content">
     <BasicsHeading tag="h2" :text="data.title" size="large" />
 
     <SnippetsSlider v-if="data.gallery?.length > 0" :images="data.gallery" />
@@ -27,10 +27,11 @@
 </template>
 
 <script setup>
-const route = useRoute();
+const routeStore = useRouteStore();
+const gap = useGapStore();
 
-const { data } = await useFetch(() => `/api${route.fullPath}`, {
-  key: () => route.fullPath,
+const { data } = await useFetch(() => `/api${routeStore.route.fullPath}`, {
+  key: () => routeStore.route.fullPath,
 });
 
 const scrollToTop = () => {
@@ -49,7 +50,7 @@ watch(
   data,
   async (newData) => {
     if (newData) {
-      console.log('data updated for route', route.fullPath);
+      console.log('data updated for route', routeStore.route.fullPath);
       await nextTick();
       scrollToTop();
     }
@@ -59,7 +60,7 @@ watch(
 
 // Handle initial page load
 onMounted(async () => {
-  console.log('mounted', route.fullPath);
+  console.log('MOUNTING TEMPLATE PREISTRAGENDE');
   await nextTick();
   scrollToTop();
 });

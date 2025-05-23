@@ -56,10 +56,12 @@
         :text="`${image.caption}`"
         class="text-xs font-sans mt-0.5 [&_strong]:!text-xs [&_a]:!text-xs"
       />
-      <BasicsCaption
-        :text="`${imageStore.currentIndex + 1}/${imagesLength}`"
-        class="ml-auto shrink-0 pt-0.5"
-      />
+      <div class="w-20 shrink-0 flex justify-end">
+        <BasicsCaption
+          :text="`${imageStore.currentIndex + 1}/${imagesLength}`"
+          class="pt-0.5 text-center inline-block tabular-nums tracking-tighter"
+        />
+      </div>
     </div>
   </div>
 </template>

@@ -1,24 +1,26 @@
 <template>
   <div
-    class="w-full h-frame-h overflow-hidden bg-white flex flex-col items-center justify-center"
+    class="w-full h-frame-h overflow-hidden bg-white flex flex-col items-center justify-center pl-[var(--intro-pl)] pt-[var(--intro-pt)] pr-[var(--intro-pr)] pb-[var(--intro-pb)]"
   >
     <div
       ref="introContainer"
-      class="absolute top-[var(--intro-pt)] left-[var(--intro-pl)] w-intro-container-w h-intro-container-h transition-transform ease-linear duration-intro -mt-[1px] transform-gpu"
-      :class="!introStore.isStart ? 'scale-[4%]' : 'w-full h-full'"
+      class="transition-[width, height] ease-linear duration-intro transform-gpu max-h-full max-w-full"
+      :class="
+        !introStore.isStart
+          ? 'w-intro-image-w h-intro-image-h'
+          : 'w-intro-container-w h-intro-container-h'
+      "
     >
       <div class="w-full h-full flex justify-center items-center relative">
         <BasicsIntroImage
           v-if="randomPortraitImage && showPortrait"
           :image="randomPortraitImage"
           @imageLoaded="handleImageLoaded"
-          class="relative z-10 [&>img]:h-full [&>img]:w-full flex justify-center"
         />
         <BasicsIntroImage
           v-if="randomLandscapeImage && !showPortrait"
           :image="randomLandscapeImage"
           @imageLoaded="handleImageLoaded"
-          class="relative z-10 [&>img]:h-auto [&>img]:w-full flex justify-center"
         />
       </div>
     </div>
@@ -70,7 +72,6 @@ onMounted(() => {
 });
 
 const handleImageLoaded = async (image) => {
-  console.log('Image loaded');
   setTimeout(() => {
     introStore.setStart(true);
     setTimeout(() => {

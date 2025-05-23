@@ -8,7 +8,6 @@
         v-for="(image, index) in images"
         :key="index"
         class="relative"
-        v-show="index === currentIndex"
         :class="{
           'opacity-0 pointer-events-none -z-50': index !== currentIndex,
         }"

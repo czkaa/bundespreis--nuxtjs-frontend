@@ -12,7 +12,7 @@
         id="galleryContainer"
         ref="galleryContainer"
       >
-        <LayoutGallery :siteData="siteData" />
+        <LayoutGallery :siteData="siteData" v-if="siteData" />
       </div>
 
       <main
@@ -22,7 +22,7 @@
         ref="mainContainer"
       >
         <div class="w-main ml-column-l mb-xs overflow-x-hidden px-sm md:px-0">
-          <NuxtPage />
+          <Template />
         </div>
       </main>
     </div>

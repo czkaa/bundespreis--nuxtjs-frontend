@@ -6,77 +6,53 @@ export default defineNuxtConfig({
     dirs: [
       '~/components',
       { path: '~/components/global', global: true },
-      { path: '~/components', pathPrefix: false, prefix: '', extensions: ['vue'], },
+      { path: '~/components', pathPrefix: false, prefix: '', extensions: ['vue'] },
     ]
   },
-  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@nuxtjs/i18n', '@nuxt/image', ],
+  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@nuxtjs/i18n', '@nuxt/image'],
   css: [
     '~/assets/css/main.css'
   ],
 
   ssr: false,
 
-  // nitro: {
-  //   preset: 'static',
-  //   prerender: {
-  //     crawlLinks: true,
-  //     routes: ['/', 
-  //       '/en',
-  //      '/api/site',
-  //      '/api/de/site', 
-  //     '/api/en/site', 
-  //     '/api/language',
-  //     ], 
-      
-  //   }
-  // },
   runtimeConfig: {
     public: {
-      apiBaseUrl: 'https://bundespreis-backend.czkaa.site'
-      // apiBaseUrl: 'http:/localhost:8000'
+      // apiBaseUrl: 'https://bundespreis-backend.czkaa.site'
+      apiBaseUrl: 'http://localhost:8000'
     }
   },
 
-  
-
   hooks: {
     'pages:extend' (pages) {
-      const catchAllRoute = pages.find(page => page.path === '/:slug(.*)*')
-      
-      if (catchAllRoute) {
-        // Create aliases that all redirect to home (/)
-        const aliases = [
-          'preistragende',
-          'winners', 
-          'nominierte',
-          'nominees',
-          'exhibition',
-          'ausstellung', 
-          'catalog',
-          'katalog',
-          'about',
-          'ueber'
-        ];
-
-        aliases.forEach(alias => {
-          pages.push({
-            name: `${alias}-alias`,
-            path: `/${alias}`,
-            file: catchAllRoute.file,
-            meta: { 
-              isAlias: true, 
-              aliasFor: '/',
-              originalPath: alias 
-            }
-          });
-        });
-      }
-    },
+      pages.push(
+        {
+          name: 'custom-info', 
+          path: '/info/:slug(.*)',
+          file: '~/pages/[...slug].vue'
+        },
+        {
+          name: 'custom-preistragende-de', // Add this for /preistragende/:slug
+          path: '/preistragende/:slug',
+          file: '~/pages/[...slug].vue'
+        },
+        {
+          name: 'custom-preistragende-en', // Add this for /preistragende/:slug
+          path: '/winners/:slug',
+          file: '~/pages/[...slug].vue'
+        },
+        {
+          name: 'custom-landing',
+          path: '/:slug([^/]+)', // Single-level paths
+          file: '~/pages/[...slug].vue'
+        }
+      );
+    }
   },
-
   i18n: {
     defaultLocale: 'de',
-    locales: [  {
+    locales: [
+      {
         code: 'de',
         file: 'de-DE.json'
       },
@@ -96,5 +72,4 @@ export default defineNuxtConfig({
       },
     }
   },
-
 })

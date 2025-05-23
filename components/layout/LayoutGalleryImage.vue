@@ -1,12 +1,7 @@
 <template>
   <NuxtLink
     ref="imageLink"
-    :to="
-      localePath({
-        name: 'preistragende-slug',
-        params: { slug: item.page.slug },
-      })
-    "
+    :to="localePath({ name: routeName, params: { slug: item.page.slug } })"
     class="relative cursor-pointer overflow-hidden"
     :class="{
       'pointer-events-none': gap.isGap,
@@ -33,9 +28,15 @@
 <script setup>
 import { useImageStore } from '../stores/images';
 const imageStore = useImageStore();
-const route = useRoute();
+const { locale } = useI18n();
 const localePath = useLocalePath();
 const gap = useGapStore();
+
+const routeName = computed(() => {
+  return locale.value === 'en'
+    ? 'custom-preistragende-en'
+    : 'custom-preistragende-de';
+});
 
 const props = defineProps({
   item: {

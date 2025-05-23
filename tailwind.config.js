@@ -49,6 +49,8 @@ export default {
         'column-l-translate': 'var(--column-l-translate)',
         'column-r-translate': 'var(--column-r-translate)',
 
+        'intro-image-w': 'var(--intro-image-w)',
+        'intro-image-h': 'var(--intro-image-h)',
         'intro-container-w': 'var(--intro-container-w)',
         'intro-container-h': 'var(--intro-container-h)',
 

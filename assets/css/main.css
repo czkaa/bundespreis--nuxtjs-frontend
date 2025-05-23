@@ -85,12 +85,12 @@ body {
 
   --intro-pl: 11.4rem;
   --intro-pr: 11.85rem;
-  --intro-pb: calc(var(--tag-h) - 2px);
-  --intro-pt: calc(var(--tag-h) - 1px);
+  --intro-pb: calc(var(--tag-h) - 1px);
+  --intro-pt: calc(var(--tag-h));
 
 
-  --intro-container-h: calc(100dvh - var(--intro-pt) - var(--intro-pb));
-  --intro-container-w: calc(100dvw - var(--intro-pl) - var(--intro-pr));
+  --intro-container-h: calc(100vh - var(--intro-pt) - var(--intro-pb));
+  --intro-container-w: calc(100vw - var(--intro-pl) - var(--intro-pr));
 
   /*SPACING*/
   --spacing-xs: 0.375rem;

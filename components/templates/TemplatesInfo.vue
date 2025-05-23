@@ -1,5 +1,7 @@
 <template>
-  <Sections :sections="data.sections" v-if="data.sections" class="bg-red-300" />
+  <Transition name="fade">
+    <Sections :sections="data.sections" v-if="data" />
+  </Transition>
 </template>
 
 <script setup>

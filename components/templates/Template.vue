@@ -1,16 +1,26 @@
 <template>
-  <div class="z-[200] fixed top-0 left-0 p-sm bg-red-600">{{ route }}</div>
-  <TemplatesInfo v-if="template === 'info'" />
-  <TemplatesPreistragende v-else-if="template === 'preistragende'" />
-  <TemplatesHome v-else />
+  <TemplatesInfo
+    v-if="routeStore.template === 'info'"
+    :key="routeStore.template"
+  />
+  <TemplatesPreistragende
+    v-else-if="routeStore.template === 'preistragende'"
+    :key="routeStore.fullPath"
+  />
+  <TemplatesLanding
+    v-else-if="routeStore.template === 'landing'"
+    :key="routeStore.template"
+  />
+  <TemplatesHome v-else :key="routeStore.template" />
 </template>
 
 <script setup>
-const route = useRoute();
-const gap = useGapStore();
 const routeStore = useRouteStore();
 
-const template = computed(() => {
-  return routeStore.template;
-});
+watch(
+  () => routeStore.template,
+  (newVal, oldVal) => {
+    console.log('🔄 Template changed:', oldVal, '->', newVal);
+  }
+);
 </script>

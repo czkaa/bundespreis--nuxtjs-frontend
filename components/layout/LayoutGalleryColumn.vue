@@ -23,7 +23,6 @@
 </template>
 
 <script setup>
-import { useGapStore } from '../stores/gap';
 const localePath = useLocalePath();
 
 const gap = useGapStore();
@@ -111,6 +110,7 @@ const itemsWithPositions = computed(() => {
 });
 
 const toggleGap = () => {
+  if (gap.isTransitioning) return;
   navigateTo(localePath('/'));
 };
 </script>
