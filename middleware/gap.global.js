@@ -27,15 +27,19 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   if (fromTemplate === toTemplate) {
     if (toTemplate === 'preistragende') {
       gap.setGap(false);
-      await new Promise((resolve) => setTimeout(resolve, GAP_DURATION * 1.5));
-      gap.setGap(true);
+      await new Promise((resolve) => setTimeout(resolve, GAP_DURATION));
+      setTimeout(() => {
+        gap.setGap(true);
+      }, GAP_DURATION);
     }
   } else if (toTemplate === 'home') {
     gap.setGap(false);
   } else {
     gap.setGap(false);
     await new Promise((resolve) => setTimeout(resolve, GAP_DURATION * 1.5));
-    gap.setGap(true);
+    setTimeout(() => {
+      gap.setGap(true);
+    }, GAP_DURATION);
   }
 
   routeStore.setTemplate(toTemplate);
