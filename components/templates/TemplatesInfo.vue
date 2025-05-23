@@ -14,4 +14,12 @@ const gap = useGapStore();
 const localePath = useLocalePath();
 
 const { data: data } = await useFetch(() => `/api${localePath('/info')}`);
+
+watch(
+  () => routeStore.route,
+  async () => {
+    await refresh(); // This will re-fetch the data
+  },
+  { immediate: false }
+);
 </script>

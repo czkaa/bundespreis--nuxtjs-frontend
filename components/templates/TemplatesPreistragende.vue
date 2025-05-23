@@ -30,10 +30,25 @@
 const routeStore = useRouteStore();
 const gap = useGapStore();
 
-const { data } = await useFetch(() => `/api${routeStore.route}`, {
-  key: () => routeStore.routeh,
-});
+const data = ref(null);
+const pending = ref(false);
 
+const fetchData = async () => {
+  if (!routeStore.route) return;
+
+  pending.value = true;
+  try {
+    data.value = await $fetch(`/api${routeStore.route}`);
+  } catch (error) {
+    console.error('Failed to fetch data:', error);
+    data.value = null;
+  } finally {
+    pending.value = false;
+  }
+};
+
+// Watch route changes
+watch(() => routeStore.route, fetchData, { immediate: true });
 const scrollToTop = () => {
   const mainContainer = document.querySelector('main');
   if (mainContainer) {
