@@ -17,7 +17,7 @@
 
       <main
         style="scrollbar-gutter: stable"
-        class="w-full absolute h-frame-h transition-opacity duration-500 overflow-y-scroll pb-offset-content"
+        class="w-full absolute h-frame-h transition-opacity duration-gap overflow-y-scroll pb-offset-content"
         :class="{ 'opacity-0': !gap.isGap }"
         ref="mainContainer"
       >
