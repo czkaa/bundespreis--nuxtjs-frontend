@@ -29,7 +29,14 @@ export default defineNuxtConfig({
     prerender: {
       crawlLinks: true,
       routes: 
-      [
+      ['/', 
+      '/en',
+      '/api/site',
+      '/api/de/site', 
+      '/api/en/site', 
+      '/api/language',
+      '/api/de',
+      '/api/en'
       ], 
       
     }

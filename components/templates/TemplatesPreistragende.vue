@@ -30,9 +30,10 @@
 
 <script setup>
 const routeStore = useRouteStore();
+const gap = useGapStore();
 
-const { data } = await useFetch(() => `/api${routeStore.route}`, {
-  key: () => routeStore.route,
+const { data } = await useFetch(() => `/api${routeStore.route.fullPath}`, {
+  key: () => routeStore.route.fullPath,
 });
 
 const scrollToTop = () => {

@@ -50,6 +50,8 @@
 </template>
 
 <script setup>
+const runtimeConfig = useRuntimeConfig();
+
 import Template from './components/templates/Template.vue';
 import { useI18n } from 'vue-i18n';
 import throttle from 'lodash.throttle';
