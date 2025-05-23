@@ -22,25 +22,25 @@ export default defineNuxtConfig({
     }
   },
 
-  ssr: true,
+  // ssr: true,
 
-  nitro: {
-    preset: 'static',
-    prerender: {
-      crawlLinks: true,
-      routes: 
-      ['/', 
-      '/en',
-      '/api/site',
-      '/api/de/site', 
-      '/api/en/site', 
-      '/api/language',
-      '/api/de',
-      '/api/en'
-      ], 
+  // nitro: {
+  //   preset: 'static',
+  //   prerender: {
+  //     crawlLinks: true,
+  //     routes: 
+  //     ['/', 
+  //     '/en',
+  //     '/api/site',
+  //     '/api/de/site', 
+  //     '/api/en/site', 
+  //     '/api/language',
+  //     '/api/de',
+  //     '/api/en'
+  //     ], 
       
-    }
-  },
+  //   }
+  // },
 
   hooks: {
     'pages:extend' (pages) {
