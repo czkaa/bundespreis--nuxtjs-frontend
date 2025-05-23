@@ -12,7 +12,7 @@ const props = defineProps({
 });
 const gap = useGapStore();
 const localePath = useLocalePath();
-
+const routeStore = useRouteStore();
 const { data: data } = await useFetch(() => `/api${localePath('/info')}`);
 
 watch(

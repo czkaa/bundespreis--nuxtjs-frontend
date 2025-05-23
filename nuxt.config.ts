@@ -35,8 +35,6 @@ export default defineNuxtConfig({
       '/api/de/site', 
       '/api/en/site', 
       '/api/language',
-      '/api/de',
-      '/api/en'
       ], 
       
     }
