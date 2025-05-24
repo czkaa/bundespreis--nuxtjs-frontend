@@ -42,18 +42,22 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     if (toTemplate === 'preistragende' || toLanguage !== fromLanguage) {
       gap.setGap(false);
       await new Promise((resolve) => setTimeout(resolve, GAP_DURATION));
-      gap.setGap(true);
+      setTimeout(() => {
+        gap.setGap(true);
+      }, GAP_DURATION / 2);
     }
   } else if (toTemplate === 'home') {
     gap.setGap(false);
   } else if (fromTemplate === 'home') {
     setTimeout(() => {
       gap.setGap(true);
-    }, 100);
+    }, GAP_DURATION / 2);
   } else {
     gap.setGap(false);
     await new Promise((resolve) => setTimeout(resolve, GAP_DURATION));
-    gap.setGap(true);
+    setTimeout(() => {
+      gap.setGap(true);
+    }, GAP_DURATION / 2);
   }
 
   routeStore.setTemplate(toTemplate);
