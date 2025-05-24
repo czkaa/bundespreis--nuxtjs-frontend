@@ -6,10 +6,10 @@
       :to="localePath(`/${page.uri}`)"
       class="inline-block relative transition-transform duration-500 md:h-tag hover-hover:hover:translate-y-tag-top md:hover-hover:hover:translate-y-0"
       :class="{
-        'translate-y-tag-top md:translate-y-0': route.fullPath.includes(
-          page.uri
-        ),
+        'translate-y-tag-top md:translate-y-0':
+          routeStore.scrollTrigger === page.slug,
       }"
+      @click="routeStore.setScrollTrigger(page.slug)"
     >
       <div
         class="absolute w-full h-[calc(var(--tag-top)+1px)] bg-black -translate-y-[calc(100%-1px)] transform md:hidden"
@@ -24,6 +24,8 @@
 </template>
 
 <script setup>
+const routeStore = useRouteStore();
+
 const props = defineProps({
   siteData: {
     type: Object,

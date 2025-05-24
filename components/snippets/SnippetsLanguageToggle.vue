@@ -13,8 +13,6 @@
       class="items-end w-tag h-tag uppercase justify-center"
     />
   </NuxtLink>
-
-  <!-- <div class="bg-white absolute p-3">{{ pathWithoutLocale }}</div> -->
 </template>
 
 <script setup>

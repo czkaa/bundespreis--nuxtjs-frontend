@@ -18,11 +18,13 @@
       <main
         style="scrollbar-gutter: stable"
         class="w-full absolute h-frame-h transition-opacity duration-gap overflow-y-scroll pb-offset-content"
-        :class="{ 'opacity-0': !gap.isGap }"
+        :class="{
+          'opacity-0': !gap.isGap || !isMounted,
+        }"
         ref="mainContainer"
       >
         <div class="w-main ml-column-l mb-xs overflow-x-hidden px-sm md:px-0">
-          <Template />
+          <NuxtPage />
         </div>
       </main>
     </div>
@@ -50,13 +52,13 @@
 </template>
 
 <script setup>
-const runtimeConfig = useRuntimeConfig();
-
-import Template from './components/templates/Template.vue';
 import { useI18n } from 'vue-i18n';
 import throttle from 'lodash.throttle';
+
 const { locale } = useI18n();
+const { getPageData } = getData();
 const { setAllMetadata, setPageTitle } = useHeadSeo();
+
 const gap = useGapStore();
 const introStore = useIntroStore();
 const siteStore = useSiteStore();
@@ -64,6 +66,9 @@ const isLangChange = ref(false);
 
 const galleryContainer = ref(null);
 const mainContainer = ref(null);
+const isMounted = ref(null);
+
+// HANDLING LAYOUT CHANGE
 
 const showHeader = computed(() => {
   return (introStore.isDone || !introStore.isIntro) && !isLangChange.value;
@@ -105,6 +110,10 @@ onMounted(() => {
   if (mainContainer.value) {
     mainContainer.value.addEventListener('scroll', handleScroll);
   }
+
+  setTimeout(() => {
+    isMounted.value = true;
+  }, 200);
 });
 
 // Cleanup scroll listeners
@@ -118,9 +127,17 @@ onUnmounted(() => {
 });
 
 // Fetch data
-const { data: siteDataDe } = await useFetch(() => `/api/site`);
-const { data: siteDataEn } = await useFetch(() => `/api/en/site`);
-const { data: languageData } = await useFetch('/api/language');
+const { data: siteDataDe } = await useAsyncData('site-de', () =>
+  getPageData('/site')
+);
+
+const { data: siteDataEn } = await useAsyncData('site-en', () =>
+  getPageData('/en/site')
+);
+
+const { data: languageData } = await useAsyncData('language-data', () =>
+  getPageData('/language')
+);
 
 const siteData = computed(() => {
   if (locale.value === 'de') {

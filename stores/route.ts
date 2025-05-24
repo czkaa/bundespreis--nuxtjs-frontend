@@ -3,7 +3,8 @@ import { defineStore } from 'pinia'
 export const useRouteStore = defineStore('route', {
   state: () => ({
     template: '',
-    route: {}
+    route: {},
+    scrollTrigger: ''
   }),
   actions: {
 
@@ -12,6 +13,11 @@ export const useRouteStore = defineStore('route', {
     },
     setRoute (value: object) {
       this.route = value
+    },
+    setScrollTrigger (value: string) {
+      setTimeout(() => {
+        this.scrollTrigger = value
+      }, 100)
     }
   }
 })

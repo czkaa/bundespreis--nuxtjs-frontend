@@ -29,7 +29,7 @@
     </div>
 
     <div
-      class="flex mx-auto overflow-hidden justify-between items-start gap-xs shrink-0 w-full z-50"
+      class="flex mx-auto overflow-hidden justify-start items-start gap-xs shrink-0 w-full z-50"
       :style="{
         maxWidth: `calc(var(--remaining-content) * ${image.ratio})`,
       }"
@@ -54,7 +54,7 @@
 
       <BasicsText
         :text="`${image.caption}`"
-        class="text-xs font-sans mt-0.5 [&_strong]:!text-xs [&_a]:!text-xs"
+        class="text-xs font-sans mt-0.5 [&_strong]:!text-xs [&_a]:!text-xs w-full"
       />
       <div class="w-20 shrink-0 flex justify-end">
         <BasicsCaption

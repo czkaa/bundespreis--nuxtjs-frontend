@@ -1,7 +1,5 @@
 <template>
-  <Transition name="fade">
-    <Sections :sections="data.sections" v-if="data" />
-  </Transition>
+  <Sections :sections="data.sections" />
 </template>
 
 <script setup>
@@ -10,8 +8,4 @@ const props = defineProps({
     type: Object,
   },
 });
-const gap = useGapStore();
-const localePath = useLocalePath();
-
-const { data: data } = await useFetch(() => `/api${localePath('/info')}`);
 </script>

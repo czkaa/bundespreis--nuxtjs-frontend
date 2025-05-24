@@ -9,8 +9,8 @@
       :height="image.height"
       :srcset="isNearViewport ? image.srcset : ''"
       class="w-full h-auto object-cover transition-opacity duration-200 object-center"
-      :class="[isNearViewport && loaded ? 'opacity-100' : 'opacity-0']"
-      @load="loaded = true"
+      :class="[loaded ? 'opacity-100' : 'opacity-100']"
+      @onload="loaded = true"
     />
   </figure>
 </template>

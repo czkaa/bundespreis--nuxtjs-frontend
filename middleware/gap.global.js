@@ -20,14 +20,15 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
   const fromTemplate = findTemplate(from);
   const toTemplate = findTemplate(to);
-  if (to.fullPath === from.fullPath && to.params?.slug?.length === 0) {
+
+  if (to.fullPath === from.fullPath && toTemplate === 'home') {
     intro.setIntro(true);
   }
 
   if (fromTemplate === toTemplate) {
     if (toTemplate === 'preistragende') {
       gap.setGap(false);
-      await new Promise((resolve) => setTimeout(resolve, GAP_DURATION));
+      await new Promise((resolve) => setTimeout(resolve, GAP_DURATION * 2));
       setTimeout(() => {
         gap.setGap(true);
       }, GAP_DURATION);
@@ -36,7 +37,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     gap.setGap(false);
   } else {
     gap.setGap(false);
-    await new Promise((resolve) => setTimeout(resolve, GAP_DURATION * 1.5));
+    await new Promise((resolve) => setTimeout(resolve, GAP_DURATION * 2));
     setTimeout(() => {
       gap.setGap(true);
     }, GAP_DURATION);
@@ -44,4 +45,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
   routeStore.setTemplate(toTemplate);
   routeStore.setRoute(to.fullPath);
+
+  console.log(to);
 });

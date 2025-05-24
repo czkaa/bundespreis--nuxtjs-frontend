@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div>
     <Section
       v-for="section in sections"
       :key="section.id"
@@ -11,12 +11,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 import Section from './Section.vue';
 
-const routeStore = useRouteStore();
 const router = useRouter();
-const { $localePath } = useNuxtApp();
+const route = useRoute();
+const localePath = useLocalePath();
 
 const props = defineProps({
   sections: {
@@ -27,23 +27,14 @@ const props = defineProps({
 
 const main = ref(null);
 const lastScrollTop = ref(0);
+const routeStore = useRouteStore();
 const scrollDirection = ref('down');
 
 // Flags to prevent infinite loops
-const isScrollingProgrammatically = ref(false);
-const isUpdatingRouteFromScroll = ref(false);
+const isScrollingProgrammatically = ref(true);
 
-onMounted(() => {
-  if (document) {
-    main.value = document.querySelector('main');
-    scrollToSection(routeStore.route, 'instant');
-
-    // Track scroll direction
-    if (main.value) {
-      main.value.addEventListener('scroll', handleScroll);
-    }
-  }
-});
+let scrollTimeout = null;
+let triggerScrollTimeout = null;
 
 const handleScroll = () => {
   if (!main.value || isScrollingProgrammatically.value) return;
@@ -54,66 +45,50 @@ const handleScroll = () => {
   lastScrollTop.value = currentScrollTop;
 };
 
-onMounted(() => {
-  if (document) {
-    main.value = document.querySelector('main');
-    scrollToSection(routeStore.route, 'instant');
-  }
-});
-
-const scrollToSection = (route, behavior) => {
-  const slug = route?.split('/').pop();
-  if (!slug || !main.value) return;
-
+const scrollToElement = (slug) => {
   const section = document.getElementById(slug);
-  if (section) {
-    // Set flag to indicate programmatic scrolling
-    isScrollingProgrammatically.value = true;
-
-    main.value.scrollTo({
-      top: section.offsetTop,
-      behavior: behavior,
-    });
-
-    // Reset flag after scroll completes
-    setTimeout(
-      () => {
-        isScrollingProgrammatically.value = false;
-      },
-      behavior === 'smooth' ? 500 : 100
-    );
-  }
+  if (!section || !slug || !main.value) return;
+  isScrollingProgrammatically.value = true;
+  main.value.scrollTo({
+    top: section.offsetTop,
+    behavior: 'smooth',
+  });
+  // Reset flag after scroll completes
+  scrollTimeout = setTimeout(() => {
+    isScrollingProgrammatically.value = false;
+  }, 2000);
 };
 
 const handleSectionInView = async (slug) => {
-  // Don't update route if we're currently scrolling programmatically
-  if (isScrollingProgrammatically.value || isUpdatingRouteFromScroll.value) {
-    return;
-  }
-
-  // Set flag to prevent watcher from triggering scroll
-  isUpdatingRouteFromScroll.value = true;
-
-  try {
-    const newPath = $localePath(`/${slug}`);
-    await router.push(newPath);
-  } catch (error) {
-    console.error('Error updating route:', error);
-  } finally {
-    // Reset flag after route update
-    setTimeout(() => {
-      isUpdatingRouteFromScroll.value = false;
-    }, 100);
+  if (!isScrollingProgrammatically.value) {
+    window.history.replaceState({}, '', localePath(`/${slug}`));
+    routeStore.setScrollTrigger(slug);
   }
 };
 
-// Watch route changes and scroll accordingly (but not when updating from scroll)
-watch(
-  () => routeStore.route,
-  (route) => {
-    if (!isUpdatingRouteFromScroll.value) {
-      scrollToSection(route, 'smooth');
+onMounted(() => {
+  console.log(route.params.slug);
+  setTimeout(() => {
+    scrollToElement(route.params.slug);
+  }, 100);
+
+  if (document) {
+    main.value = document.querySelector('main');
+    if (main.value) {
+      main.value.addEventListener('scroll', handleScroll);
     }
   }
-);
+});
+
+onUnmounted(() => {
+  if (main.value) {
+    main.value.removeEventListener('scroll', handleScroll);
+  }
+  if (scrollTimeout) {
+    clearTimeout(scrollTimeout);
+  }
+  if (triggerScrollTimeout) {
+    clearTimeout(triggerScrollTimeout);
+  }
+});
 </script>

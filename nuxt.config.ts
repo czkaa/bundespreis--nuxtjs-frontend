@@ -16,31 +16,26 @@ export default defineNuxtConfig({
 
 
   runtimeConfig: {
+    apiToken: 'test',
     public: {
       apiBaseUrl: 'https://bundespreis-backend.czkaa.site'
       // apiBaseUrl: 'http://localhost:8000'
     }
   },
 
-  // ssr: true,
+  ssr: true,
 
-  // nitro: {
-  //   preset: 'static',
-  //   prerender: {
-  //     crawlLinks: true,
-  //     routes: 
-  //     ['/', 
-  //     '/en',
-  //     '/api/site',
-  //     '/api/de/site', 
-  //     '/api/en/site', 
-  //     '/api/language',
-  //     '/api/de',
-  //     '/api/en'
-  //     ], 
+  nitro: {
+    preset: 'static',
+    prerender: {
+      crawlLinks: true,
+      routes: 
+      ['/', 
+      '/en',
+      ], 
       
-  //   }
-  // },
+    }
+  },
 
   hooks: {
     'pages:extend' (pages) {
@@ -48,22 +43,22 @@ export default defineNuxtConfig({
         {
           name: 'custom-info', 
           path: '/info/:slug(.*)',
-          file: '~/pages/[...slug].vue'
+          file: '~/pages/info.vue'
         },
         {
           name: 'custom-preistragende-de', // Add this for /preistragende/:slug
           path: '/preistragende/:slug',
-          file: '~/pages/[...slug].vue'
+          file: '~/pages/preistragende-subpage/[...slug].vue'
         },
         {
           name: 'custom-preistragende-en', // Add this for /preistragende/:slug
           path: '/winners/:slug',
-          file: '~/pages/[...slug].vue'
+          file: '~/pages/preistragende-subpage/[...slug].vue'
         },
         {
           name: 'custom-landing',
           path: '/:slug([^/]+)', // Single-level paths
-          file: '~/pages/[...slug].vue'
+          file: '~/pages/landing.vue'
         }
       );
     }

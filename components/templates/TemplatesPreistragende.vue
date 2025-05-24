@@ -1,5 +1,5 @@
 <template>
-  <div v-if="data" class="space-y-sm mt-offset-content">
+  <div class="space-y-sm mt-offset-content">
     <BasicsHeading tag="h2" :text="data.title" size="large" />
 
     <SnippetsSlider v-if="data.gallery?.length > 0" :images="data.gallery" />
@@ -27,11 +27,13 @@
 </template>
 
 <script setup>
+const route = useRoute();
 const routeStore = useRouteStore();
-const gap = useGapStore();
 
-const { data } = await useFetch(() => `/api${routeStore.route}`, {
-  key: () => routeStore.routeh,
+const props = defineProps({
+  data: {
+    type: Object,
+  },
 });
 
 const scrollToTop = () => {
@@ -47,7 +49,7 @@ const scrollToTop = () => {
 // Watch the data change instead of route change
 // Since useFetch key is tied to route.fullPath, data will change when route changes
 watch(
-  data,
+  props.data,
   async (newData) => {
     if (newData) {
       await nextTick();
@@ -61,5 +63,7 @@ watch(
 onMounted(async () => {
   await nextTick();
   scrollToTop();
+  const routeBits = route.fullPath.split('/');
+  routeStore.setScrollTrigger(routeBits[routeBits.length - 2]);
 });
 </script>

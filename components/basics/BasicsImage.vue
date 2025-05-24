@@ -7,7 +7,8 @@
       :srcset="image.srcset"
       :style="{ aspectRatio: image.ratio ? image.ratio : '' }"
       class="w-full h-auto object-contain transition-opacity duration-200 object-center"
-      :class="[loaded ? 'opacity-0' : 'opacity-100']"
+      :class="[loaded ? 'opacity-100' : 'opacity-100']"
+      @load="loaded = true"
     />
   </figure>
 </template>
