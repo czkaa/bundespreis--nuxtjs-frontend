@@ -4,17 +4,16 @@
       v-for="section in sections"
       :key="section.id"
       :section="section"
-      :scrollDirection="scrollDirection"
+      @sectionInView="handleSectionInView"
     />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch } from 'vue';
 import Section from './Section.vue';
 
-const router = useRouter();
 const route = useRoute();
+const router = useRouter();
 const localePath = useLocalePath();
 
 const props = defineProps({
@@ -24,70 +23,116 @@ const props = defineProps({
   },
 });
 
-const main = ref(null);
-const lastScrollTop = ref(0);
-const routeStore = useRouteStore();
-const scrollDirection = ref('down');
+// Flags to control when to update URL vs scroll
+const isScrolling = ref(false);
+const isUpdatingUrl = ref(false);
+const watcherEnabled = ref(true);
 
-// Flags to prevent infinite loops
-const isScrollingProgrammatically = ref(true);
+const scrollToElement = (slug, instant = false) => {
+  // Only run on client side
+  if (!process.client) return;
 
-let scrollTimeout = null;
-let triggerScrollTimeout = null;
+  const main = document.querySelector('main');
+  const section = document.getElementById(slug);
+  if (section && main) {
+    isScrolling.value = true;
 
-// const handleScroll = () => {
-//   if (!main.value || isScrollingProgrammatically.value) return;
+    if (instant) {
+      main.scrollTo({
+        top: section.offsetTop,
+        behavior: 'instant',
+      });
+      // For instant scroll, we can immediately reset
+      requestAnimationFrame(() => {
+        isScrolling.value = false;
+      });
+    } else {
+      // For smooth scroll, track with requestAnimationFrame
+      const targetScrollTop = section.offsetTop;
+      let lastScrollTop = main.scrollTop;
+      let stableFrames = 0;
 
-//   const currentScrollTop = main.value.scrollTop;
-//   scrollDirection.value =
-//     currentScrollTop > lastScrollTop.value ? 'down' : 'up';
-//   lastScrollTop.value = currentScrollTop;
-// };
+      const checkScrollComplete = () => {
+        const currentScrollTop = main.scrollTop;
 
-// const scrollToElement = (slug) => {
-//   const section = document.getElementById(slug);
-//   if (!section || !slug || !main.value) return;
-//   isScrollingProgrammatically.value = true;
-//   main.value.scrollTo({
-//     top: section.offsetTop,
-//     behavior: 'smooth',
-//   });
-//   // Reset flag after scroll completes
-//   scrollTimeout = setTimeout(() => {
-//     isScrollingProgrammatically.value = false;
-//   }, 2000);
-// };
+        // Check if scroll position has stabilized (within 1px tolerance)
+        if (Math.abs(currentScrollTop - lastScrollTop) < 1) {
+          stableFrames++;
+          // If position is stable for 3 frames and we're close to target
+          if (
+            stableFrames >= 3 &&
+            Math.abs(currentScrollTop - targetScrollTop) < 5
+          ) {
+            isScrolling.value = false;
+            return;
+          }
+        } else {
+          stableFrames = 0;
+        }
 
-// const handleSectionInView = async (slug) => {
-//   if (!isScrollingProgrammatically.value) {
-//     window.history.replaceState({}, '', localePath(`/${slug}`));
-//     routeStore.setScrollTrigger(slug);
-//   }
-// };
+        lastScrollTop = currentScrollTop;
+        requestAnimationFrame(checkScrollComplete);
+      };
 
-// onMounted(() => {
-//   console.log(route.params.slug);
-//   setTimeout(() => {
-//     scrollToElement(route.params.slug);
-//   }, 100);
+      main.scrollTo({
+        top: targetScrollTop,
+        behavior: 'smooth',
+      });
 
-//   if (document) {
-//     main.value = document.querySelector('main');
-//     if (main.value) {
-//       main.value.addEventListener('scroll', handleScroll);
-//     }
-//   }
-// });
+      requestAnimationFrame(checkScrollComplete);
 
-// onUnmounted(() => {
-//   if (main.value) {
-//     main.value.removeEventListener('scroll', handleScroll);
-//   }
-//   if (scrollTimeout) {
-//     clearTimeout(scrollTimeout);
-//   }
-//   if (triggerScrollTimeout) {
-//     clearTimeout(triggerScrollTimeout);
-//   }
-// });
+      // Fallback timeout as safety net
+      setTimeout(() => {
+        isScrolling.value = false;
+      }, 2000);
+    }
+  }
+};
+
+const handleSectionInView = async (slug) => {
+  if (isScrolling.value || isUpdatingUrl.value) return;
+
+  // Temporarily disable watcher
+  watcherEnabled.value = false;
+  isUpdatingUrl.value = true;
+
+  try {
+    // Update URL through Vue Router
+    await router.replace(localePath(`/${slug}`));
+  } catch (error) {
+    console.warn('Router navigation failed:', error);
+  } finally {
+    // Re-enable watcher after a brief delay
+    setTimeout(() => {
+      isUpdatingUrl.value = false;
+      watcherEnabled.value = true;
+    }, 100);
+  }
+};
+
+// Watch for route changes (smooth scroll for navigation)
+watch(
+  () => route.params.slug,
+  (newSlug) => {
+    if (!watcherEnabled.value || isScrolling.value || isUpdatingUrl.value)
+      return;
+
+    console.log('Route changed to:', newSlug);
+    if (newSlug?.length > 0) {
+      const slug = newSlug[0];
+      scrollToElement(slug, false); // false = smooth scroll
+    }
+  }
+);
+
+onMounted(() => {
+  // Initial scroll on mount - instant (only on client)
+  if (process.client && route.params.slug?.length > 0) {
+    console.log('Initial slug:', route.params.slug);
+    const targetSlug = route.params.slug[0];
+    setTimeout(() => {
+      scrollToElement(targetSlug, true); // true = instant scroll on mount
+    }, 200);
+  }
+});
 </script>

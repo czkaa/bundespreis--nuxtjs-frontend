@@ -12,10 +12,6 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-  scrollDirection: {
-    type: String,
-    default: 'down',
-  },
   disableObserver: {
     type: Boolean,
     default: false,
@@ -29,11 +25,7 @@ let observer = null;
 
 const setupObserver = () => {
   if (sectionRef.value && !props.disableObserver) {
-    // Different rootMargin based on scroll direction
-    const rootMargin =
-      props.scrollDirection === 'up'
-        ? '-10% 0px -10% 0px' // When scrolling up, trigger when section enters from top
-        : '-10% 0px -20% 0px'; // When scrolling down, trigger when section enters from bottom
+    const rootMargin = '-10% 0px -10% 0px';
 
     observer = new IntersectionObserver(
       (entries) => {
