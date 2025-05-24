@@ -2,7 +2,10 @@
   <div
     basics-text
     v-if="formattedText"
-    class="text-sm"
+    :class="{
+      'text-xs font-sans [&_strong]:!text-xs [&_a]:!text-xs': size === 'xs',
+      'text-sm-serif font-serif': size === 'sm',
+    }"
     v-html="formattedText"
   ></div>
 </template>
@@ -10,6 +13,10 @@
 <script setup>
 const props = defineProps({
   text: String,
+  size: {
+    type: String,
+    default: 'sm',
+  },
 });
 
 const formattedText = computed(() => {

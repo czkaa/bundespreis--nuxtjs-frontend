@@ -27,9 +27,6 @@
 </template>
 
 <script setup>
-const route = useRoute();
-const routeStore = useRouteStore();
-
 const props = defineProps({
   data: {
     type: Object,
@@ -63,7 +60,5 @@ watch(
 onMounted(async () => {
   await nextTick();
   scrollToTop();
-  const routeBits = route.fullPath.split('/');
-  routeStore.setScrollTrigger(routeBits[routeBits.length - 2]);
 });
 </script>

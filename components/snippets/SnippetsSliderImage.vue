@@ -11,7 +11,8 @@
       >
         <BasicsText
           :text="image.showmore"
-          class="text-white font-sans text-xs [&_strong]:!text-xs [&_a]:!text-xs"
+          size="xs"
+          class="text-white [&_p]:mb-4"
         />
       </div>
       <template v-if="imagesLength > 1 && !showShowmore">
@@ -52,10 +53,7 @@
         />
       </button>
 
-      <BasicsText
-        :text="`${image.caption}`"
-        class="text-xs font-sans mt-0.5 [&_strong]:!text-xs [&_a]:!text-xs w-full"
-      />
+      <BasicsText :text="`${image.caption}`" size="xs" class="mt-0.5 w-full" />
       <div class="w-20 shrink-0 flex justify-end">
         <BasicsCaption
           :text="`${imageStore.currentIndex + 1}/${imagesLength}`"

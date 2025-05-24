@@ -10,6 +10,7 @@
 </template>
 
 <script setup>
+import { onMounted, watch, ref, nextTick } from 'vue';
 import Section from './Section.vue';
 
 const route = useRoute();
@@ -27,6 +28,7 @@ const props = defineProps({
 const isScrolling = ref(false);
 const isUpdatingUrl = ref(false);
 const watcherEnabled = ref(true);
+const isInitialMount = ref(true);
 
 const scrollToElement = (slug, instant = false) => {
   // Only run on client side
@@ -45,6 +47,14 @@ const scrollToElement = (slug, instant = false) => {
       // For instant scroll, we can immediately reset
       requestAnimationFrame(() => {
         isScrolling.value = false;
+        // Allow URL updates after initial mount is complete
+        if (isInitialMount.value) {
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              isInitialMount.value = false;
+            });
+          });
+        }
       });
     } else {
       // For smooth scroll, track with requestAnimationFrame
@@ -90,7 +100,8 @@ const scrollToElement = (slug, instant = false) => {
 };
 
 const handleSectionInView = async (slug) => {
-  if (isScrolling.value || isUpdatingUrl.value) return;
+  // Don't update URL during initial mount or while scrolling/updating
+  if (isInitialMount.value || isScrolling.value || isUpdatingUrl.value) return;
 
   // Temporarily disable watcher
   watcherEnabled.value = false;
@@ -102,11 +113,13 @@ const handleSectionInView = async (slug) => {
   } catch (error) {
     console.warn('Router navigation failed:', error);
   } finally {
-    // Re-enable watcher after a brief delay
-    setTimeout(() => {
-      isUpdatingUrl.value = false;
-      watcherEnabled.value = true;
-    }, 100);
+    // Re-enable watcher after a few frames
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        isUpdatingUrl.value = false;
+        watcherEnabled.value = true;
+      });
+    });
   }
 };
 
@@ -130,9 +143,11 @@ onMounted(() => {
   if (process.client && route.params.slug?.length > 0) {
     console.log('Initial slug:', route.params.slug);
     const targetSlug = route.params.slug[0];
-    setTimeout(() => {
-      scrollToElement(targetSlug, true); // true = instant scroll on mount
-    }, 200);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        scrollToElement(targetSlug, true); // true = instant scroll on mount
+      });
+    });
   }
 });
 </script>
