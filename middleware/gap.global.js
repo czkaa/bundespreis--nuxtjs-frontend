@@ -22,7 +22,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   const toTemplate = findTemplate(to);
 
   if (to.fullPath === from.fullPath && toTemplate === 'home') {
-    intro.setIntro(true);
+    // intro.setIntro(true);
   }
 
   if (fromTemplate === toTemplate) {
@@ -47,4 +47,5 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   routeStore.setRoute(to.fullPath);
 
   console.log(to);
+  gap.setGap(true);
 });

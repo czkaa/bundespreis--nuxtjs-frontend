@@ -37,32 +37,7 @@ export default defineNuxtConfig({
     }
   },
 
-  hooks: {
-    'pages:extend' (pages) {
-      pages.push(
-        {
-          name: 'custom-info', 
-          path: '/info/:slug(.*)',
-          file: '~/pages/info.vue'
-        },
-        {
-          name: 'custom-preistragende-de', // Add this for /preistragende/:slug
-          path: '/preistragende/:slug',
-          file: '~/pages/preistragende-subpage/[...slug].vue'
-        },
-        {
-          name: 'custom-preistragende-en', // Add this for /preistragende/:slug
-          path: '/winners/:slug',
-          file: '~/pages/preistragende-subpage/[...slug].vue'
-        },
-        {
-          name: 'custom-landing',
-          path: '/:slug([^/]+)', // Single-level paths
-          file: '~/pages/landing.vue'
-        }
-      );
-    }
-  },
+
   i18n: {
     defaultLocale: 'de',
     locales: [

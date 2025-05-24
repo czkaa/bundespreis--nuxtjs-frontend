@@ -5,6 +5,10 @@
 </template>
 
 <script setup>
+definePageMeta({
+  key: 'landing-page',
+});
+
 const { locale } = useI18n();
 const { getPageData } = getData();
 const route = useRoute();

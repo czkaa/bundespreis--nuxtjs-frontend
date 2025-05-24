@@ -9,7 +9,6 @@
         'translate-y-tag-top md:translate-y-0':
           routeStore.scrollTrigger === page.slug,
       }"
-      @click="routeStore.setScrollTrigger(page.slug)"
     >
       <div
         class="absolute w-full h-[calc(var(--tag-top)+1px)] bg-black -translate-y-[calc(100%-1px)] transform md:hidden"

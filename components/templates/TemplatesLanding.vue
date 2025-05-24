@@ -8,4 +8,8 @@ const props = defineProps({
     type: Object,
   },
 });
+
+onMounted(() => {
+  console.log('MOUNT :');
+});
 </script>

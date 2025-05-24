@@ -5,7 +5,6 @@
       :key="section.id"
       :section="section"
       :scrollDirection="scrollDirection"
-      @sectionInView="handleSectionInView"
     />
   </div>
 </template>
@@ -36,59 +35,59 @@ const isScrollingProgrammatically = ref(true);
 let scrollTimeout = null;
 let triggerScrollTimeout = null;
 
-const handleScroll = () => {
-  if (!main.value || isScrollingProgrammatically.value) return;
+// const handleScroll = () => {
+//   if (!main.value || isScrollingProgrammatically.value) return;
 
-  const currentScrollTop = main.value.scrollTop;
-  scrollDirection.value =
-    currentScrollTop > lastScrollTop.value ? 'down' : 'up';
-  lastScrollTop.value = currentScrollTop;
-};
+//   const currentScrollTop = main.value.scrollTop;
+//   scrollDirection.value =
+//     currentScrollTop > lastScrollTop.value ? 'down' : 'up';
+//   lastScrollTop.value = currentScrollTop;
+// };
 
-const scrollToElement = (slug) => {
-  const section = document.getElementById(slug);
-  if (!section || !slug || !main.value) return;
-  isScrollingProgrammatically.value = true;
-  main.value.scrollTo({
-    top: section.offsetTop,
-    behavior: 'smooth',
-  });
-  // Reset flag after scroll completes
-  scrollTimeout = setTimeout(() => {
-    isScrollingProgrammatically.value = false;
-  }, 2000);
-};
+// const scrollToElement = (slug) => {
+//   const section = document.getElementById(slug);
+//   if (!section || !slug || !main.value) return;
+//   isScrollingProgrammatically.value = true;
+//   main.value.scrollTo({
+//     top: section.offsetTop,
+//     behavior: 'smooth',
+//   });
+//   // Reset flag after scroll completes
+//   scrollTimeout = setTimeout(() => {
+//     isScrollingProgrammatically.value = false;
+//   }, 2000);
+// };
 
-const handleSectionInView = async (slug) => {
-  if (!isScrollingProgrammatically.value) {
-    window.history.replaceState({}, '', localePath(`/${slug}`));
-    routeStore.setScrollTrigger(slug);
-  }
-};
+// const handleSectionInView = async (slug) => {
+//   if (!isScrollingProgrammatically.value) {
+//     window.history.replaceState({}, '', localePath(`/${slug}`));
+//     routeStore.setScrollTrigger(slug);
+//   }
+// };
 
-onMounted(() => {
-  console.log(route.params.slug);
-  setTimeout(() => {
-    scrollToElement(route.params.slug);
-  }, 100);
+// onMounted(() => {
+//   console.log(route.params.slug);
+//   setTimeout(() => {
+//     scrollToElement(route.params.slug);
+//   }, 100);
 
-  if (document) {
-    main.value = document.querySelector('main');
-    if (main.value) {
-      main.value.addEventListener('scroll', handleScroll);
-    }
-  }
-});
+//   if (document) {
+//     main.value = document.querySelector('main');
+//     if (main.value) {
+//       main.value.addEventListener('scroll', handleScroll);
+//     }
+//   }
+// });
 
-onUnmounted(() => {
-  if (main.value) {
-    main.value.removeEventListener('scroll', handleScroll);
-  }
-  if (scrollTimeout) {
-    clearTimeout(scrollTimeout);
-  }
-  if (triggerScrollTimeout) {
-    clearTimeout(triggerScrollTimeout);
-  }
-});
+// onUnmounted(() => {
+//   if (main.value) {
+//     main.value.removeEventListener('scroll', handleScroll);
+//   }
+//   if (scrollTimeout) {
+//     clearTimeout(scrollTimeout);
+//   }
+//   if (triggerScrollTimeout) {
+//     clearTimeout(triggerScrollTimeout);
+//   }
+// });
 </script>
