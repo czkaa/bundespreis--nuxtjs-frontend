@@ -53,8 +53,9 @@ export default defineNuxtConfig({
     strategy: 'prefix_except_default',
     customRoutes: 'config',
     pages: {
-      'preistragende-slug': {
-        en: '/winners/[slug]'
+      'preistragendee-slug': {
+        en: '/winners/[slug]',
+        de: '/preistragende/[slug]'
       },
       'info-slug': {
         en: '/info/[slug]'
