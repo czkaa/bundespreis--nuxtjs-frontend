@@ -24,7 +24,7 @@
         ref="mainContainer"
       >
         <div class="w-main ml-column-l mb-xs overflow-x-hidden px-sm md:px-0">
-          <NuxtPage />
+          <!-- <NuxtPage /> -->
         </div>
       </main>
     </div>
@@ -52,16 +52,19 @@
 </template>
 
 <script setup>
-import { useI18n } from 'vue-i18n';
 import throttle from 'lodash.throttle';
 
-const { locale } = useI18n();
 const { getPageData } = getData();
 const { setAllMetadata, setPageTitle } = useHeadSeo();
 
 const gap = useGapStore();
 const introStore = useIntroStore();
 const siteStore = useSiteStore();
+const routeStore = useRouteStore();
+
+const locale = computed(() => {
+  routeStore.locale;
+});
 const isLangChange = ref(false);
 
 const galleryContainer = ref(null);
@@ -140,9 +143,9 @@ const { data: languageData } = await useAsyncData('language-data', () =>
 );
 
 const siteData = computed(() => {
-  if (locale.value === 'de') {
+  if (locale === 'de') {
     return siteDataDe.value;
-  } else if (locale.value === 'en') {
+  } else if (locale === 'en') {
     return siteDataEn.value;
   }
   return null;

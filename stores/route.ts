@@ -4,7 +4,8 @@ export const useRouteStore = defineStore('route', {
   state: () => ({
     template: '',
     route: {},
-    scrollTrigger: ''
+    scrollTrigger: '',
+    locale: 'de'
   }),
   actions: {
 
@@ -18,6 +19,10 @@ export const useRouteStore = defineStore('route', {
       setTimeout(() => {
         this.scrollTrigger = value
       }, 100)
+    },
+
+    setLocale(value: string) {
+      this.locale = value
     }
   }
 })
