@@ -6,7 +6,7 @@
 
 <script setup>
 definePageMeta({
-  key: 'landing-page',
+  key: 'landing-pag',
 });
 
 const { locale } = useI18n();
