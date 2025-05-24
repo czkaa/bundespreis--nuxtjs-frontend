@@ -53,12 +53,13 @@ export default defineNuxtConfig({
     strategy: 'prefix_except_default',
     customRoutes: 'config',
     pages: {
-      'preistragendee-slug': {
+      'preistragendesub-slug': {
         en: '/winners/[slug]',
         de: '/preistragende/[slug]'
       },
       'info-slug': {
-        en: '/info/[slug]'
+        en: '/info/[slug]',
+        de: '/info/[slug]'
       },
     }
   },
