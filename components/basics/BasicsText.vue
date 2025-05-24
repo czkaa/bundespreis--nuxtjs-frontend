@@ -4,7 +4,7 @@
     v-if="formattedText"
     :class="{
       'text-xs font-sans [&_strong]:!text-xs [&_a]:!text-xs': size === 'xs',
-      'text-sm-serif font-serif': size === 'sm',
+      'text-sm font-serif': size === 'sm',
     }"
     v-html="formattedText"
   ></div>

@@ -140,7 +140,7 @@ watch(
 
 onMounted(() => {
   // Initial scroll on mount - instant (only on client)
-  if (process.client && route.params.slug?.length > 0) {
+  if (route.params.slug?.length > 0) {
     console.log('Initial slug:', route.params.slug);
     const targetSlug = route.params.slug[0];
     requestAnimationFrame(() => {
