@@ -1,5 +1,13 @@
 <template>
-  <NuxtLink :to="switchPath" class="sm:mt-0" :aria-label="ariaLabel">
+  <NuxtLink
+    :to="switchPath"
+    class="sm:mt-0"
+    :aria-label="`${
+      targetLocale === 'en'
+        ? $t('changeLanguageToEn')
+        : $t('changeLanguageToDe')
+    }`"
+  >
     <BasicsNavItem
       :text="targetLocale"
       class="items-end w-tag h-tag uppercase justify-center"
@@ -8,7 +16,7 @@
 </template>
 
 <script setup>
-const { locale, t } = useI18n();
+const { locale } = useI18n();
 const route = useRoute();
 
 const props = defineProps({
@@ -17,31 +25,25 @@ const props = defineProps({
     required: true,
   },
 });
+
+// Target locale to switch to
 const targetLocale = computed(() => (locale.value === 'de' ? 'en' : 'de'));
 
-const currentPath = computed(() => {
+const pathWithoutLocale = computed(() => {
   return route.path
     .replace(new RegExp(`^\\/${locale.value}\\/?`), '')
     .replace(/^\/+/, '');
 });
 
 const switchPath = computed(() => {
-  const isGerman = targetLocale.value === 'de';
-  const basePath = isGerman ? '' : '/en';
-
-  if (!currentPath.value) {
-    return isGerman ? '/' : '/en';
+  if (pathWithoutLocale.value === '') {
+    return `${targetLocale.value === 'de' ? '/' : '/en'}`;
   }
   const routes = props.languageData?.[locale.value]?.routes || {};
-  const translatedPath =
-    routes[currentPath.value]?.[targetLocale.value] || currentPath.value;
+  const translation = routes[pathWithoutLocale.value]?.[targetLocale.value];
 
-  return `${basePath}/${translatedPath}`;
-});
-
-const ariaLabel = computed(() => {
-  return targetLocale.value === 'en'
-    ? t('changeLanguageToEn')
-    : t('changeLanguageToDe');
+  return translation
+    ? `${targetLocale.value === 'de' ? '' : '/en'}/${translation}`
+    : `${targetLocale.value === 'de' ? '' : '/en'}/${pathWithoutLocale.value}`;
 });
 </script>
