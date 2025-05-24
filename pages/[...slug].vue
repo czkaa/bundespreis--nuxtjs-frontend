@@ -6,7 +6,8 @@
 
 <script setup>
 definePageMeta({
-  key: 'landing-pag',
+  key: (route) =>
+    `landing-page-${route.fullPath.startsWith('/en') ? 'en' : 'de'}`,
 });
 
 const { locale } = useI18n();
