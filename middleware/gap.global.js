@@ -39,7 +39,10 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   }
 
   if (fromTemplate === toTemplate) {
-    if (toTemplate === 'preistragende' || toLanguage !== fromLanguage) {
+    if (
+      toTemplate === 'preistragende' ||
+      (toLanguage !== fromLanguage && toTemplate !== 'home')
+    ) {
       gap.setGap(false);
       await new Promise((resolve) => setTimeout(resolve, GAP_DURATION));
       setTimeout(() => {

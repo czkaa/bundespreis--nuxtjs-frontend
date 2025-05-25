@@ -1,6 +1,7 @@
 <template>
   <div
     class="w-full h-frame-h overflow-hidden bg-white flex flex-col items-center justify-center pl-[var(--intro-pl)] pt-[var(--intro-pt)] pr-[var(--intro-pr)] pb-[var(--intro-pb)]"
+    style="contain: layout"
   >
     <div
       ref="introContainer"
