@@ -38,8 +38,6 @@ const props = defineProps({
   },
 });
 
-const lastPositions = ref([0.5, 0.5]);
-
 const calculateWellDistributedPositions = (items) => {
   const numItems = items.length;
   if (numItems === 0) return [];
@@ -49,9 +47,37 @@ const calculateWellDistributedPositions = (items) => {
 
   // Generate positions with balanced distribution
   const positions = [];
+  let leftSideConsecutive = 0;
+  let rightSideConsecutive = 0;
+
   for (let i = 0; i < numItems; i++) {
     // Generate a random position between 0 and 1
     let position = Math.random();
+
+    // Check if we need to force a position to avoid more than 2 consecutive on same side
+    if (position < 0.5) {
+      // This would be on the left side
+      if (leftSideConsecutive >= 2) {
+        // Force to right side
+        position = Math.random() * 0.5 + 0.5;
+        leftSideConsecutive = 0;
+        rightSideConsecutive = 1;
+      } else {
+        leftSideConsecutive++;
+        rightSideConsecutive = 0;
+      }
+    } else {
+      // This would be on the right side
+      if (rightSideConsecutive >= 2) {
+        // Force to left side
+        position = Math.random() * 0.5;
+        rightSideConsecutive = 0;
+        leftSideConsecutive = 1;
+      } else {
+        rightSideConsecutive++;
+        leftSideConsecutive = 0;
+      }
+    }
 
     // Apply the edge threshold rule
     if (position < edgeThreshold) {
@@ -59,23 +85,6 @@ const calculateWellDistributedPositions = (items) => {
     } else if (position > 1 - edgeThreshold) {
       position = 1; // Snap to right edge
     }
-
-    if (
-      lastPositions.value[0] > 0.6 &&
-      lastPositions.value[1] > 0.6 &&
-      position > 0.6
-    ) {
-      position = Math.abs(1 - position);
-    } else if (
-      lastPositions.value[0] < 0.4 &&
-      lastPositions.value[1] < 0.4 &&
-      position < 0.4
-    ) {
-      position = Math.abs(1 - position);
-    }
-
-    lastPositions.value[0] = lastPositions.value[1];
-    lastPositions.value[1] = position;
 
     positions.push(position);
   }
