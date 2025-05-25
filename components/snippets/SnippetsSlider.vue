@@ -1,7 +1,7 @@
 <template>
   <div
     ref="sliderContainer"
-    class="gallery-slider relative flex flex-col overflow-hidden"
+    class="gallery-slider relative flex flex-col overflow-hidden touch-manipulation"
   >
     <div class="grid grid-cols-1">
       <SnippetsSliderImage
