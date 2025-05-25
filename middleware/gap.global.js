@@ -7,13 +7,13 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
   const findTemplate = (route) => {
     if (!route?.name) return null;
-    /* preistragende needs to be checked first because it also contains 'slug' */
+    /* preistragende and info needs to be checked first because it also contains 'slug' */
     if (route.name.includes('preistragende')) {
       return 'preistragende';
-    } else if (route.name.includes('slug')) {
-      return 'landing';
     } else if (route.name.includes('info')) {
       return 'info';
+    } else if (route.name.includes('slug')) {
+      return 'landing';
     } else {
       return 'home';
     }
