@@ -76,7 +76,7 @@ body {
   --tag-top: 2.8rem;
   --heading-h: 5.625rem;
   --offset-content: calc(var(--tag-h) + var(--spacing-xs) + var(--tag-top));
-  --remaining-content: calc(100dvh - var(--heading-h) - var(--offset-content) - (var(--tag-h) + var(--tag-top) * 2) );
+  --remaining-content: calc(100dvh - var(--heading-h) - var(--offset-content) - (var(--tag-h) + var(--tag-top) * 2) - var(--spacing-sm));
   --logotype: 6.95rem;
 
 
