@@ -19,11 +19,12 @@ export default defineNuxtConfig({
   ],
 
 
+
   runtimeConfig: {
-    apiToken: 'test',
+    apiToken: process.env.API_TOKEN,
+    
     public: {
-      apiBaseUrl: 'https://bundespreis-backend.czkaa.site'
-      // apiBaseUrl: 'http://localhost:8000'
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || 'https://bundespreis-backend.czkaa.site'
     }
   },
 

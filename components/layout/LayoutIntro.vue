@@ -13,7 +13,7 @@
     <ClientOnly>
       <div
         ref="introContainer"
-        class="ease-linear duration-intro max-h-full max-w-full will-change-transform w-intro-container-w h-intro-container-h flex justify-center items-center relative"
+        class="ease-linear duration-intro max-h-full max-w-full will-change-transform w-full h-full flex justify-center items-center relative"
         :style="introStyle"
       >
         <BasicsIntroImage
@@ -100,6 +100,10 @@ const selectRandomImages = () => {
     const randomIndex = Math.floor(Math.random() * landscape.length);
     randomLandscapeImage.value = landscape[randomIndex];
   }
+
+  if (randomPortraitImage.value?.src) {
+    preloadImage(randomPortraitImage.value.src);
+  }
 };
 
 const checkViewportSize = () => {
@@ -115,15 +119,12 @@ onMounted(async () => {
 });
 
 const handleImageLoaded = async (image) => {
-  // Small delay to ensure transition is applied
+  introStore.setStart(true);
   setTimeout(() => {
-    introStore.setStart(true);
+    introStore.setScaled(true);
     setTimeout(() => {
-      introStore.setScaled(true);
-      setTimeout(() => {
-        introStore.setDone(true);
-      }, 1000);
-    }, INTRO_DURATION);
-  }, 50); // Small delay to ensure transition property is applied
+      introStore.setDone(true);
+    }, 500);
+  }, INTRO_DURATION);
 };
 </script>
