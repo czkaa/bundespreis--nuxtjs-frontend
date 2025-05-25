@@ -10,16 +10,16 @@ const props = defineProps({
     type: Object,
   },
 });
-
-definePageMeta({
-  key: 'info-page',
-});
-
+const route = useRoute();
 const { locale } = useI18n();
 const { getPageData } = getData();
-const route = useRoute();
 
-const { data: page, error } = await useAsyncData(`pageData-landing`, () =>
-  getPageData(`/${locale.value}/info`)
+definePageMeta({
+  key: (route) => `info-page-${route.fullPath.startsWith('/en') ? 'en' : 'de'}`,
+});
+
+const { data: page, error } = await useAsyncData(
+  `pageData-landing-${route.name}`,
+  () => getPageData(`/${locale.value}/info`)
 );
 </script>
