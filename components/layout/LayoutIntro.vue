@@ -122,21 +122,23 @@ const handleImageLoaded = () => {
 const startTransition = () => {
   if (!isReadyForTransition.value) return;
 
-  introStore.setStart(true);
-
-  // Trigger the scale transition
-  scaleValues.value = {
-    ...scaleValues.value,
-    isScaled: true,
-  };
-
-  // Handle completion timing
   setTimeout(() => {
-    introStore.setScaled(true);
+    introStore.setStart(true);
+
+    // Trigger the scale transition
+    scaleValues.value = {
+      ...scaleValues.value,
+      isScaled: true,
+    };
+
+    // Handle completion timing
     setTimeout(() => {
-      introStore.setDone(true);
-    }, 500);
-  }, INTRO_DURATION);
+      introStore.setScaled(true);
+      setTimeout(() => {
+        introStore.setDone(true);
+      }, 500);
+    }, INTRO_DURATION);
+  }, 500);
 };
 
 const selectRandomImages = () => {
