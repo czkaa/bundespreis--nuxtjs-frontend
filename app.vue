@@ -78,7 +78,9 @@ const showIntro = computed(() => {
 
 const showFooter = computed(() => {
   return (
-    (galleryAtBottom.value && !gap.isGap) || (mainAtBottom.value && gap.isGap)
+    ((galleryAtBottom.value && !gap.isGap) ||
+      (mainAtBottom.value && gap.isGap)) &&
+    gap.isTransitioning
   );
 });
 
