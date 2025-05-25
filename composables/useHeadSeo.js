@@ -18,14 +18,14 @@ export const useHeadSeo = () => {
         {
           name: 'description',
           content:
-            siteData?.seo?.description || 'Bundespreis data viewer application',
+            siteData?.seo?.description || 'Bundespreis für Kunststudierende',
         },
         { name: 'keywords', content: siteData?.seo?.keywords || '' },
         { property: 'og:title', content: siteTitle },
         {
           property: 'og:description',
           content:
-            siteData?.seo?.description || 'Bundespreis data viewer application',
+            siteData?.seo?.description || 'Bundespreis für Kunststudierende',
         },
         ...(siteData?.seo?.image
           ? [{ property: 'og:image', content: siteData.seo.image }]

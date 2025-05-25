@@ -64,8 +64,6 @@ const introStore = useIntroStore();
 const siteStore = useSiteStore();
 const isLangChange = ref(false);
 
-const galleryContainer = ref(null);
-const mainContainer = ref(null);
 const isMounted = ref(null);
 
 // HANDLING LAYOUT CHANGE
@@ -95,14 +93,11 @@ const isScrolledToBottom = (element) => {
   const isScrolledToBottom =
     element.scrollTop + element.clientHeight >=
     element.scrollHeight - threshold;
-
-  console.log(isScrolledToBottom);
   return isScrolledToBottom;
 };
 
 // Throttled scroll handler
 const handleScroll = throttle(() => {
-  console.log('scroll');
   galleryAtBottom.value = isScrolledToBottom(galleryContainer.value);
   mainAtBottom.value = isScrolledToBottom(mainContainer.value);
 }, 100); // Throttle to 100ms
@@ -111,27 +106,23 @@ const handleScroll = throttle(() => {
 onMounted(async () => {
   await nextTick();
 
-  // Initialize scroll states immediately
-  galleryAtBottom.value = isScrolledToBottom(galleryContainer.value);
-  mainAtBottom.value = isScrolledToBottom(mainContainer.value);
-
-  if (galleryContainer.value) {
-    galleryContainer.value.addEventListener('scroll', handleScroll);
-  }
-  if (mainContainer.value) {
-    mainContainer.value.addEventListener('scroll', handleScroll);
-  }
-
-  isMounted.value = true;
+  setTimeout(() => {
+    isMounted.value = true;
+  }, 1000);
 });
 
-// Cleanup scroll listeners
-onUnmounted(() => {
-  if (galleryContainer.value) {
-    galleryContainer.value.removeEventListener('scroll', handleScroll);
+const galleryContainer = ref(null);
+const mainContainer = ref(null);
+
+watch(galleryContainer, (newValue) => {
+  if (newValue) {
+    newValue.addEventListener('scroll', handleScroll);
   }
-  if (mainContainer.value) {
-    mainContainer.value.removeEventListener('scroll', handleScroll);
+});
+
+watch(mainContainer, (newValue) => {
+  if (newValue) {
+    newValue.addEventListener('scroll', handleScroll);
   }
 });
 

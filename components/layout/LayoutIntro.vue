@@ -10,24 +10,24 @@
       ref="pseudoContainer"
       class="w-intro-container-w h-intro-container-h absolute pointer-events-none"
     ></div>
-
-    <div
-      ref="introContainer"
-      v-if="scaleValues"
-      class="transition-transform ease-linear duration-intro max-h-full max-w-full will-change-transform w-intro-container-w h-intro-container-h flex justify-center items-center relative"
-      :style="introStyle"
-    >
-      <BasicsIntroImage
-        v-if="randomPortraitImage && showPortrait"
-        :image="randomPortraitImage"
-        @imageLoaded="handleImageLoaded"
-      />
-      <BasicsIntroImage
-        v-if="randomLandscapeImage && !showPortrait"
-        :image="randomLandscapeImage"
-        @imageLoaded="handleImageLoaded"
-      />
-    </div>
+    <ClientOnly>
+      <div
+        ref="introContainer"
+        class="ease-linear duration-intro max-h-full max-w-full will-change-transform w-intro-container-w h-intro-container-h flex justify-center items-center relative"
+        :style="introStyle"
+      >
+        <BasicsIntroImage
+          v-if="randomPortraitImage && showPortrait"
+          :image="randomPortraitImage"
+          @imageLoaded="handleImageLoaded"
+        />
+        <BasicsIntroImage
+          v-if="randomLandscapeImage && !showPortrait"
+          :image="randomLandscapeImage"
+          @imageLoaded="handleImageLoaded"
+        />
+      </div>
+    </ClientOnly>
   </div>
 </template>
 
@@ -51,20 +51,37 @@ const pseudoContainer = ref(null);
 const showPortrait = ref(false);
 
 const scaleValues = ref(null);
+const enableTransition = ref(false); // Add this flag
 
-const calculateScale = () => {
+const calculateScale = async () => {
   if (pseudoImage.value && pseudoContainer.value) {
     scaleValues.value = {
       x: pseudoImage.value.clientWidth / pseudoContainer.value.clientWidth,
       y: pseudoImage.value.clientHeight / pseudoContainer.value.clientHeight,
     };
   }
+
+  await nextTick();
+  enableTransition.value = true;
 };
 
 const introStyle = computed(() => {
-  return !introStore.isStart
-    ? { transform: `scale(${scaleValues.value.x}, ${scaleValues.value.y})` }
-    : { transform: 'scale(1, 1)' };
+  if (!scaleValues.value) {
+    return { transitionProperty: 'none' };
+  }
+
+  const baseStyle = !introStore.isStart
+    ? {
+        transform: `scale(${scaleValues.value.x}, ${scaleValues.value.y})`,
+      }
+    : {
+        transform: 'scale(1, 1)',
+      };
+
+  return {
+    ...baseStyle,
+    transitionProperty: enableTransition.value ? 'transform' : 'none',
+  };
 });
 
 const introImages = computed(
@@ -98,6 +115,7 @@ onMounted(async () => {
 });
 
 const handleImageLoaded = async (image) => {
+  // Small delay to ensure transition is applied
   setTimeout(() => {
     introStore.setStart(true);
     setTimeout(() => {
@@ -106,6 +124,6 @@ const handleImageLoaded = async (image) => {
         introStore.setDone(true);
       }, 1000);
     }, INTRO_DURATION);
-  }, 1000);
+  }, 50); // Small delay to ensure transition property is applied
 };
 </script>
