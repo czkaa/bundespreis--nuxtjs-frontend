@@ -103,7 +103,13 @@ const handleScroll = throttle(() => {
 }, 100); // Throttle to 100ms
 
 // Setup scroll listeners
-onMounted(() => {
+onMounted(async () => {
+  await nextTick();
+
+  // Initialize scroll states immediately
+  galleryAtBottom.value = isScrolledToBottom(galleryContainer.value);
+  mainAtBottom.value = isScrolledToBottom(mainContainer.value);
+
   if (galleryContainer.value) {
     galleryContainer.value.addEventListener('scroll', handleScroll);
   }
@@ -111,9 +117,7 @@ onMounted(() => {
     mainContainer.value.addEventListener('scroll', handleScroll);
   }
 
-  setTimeout(() => {
-    isMounted.value = true;
-  }, 200);
+  isMounted.value = true;
 });
 
 // Cleanup scroll listeners

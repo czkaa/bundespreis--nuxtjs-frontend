@@ -48,6 +48,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     }
   } else if (toTemplate === 'home') {
     gap.setGap(false);
+    await new Promise((resolve) => setTimeout(resolve, GAP_DURATION));
   } else {
     gap.setGap(false);
     await new Promise((resolve) => setTimeout(resolve, GAP_DURATION));

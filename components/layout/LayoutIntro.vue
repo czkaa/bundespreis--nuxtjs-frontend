@@ -4,7 +4,7 @@
   >
     <div
       ref="introContainer"
-      class="transition-[width, height] ease-linear duration-intro transform-gpu max-h-full max-w-full"
+      class="transition-[width, height] ease-linear duration-intro max-h-full max-w-full will-change-[width, height]"
       :class="
         !introStore.isStart
           ? 'w-intro-image-w h-intro-image-h'
