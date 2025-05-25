@@ -97,12 +97,12 @@ const isScrolledToBottom = (element) => {
     element.scrollHeight - threshold;
 
   console.log(isScrolledToBottom);
-
   return isScrolledToBottom;
 };
 
 // Throttled scroll handler
 const handleScroll = throttle(() => {
+  console.log('scroll');
   galleryAtBottom.value = isScrolledToBottom(galleryContainer.value);
   mainAtBottom.value = isScrolledToBottom(mainContainer.value);
 }, 100); // Throttle to 100ms

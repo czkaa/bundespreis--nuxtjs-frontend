@@ -47,35 +47,23 @@ const calculateWellDistributedPositions = (items) => {
 
   // Generate positions with balanced distribution
   const positions = [];
-  let leftSideConsecutive = 0;
-  let rightSideConsecutive = 0;
 
   for (let i = 0; i < numItems; i++) {
     // Generate a random position between 0 and 1
     let position = Math.random();
 
-    // Check if we need to force a position to avoid more than 2 consecutive on same side
-    if (position < 0.5) {
-      // This would be on the left side
-      if (leftSideConsecutive >= 2) {
-        // Force to right side
-        position = Math.random() * 0.5 + 0.5;
-        leftSideConsecutive = 0;
-        rightSideConsecutive = 1;
-      } else {
-        leftSideConsecutive++;
-        rightSideConsecutive = 0;
+    // Check if we have at least 2 previous positions
+    if (i >= 2) {
+      const prevPosition = positions[i - 1];
+      const prevPrevPosition = positions[i - 2];
+
+      // If all three positions (prev, prevprev, and current) are over 0.6
+      if (prevPosition > 0.6 && prevPrevPosition > 0.6 && position > 0.6) {
+        position = Math.abs(1 - position);
       }
-    } else {
-      // This would be on the right side
-      if (rightSideConsecutive >= 2) {
-        // Force to left side
-        position = Math.random() * 0.5;
-        rightSideConsecutive = 0;
-        leftSideConsecutive = 1;
-      } else {
-        rightSideConsecutive++;
-        leftSideConsecutive = 0;
+      // If all three positions are under 0.4
+      else if (prevPosition < 0.4 && prevPrevPosition < 0.4 && position < 0.4) {
+        position = Math.abs(1 - position);
       }
     }
 
@@ -89,11 +77,7 @@ const calculateWellDistributedPositions = (items) => {
     positions.push(position);
   }
 
-  // Shuffle the positions slightly to avoid predictable patterns
-  // but maintain the left/right balance
-  const shuffledItems = [...items].sort(() => Math.random() - 0.5);
-
-  return shuffledItems.map((item, index) => {
+  return items.map((item, index) => {
     const position = positions[index];
 
     return {
