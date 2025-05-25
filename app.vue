@@ -89,13 +89,16 @@ const mainAtBottom = ref(false);
 
 // Function to check if element is scrolled to bottom
 const isScrolledToBottom = (element) => {
-  console.log(element, 'ELEMENT');
   if (!element) return false;
   const threshold = 100; // Small threshold to account for sub-pixel scrolling
 
-  return (
-    element.scrollTop + element.clientHeight >= element.scrollHeight - threshold
-  );
+  const isScrolledToBottom =
+    element.scrollTop + element.clientHeight >=
+    element.scrollHeight - threshold;
+
+  console.log(isScrolledToBottom);
+
+  return isScrolledToBottom;
 };
 
 // Throttled scroll handler
