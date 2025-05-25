@@ -3,26 +3,30 @@
     class="w-full h-frame-h overflow-hidden bg-white flex flex-col items-center justify-center pl-[var(--intro-pl)] pt-[var(--intro-pt)] pr-[var(--intro-pr)] pb-[var(--intro-pb)]"
   >
     <div
+      ref="pseudoImage"
+      class="w-intro-image-w h-intro-image-h absolute pointer-events-none"
+    ></div>
+    <div
+      ref="pseudoContainer"
+      class="w-intro-container-w h-intro-container-h absolute pointer-events-none"
+    ></div>
+
+    <div
       ref="introContainer"
-      class="transition-[width, height] ease-linear duration-intro max-h-full max-w-full will-change-[width, height]"
-      :class="
-        !introStore.isStart
-          ? 'w-intro-image-w h-intro-image-h'
-          : 'w-intro-container-w h-intro-container-h'
-      "
+      v-if="scaleValues"
+      class="transition-transform ease-linear duration-intro max-h-full max-w-full will-change-transform w-intro-container-w h-intro-container-h flex justify-center items-center relative"
+      :style="introStyle"
     >
-      <div class="w-full h-full flex justify-center items-center relative">
-        <BasicsIntroImage
-          v-if="randomPortraitImage && showPortrait"
-          :image="randomPortraitImage"
-          @imageLoaded="handleImageLoaded"
-        />
-        <BasicsIntroImage
-          v-if="randomLandscapeImage && !showPortrait"
-          :image="randomLandscapeImage"
-          @imageLoaded="handleImageLoaded"
-        />
-      </div>
+      <BasicsIntroImage
+        v-if="randomPortraitImage && showPortrait"
+        :image="randomPortraitImage"
+        @imageLoaded="handleImageLoaded"
+      />
+      <BasicsIntroImage
+        v-if="randomLandscapeImage && !showPortrait"
+        :image="randomLandscapeImage"
+        @imageLoaded="handleImageLoaded"
+      />
     </div>
   </div>
 </template>
@@ -42,7 +46,26 @@ const props = defineProps({
 const randomPortraitImage = ref(null);
 const randomLandscapeImage = ref(null);
 const introContainer = ref(null);
+const pseudoImage = ref(null);
+const pseudoContainer = ref(null);
 const showPortrait = ref(false);
+
+const scaleValues = ref(null);
+
+const calculateScale = () => {
+  if (pseudoImage.value && pseudoContainer.value) {
+    scaleValues.value = {
+      x: pseudoImage.value.clientWidth / pseudoContainer.value.clientWidth,
+      y: pseudoImage.value.clientHeight / pseudoContainer.value.clientHeight,
+    };
+  }
+};
+
+const introStyle = computed(() => {
+  return !introStore.isStart
+    ? { transform: `scale(${scaleValues.value.x}, ${scaleValues.value.y})` }
+    : { transform: 'scale(1, 1)' };
+});
 
 const introImages = computed(
   () => props.siteData?.introImages || { portrait: [], landscape: [] }
@@ -66,8 +89,11 @@ const checkViewportSize = () => {
   showPortrait.value = window.innerWidth <= BREAKPOINT_MD;
 };
 
-onMounted(() => {
-  selectRandomImages();
+selectRandomImages();
+
+onMounted(async () => {
+  await nextTick();
+  calculateScale();
   checkViewportSize();
 });
 
