@@ -28,7 +28,6 @@
 <script setup>
 import { useImageStore } from '../stores/images';
 const imageStore = useImageStore();
-const { locale } = useI18n();
 const localePath = useLocalePath();
 const gap = useGapStore();
 

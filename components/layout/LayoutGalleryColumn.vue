@@ -93,8 +93,9 @@ const itemsWithPositions = computed(() => {
   return calculateWellDistributedPositions(props.items);
 });
 
-const toggleGap = () => {
-  if (gap.isTransitioning) return;
+const toggleGap = async () => {
+  await nextTick();
+  if (gap.isGap || gap.isTransitioning) return;
   navigateTo(localePath('/'));
 };
 </script>
