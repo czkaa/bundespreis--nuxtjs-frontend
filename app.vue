@@ -88,6 +88,7 @@ const showFooter = computed(() => {
 
 const galleryAtBottom = ref(false);
 const mainAtBottom = ref(false);
+const blockFooter = ref(false);
 
 // Function to check if element is scrolled to bottom
 const isScrolledToBottom = (element) => {
@@ -102,6 +103,7 @@ const isScrolledToBottom = (element) => {
 
 // Throttled scroll handler
 const handleScroll = throttle(() => {
+  if (blockFooter.value) return;
   galleryAtBottom.value = isScrolledToBottom(galleryContainer.value);
   mainAtBottom.value = isScrolledToBottom(mainContainer.value);
 }, 100); // Throttle to 100ms
@@ -128,6 +130,13 @@ watch(mainContainer, (newValue) => {
   if (newValue) {
     newValue.addEventListener('scroll', handleScroll);
   }
+});
+
+watch(gap.isGap, (newValue) => {
+  blockFooter.value = true;
+  setTimeout(() => {
+    blockFooter.value = false;
+  }, 1000);
 });
 
 // Fetch data
