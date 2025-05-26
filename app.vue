@@ -20,7 +20,6 @@
         class="absolute w-full h-frame-h transition-opacity duration-gap overflow-y-scroll pb-offset-content"
         :class="{
           'opacity-0': !gap.isGap || !isMounted,
-
           'z-50': gap.isGap && gap.isTransitioning,
         }"
         ref="mainContainer"
@@ -81,9 +80,10 @@ const showIntro = computed(() => {
 
 const showFooter = computed(() => {
   return (
-    (galleryAtBottom.value && !gap.isGap && !gap.isTransitioning) ||
-    (mainAtBottom.value && gap.isGap && !gap.isTransitioning) ||
-    routeStore.template === 'info'
+    ((galleryAtBottom.value && !gap.isGap && !gap.isTransitioning) ||
+      (mainAtBottom.value && gap.isGap && !gap.isTransitioning) ||
+      routeStore.template === 'info') &&
+    !blockFooter.value
   );
 });
 
