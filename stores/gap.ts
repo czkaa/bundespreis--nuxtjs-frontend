@@ -11,11 +11,14 @@ export const useGapStore = defineStore('gap', {
       this.isGap = !this.isGap
     },
     setGap(value: boolean) {
-       this.isGap = value
-       this.isTransitioning = true;
+      this.isTransitioning = true;
+
+      setTimeout(() => {
+        this.isGap = value;
        setTimeout(() => {
          this.isTransitioning = false
        }, GAP_DURATION)
+      }, 100)
     }
   }
 })

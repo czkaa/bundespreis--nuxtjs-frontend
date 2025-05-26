@@ -95,7 +95,7 @@ const itemsWithPositions = computed(() => {
 
 const toggleGap = async () => {
   await nextTick();
-  if (gap.isGap || gap.isTransitioning) return;
+  if (gap.isTransitioning || gap.isGap) return;
   navigateTo(localePath('/'));
 };
 </script>
