@@ -132,9 +132,14 @@ watch(
     if (!watcherEnabled.value || isScrolling.value || isUpdatingUrl.value)
       return;
 
-    console.log('Route changed to:', newSlug);
-    if (newSlug?.length > 0) {
-      const slug = newSlug[0];
+    const slug =
+      newSlug && typeof newSlug === 'string'
+        ? newSlug
+        : newSlug?.length > 0
+        ? newSlug[0]
+        : null;
+
+    if (slug) {
       scrollToElement(slug, false); // false = smooth scroll
     }
   }

@@ -65,5 +65,4 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   }
 
   routeStore.setTemplate(toTemplate);
-  routeStore.setRoute(to.fullPath);
 });

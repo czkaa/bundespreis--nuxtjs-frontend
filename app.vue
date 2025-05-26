@@ -65,6 +65,7 @@ const gap = useGapStore();
 const introStore = useIntroStore();
 const siteStore = useSiteStore();
 const isLangChange = ref(false);
+const routeStore = useRouteStore();
 
 const isMounted = ref(null);
 
@@ -80,9 +81,9 @@ const showIntro = computed(() => {
 
 const showFooter = computed(() => {
   return (
-    ((galleryAtBottom.value && !gap.isGap) ||
-      (mainAtBottom.value && gap.isGap)) &&
-    !gap.isTransitioning
+    (galleryAtBottom.value && !gap.isGap && !gap.isTransitioning) ||
+    (mainAtBottom.value && gap.isGap && !gap.isTransitioning) ||
+    routeStore.template === 'info'
   );
 });
 

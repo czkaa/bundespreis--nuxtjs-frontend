@@ -5,11 +5,6 @@
 </template>
 
 <script setup>
-const props = defineProps({
-  data: {
-    type: Object,
-  },
-});
 const route = useRoute();
 const { locale } = useI18n();
 const { getPageData } = getData();
