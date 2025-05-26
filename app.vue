@@ -7,7 +7,7 @@
         style="scrollbar-gutter: stable"
         class="absolute top-0 h-frame-h w-full z-50 overflow-y-auto"
         :class="{
-          'pointer-events-none': gap.isGap,
+          'pointer-events-none overflow-hidden': gap.isGap,
         }"
         id="galleryContainer"
         ref="galleryContainer"
@@ -17,13 +17,15 @@
 
       <main
         style="scrollbar-gutter: stable"
-        class="w-full absolute h-frame-h transition-opacity duration-gap overflow-y-scroll pb-offset-content"
+        class="ml-column-l w-main absolute h-frame-h transition-opacity duration-gap overflow-y-scroll pb-offset-content"
         :class="{
           'opacity-0': !gap.isGap || !isMounted,
+
+          'z-50': gap.isGap && gap.isTransitioning,
         }"
         ref="mainContainer"
       >
-        <div class="w-main ml-column-l mb-xs overflow-x-hidden px-sm md:px-0">
+        <div class="mb-xs overflow-x-hidden px-sm md:px-0">
           <NuxtPage />
         </div>
       </main>
@@ -80,7 +82,7 @@ const showFooter = computed(() => {
   return (
     ((galleryAtBottom.value && !gap.isGap) ||
       (mainAtBottom.value && gap.isGap)) &&
-    gap.isTransitioning
+    !gap.isTransitioning
   );
 });
 
