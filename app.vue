@@ -17,7 +17,7 @@
 
       <main
         style="scrollbar-gutter: stable"
-        class="ml-column-l w-main absolute h-frame-h transition-opacity duration-gap overflow-y-scroll pb-offset-content"
+        class="absolute h-frame-h transition-opacity duration-gap overflow-y-scroll pb-offset-content"
         :class="{
           'opacity-0': !gap.isGap || !isMounted,
 
@@ -25,7 +25,7 @@
         }"
         ref="mainContainer"
       >
-        <div class="mb-xs overflow-x-hidden px-sm md:px-0">
+        <div class="w-main ml-column-l mb-xs overflow-x-hidden px-sm md:px-0">
           <NuxtPage />
         </div>
       </main>

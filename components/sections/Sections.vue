@@ -1,10 +1,12 @@
 <template>
   <div>
     <Section
-      v-for="section in sections"
+      v-for="(section, index) in sections"
       :key="section.id"
       :section="section"
       @sectionInView="handleSectionInView"
+      :isFirst="index === 0"
+      :isLast="index === sections.length - 1"
     />
   </div>
 </template>
