@@ -107,8 +107,9 @@ const disconnectObserver = () => {
 };
 
 onMounted(async () => {
-  await nextTick();
-  setupObserver();
+  setTimeout(() => {
+    setupObserver();
+  }, 1000);
 });
 
 onUnmounted(() => {
