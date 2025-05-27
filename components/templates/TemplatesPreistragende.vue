@@ -11,10 +11,7 @@
         maxWidth: `min(var(--image-w), calc(65vh * ${data.portrait.ratio}))`,
       }"
     >
-      <BasicsGalleryImage
-        :image="data.portrait"
-        class="hover-hover:hover:scale-[103%] hover-hover:hover:z-50 transform transition-transform duration-300"
-      />
+      <BasicsGalleryImage :image="data.portrait" />
       <BasicsCaption
         v-if="data.portrait.caption"
         :text="data.portrait.caption"

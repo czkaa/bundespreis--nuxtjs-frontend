@@ -17,14 +17,14 @@
 
       <main
         style="scrollbar-gutter: stable"
-        class="absolute w-full h-frame-h transition-opacity duration-gap overflow-y-scroll pb-offset-content"
+        class="absolute w-full h-frame-h transition-opacity duration-gap overflow-y-scroll pb-[30vh]"
         :class="{
           'opacity-0': !gap.isGap || !isMounted || gap.isTransitioning,
           'z-50': gap.isGap && gap.isTransitioning,
         }"
         ref="mainContainer"
       >
-        <div class="w-main ml-column-l mb-xs overflow-x-hidden px-sm md:px-0">
+        <div class="w-main ml-column-l overflow-x-hidden px-sm md:px-0">
           <slot />
         </div>
       </main>

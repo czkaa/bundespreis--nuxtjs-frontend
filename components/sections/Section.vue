@@ -24,6 +24,11 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  scrollDirection: {
+    type: String,
+    default: 'down',
+    validator: (value) => ['up', 'down'].includes(value),
+  },
 });
 
 const emit = defineEmits(['sectionInView']);
@@ -40,36 +45,61 @@ const setupObserver = () => {
       // For first element: more lenient, trigger early
       observerConfig = {
         threshold: [0, 0.1, 0.3],
-        rootMargin: '0px 0px -50% 0px', // Only shrink bottom margin
+        rootMargin: '0px 0px -50% 0px',
       };
     } else if (props.isLast) {
-      // For last element: very lenient threshold
+      // For last element: focus on top crossing middle
       observerConfig = {
-        threshold: [0, 0.1, 0.2],
-        rootMargin: '-50% 0px 0px 0px', // Only shrink top margin
+        threshold: [0, 0.1, 0.3, 0.5],
+        rootMargin: '-50% 0px 0px 0px',
       };
     } else {
-      // For middle elements: standard config
+      // For middle elements: more granular thresholds for scroll direction logic
       observerConfig = {
-        threshold: 0.3,
-        rootMargin: '-10% 0px -10% 0px',
+        threshold: [0, 0.1, 0.2, 0.3, 0.5, 0.8],
+        rootMargin: '0px',
       };
     }
 
     observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        // Different intersection logic based on position
+        const { isIntersecting, intersectionRatio, boundingClientRect } = entry;
+        const elementRect = boundingClientRect;
+        const viewportHeight = window.innerHeight;
+        const middleLine = viewportHeight / 2;
+
+        // Get element's position relative to viewport
+        const elementTop = elementRect.top;
+        const elementBottom = elementRect.bottom;
+        const elementMiddle = elementTop + elementRect.height / 2;
+
         let shouldEmit = false;
 
         if (props.isFirst) {
           // First element: trigger if any part is visible and intersectionRatio > 0.1
-          shouldEmit = entry.isIntersecting && entry.intersectionRatio > 0.1;
+          shouldEmit = isIntersecting && intersectionRatio > 0.1;
         } else if (props.isLast) {
-          // Last element: trigger if any meaningful part is visible
-          shouldEmit = entry.isIntersecting && entry.intersectionRatio > 0.1;
+          // Last element: only activate when scrolling down and top crosses middle
+          shouldEmit =
+            props.scrollDirection === 'down' &&
+            elementTop <= middleLine &&
+            isIntersecting &&
+            intersectionRatio > 0.1;
         } else {
-          // Middle elements: standard 30% threshold
-          shouldEmit = entry.isIntersecting && entry.intersectionRatio >= 0.3;
+          // Middle elements: different behavior based on scroll direction
+          if (props.scrollDirection === 'down') {
+            // Scrolling down: activate when element crosses middle line
+            shouldEmit =
+              elementTop <= middleLine &&
+              isIntersecting &&
+              intersectionRatio > 0.1;
+          } else {
+            // Scrolling up: activate when element bottom passes middle line
+            shouldEmit =
+              elementBottom >= middleLine &&
+              isIntersecting &&
+              intersectionRatio > 0.1;
+          }
         }
 
         if (shouldEmit) {
@@ -82,7 +112,6 @@ const setupObserver = () => {
 
     // For first element, also check if it's already in view on mount
     if (props.isFirst) {
-      // Small delay to ensure DOM is fully rendered
       setTimeout(() => {
         const rect = sectionRef.value?.getBoundingClientRect();
         if (rect && rect.top < window.innerHeight * 0.5) {
@@ -115,6 +144,17 @@ watch(
     if (disabled) {
       disconnectObserver();
     } else {
+      disconnectObserver();
+      setupObserver();
+    }
+  }
+);
+
+// Re-setup observer when scroll direction changes for better responsiveness
+watch(
+  () => props.scrollDirection,
+  () => {
+    if (!props.disableObserver) {
       disconnectObserver();
       setupObserver();
     }

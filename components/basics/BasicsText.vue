@@ -25,7 +25,7 @@ const formattedText = computed(() => {
 </script>
 <style>
 [basics-text] strong {
-  @apply text-sm-sans font-sans font-medium;
+  @apply text-sm-sans font-sans font-semibold;
 }
 
 [basics-text] a {

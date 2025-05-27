@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full h-frame-h overflow-hidden bg-white flex flex-col items-center justify-center pl-[var(--intro-pl)] pt-[var(--intro-pt)] pr-[var(--intro-pr)] pb-[var(--intro-pb)]"
+    class="w-frame-w h-frame-h overflow-hidden bg-white flex flex-col items-center justify-center pl-[var(--intro-pl)] pt-[var(--intro-pt)] pr-[var(--intro-pr)] pb-[var(--intro-pb)]"
   >
     <div
       ref="pseudoImage"
@@ -136,7 +136,7 @@ const startTransition = () => {
       introStore.setScaled(true);
       setTimeout(() => {
         introStore.setDone(true);
-      }, 500);
+      }, 1000);
     }, INTRO_DURATION);
   }, 500);
 };
