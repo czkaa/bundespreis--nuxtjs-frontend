@@ -17,7 +17,7 @@
 
       <main
         style="scrollbar-gutter: stable"
-        class="absolute w-full h-frame-h transition-opacity duration-gap overflow-y-scroll pb-[30vh]"
+        class="absolute w-full h-frame-h transition-opacity duration-gap overflow-y-scroll pb-[40vh]"
         :class="{
           'opacity-0': !gap.isGap || !isMounted || gap.isTransitioning,
           'z-50': gap.isGap && gap.isTransitioning,

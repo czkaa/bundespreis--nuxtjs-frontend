@@ -25,7 +25,7 @@ export default {
     },
     screens: {
       lg: { min: '1280px' },
-      md: { max: '900px' },
+      md: { max: '1000px' },
       sm: { max: '700px' },
 
       'hover-hover': { raw: '(hover: hover)' },

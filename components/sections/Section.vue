@@ -35,74 +35,50 @@ const emit = defineEmits(['sectionInView']);
 
 const sectionRef = ref(null);
 let observer = null;
+let hasEmitted = false;
 
 const setupObserver = () => {
   if (sectionRef.value && !props.disableObserver) {
-    // Different configurations for first, last, and middle elements
-    let observerConfig;
-
-    if (props.isFirst) {
-      // For first element: more lenient, trigger early
-      observerConfig = {
-        threshold: [0, 0.1, 0.3],
-        rootMargin: '0px 0px -50% 0px',
-      };
-    } else if (props.isLast) {
-      // For last element: focus on top crossing middle
-      observerConfig = {
-        threshold: [0, 0.1, 0.3, 0.5],
-        rootMargin: '-50% 0px 0px 0px',
-      };
-    } else {
-      // For middle elements: more granular thresholds for scroll direction logic
-      observerConfig = {
-        threshold: [0, 0.1, 0.2, 0.3, 0.5, 0.8],
-        rootMargin: '0px',
-      };
-    }
+    const observerConfig = {
+      threshold: Array.from({ length: 101 }, (_, i) => i / 100), // 0.00 to 1.00 in 0.01 steps
+      rootMargin: '0px',
+    };
 
     observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        const { isIntersecting, intersectionRatio, boundingClientRect } = entry;
+        const { isIntersecting, boundingClientRect } = entry;
+
+        if (!isIntersecting) {
+          hasEmitted = false;
+          return;
+        }
+
         const elementRect = boundingClientRect;
         const viewportHeight = window.innerHeight;
         const middleLine = viewportHeight / 2;
-
-        // Get element's position relative to viewport
         const elementTop = elementRect.top;
         const elementBottom = elementRect.bottom;
-        const elementMiddle = elementTop + elementRect.height / 2;
 
         let shouldEmit = false;
 
-        if (props.isFirst) {
-          // First element: trigger if any part is visible and intersectionRatio > 0.1
-          shouldEmit = isIntersecting && intersectionRatio > 0.1;
-        } else if (props.isLast) {
-          // Last element: only activate when scrolling down and top crosses middle
-          shouldEmit =
-            props.scrollDirection === 'down' &&
-            elementTop <= middleLine &&
-            isIntersecting &&
-            intersectionRatio > 0.1;
+        if (props.scrollDirection === 'down') {
+          // Scrolling down: trigger when top edge crosses middle line
+          shouldEmit = elementTop <= middleLine && elementTop > middleLine - 50;
         } else {
-          // Middle elements: different behavior based on scroll direction
-          if (props.scrollDirection === 'down') {
-            // Scrolling down: activate when element crosses middle line
-            shouldEmit =
-              elementTop <= middleLine &&
-              isIntersecting &&
-              intersectionRatio > 0.1;
-          } else {
-            // Scrolling up: activate when element bottom passes middle line
-            shouldEmit =
-              elementBottom >= middleLine &&
-              isIntersecting &&
-              intersectionRatio > 0.1;
-          }
+          // Scrolling up: trigger when bottom edge crosses middle line
+          shouldEmit =
+            elementBottom >= middleLine && elementBottom < middleLine + 50;
         }
 
-        if (shouldEmit) {
+        // Special case for last element when scrolling down
+        if (props.isLast && props.scrollDirection === 'down') {
+          // Only trigger when top crosses middle (not bottom)
+          shouldEmit = elementTop <= middleLine && elementTop > middleLine - 50;
+        }
+
+        // Emit only once per crossing to avoid spam
+        if (shouldEmit && !hasEmitted) {
+          hasEmitted = true;
           emit('sectionInView', props.section.slug);
         }
       });
@@ -110,12 +86,14 @@ const setupObserver = () => {
 
     observer.observe(sectionRef.value);
 
-    // For first element, also check if it's already in view on mount
+    // Initial check for first element
     if (props.isFirst) {
       setTimeout(() => {
-        const rect = sectionRef.value?.getBoundingClientRect();
-        if (rect && rect.top < window.innerHeight * 0.5) {
-          emit('sectionInView', props.section.slug);
+        if (sectionRef.value) {
+          const rect = sectionRef.value.getBoundingClientRect();
+          if (rect && rect.top <= window.innerHeight / 2) {
+            emit('sectionInView', props.section.slug);
+          }
         }
       }, 100);
     }
@@ -127,6 +105,7 @@ const disconnectObserver = () => {
     observer.disconnect();
     observer = null;
   }
+  hasEmitted = false;
 };
 
 onMounted(() => {
@@ -137,7 +116,6 @@ onUnmounted(() => {
   disconnectObserver();
 });
 
-// Watch for changes in disableObserver prop
 watch(
   () => props.disableObserver,
   (disabled) => {
@@ -150,14 +128,11 @@ watch(
   }
 );
 
-// Re-setup observer when scroll direction changes for better responsiveness
+// Reset emission flag when scroll direction changes
 watch(
   () => props.scrollDirection,
   () => {
-    if (!props.disableObserver) {
-      disconnectObserver();
-      setupObserver();
-    }
+    hasEmitted = false;
   }
 );
 </script>

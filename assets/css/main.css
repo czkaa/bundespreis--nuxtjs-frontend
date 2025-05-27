@@ -87,7 +87,7 @@ body {
   --intro-pl: 11.4rem;
   --intro-pr: 11.85rem;
   --intro-pb: calc(var(--tag-h) + 1.3rem - 1px);
-  --intro-pt: calc(var(--tag-h));
+  --intro-pt: calc(var(--tag-h) - 1px);
 
 
   --intro-container-h: calc(100vh - var(--intro-pt) - var(--intro-pb));
@@ -110,8 +110,6 @@ body {
     --image-w: 85%;
     --column-l: 8vw;
     --column-r: 8vw;
-    --intro-pl: 0;
-    --intro-pr: 0;
     
     --intro-pb: calc(var(--logotype) - 1px);
     --intro-pt: calc(var(--logotype) - 1px);
