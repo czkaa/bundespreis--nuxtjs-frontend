@@ -1,8 +1,8 @@
 <template>
   <div
     @click.stop="toggleGap"
-    style="cursor: url('~/assets/cursors/close.svg'), pointer"
-    class="w-1/2 transition-all duration-gap ease-in-out transform cursor-pointer overflow-hidden space-y-xs flex flex-col relative"
+    style="cursor: url('/cursors/close.svg'), pointer"
+    class="w-1/2 transition-all duration-gap ease-in-out transform overflow-hidden space-y-xs flex flex-col relative"
     :class="[
       gap.isGap
         ? isLeft
