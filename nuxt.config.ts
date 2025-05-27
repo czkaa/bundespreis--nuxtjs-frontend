@@ -12,12 +12,11 @@ export default defineNuxtConfig({
     ]
   },
   
-  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@nuxtjs/i18n', '@nuxt/image'],
+  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@nuxtjs/i18n'],
   
   css: [
     '~/assets/css/main.css'
   ],
-
 
 
   runtimeConfig: {

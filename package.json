@@ -13,6 +13,7 @@
   "dependencies": {
     "@nuxt/image": "^1.10.0",
     "@nuxtjs/i18n": "^9.5.4",
+    "@nuxtjs/sitemap": "^7.3.0",
     "@pinia/nuxt": "^0.5.1",
     "highlight.js": "^11.9.0",
     "lodash.throttle": "^4.1.1",

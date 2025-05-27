@@ -34,24 +34,29 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   const toLanguage = findLanguage(to);
   const fromLanguage = findLanguage(from);
 
-  if (to.fullPath === from.fullPath && toTemplate === 'home') {
-    intro.setIntro(true);
-  }
-
-  if (fromTemplate === toTemplate) {
-    if (
-      toTemplate === 'preistragende' ||
-      (toLanguage !== fromLanguage && toTemplate !== 'home')
-    ) {
+  // initial render, always open unless it is home
+  if (to.fullPath === from.fullPath) {
+    if (toTemplate === 'home') {
+      intro.setIntro(true);
+      gap.setGap(false);
+    } else {
+      gap.setGap(true);
+    }
+    // later, alway set false when going home
+  } else if (toTemplate === 'home') {
+    gap.setGap(false);
+    await new Promise((resolve) => setTimeout(resolve, GAP_DURATION));
+    // if navigating from one  temlate to the other
+  } else if (fromTemplate === toTemplate) {
+    // close and open gap only if navigating to a different language or preistragende (but not for landing and info)
+    if (toTemplate === 'preistragende' || toLanguage !== fromLanguage) {
       gap.setGap(false);
       await new Promise((resolve) => setTimeout(resolve, GAP_DURATION));
       setTimeout(() => {
         gap.setGap(true);
       }, GAP_DURATION);
     }
-  } else if (toTemplate === 'home') {
-    gap.setGap(false);
-    await new Promise((resolve) => setTimeout(resolve, GAP_DURATION));
+    // coming from home, a different animation is needed because gap is already closed
   } else if (fromTemplate === 'home') {
     setTimeout(() => {
       gap.setGap(true);

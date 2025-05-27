@@ -3,7 +3,7 @@ import { GAP_DURATION } from '../utils/tailwind';
 
 export const useGapStore = defineStore('gap', {
   state: () => ({
-    isGap: false,
+    isGap: true,
     isTransitioning: true
   }),
   actions: {
