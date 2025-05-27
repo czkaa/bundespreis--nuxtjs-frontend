@@ -171,6 +171,8 @@ watch(
   (newValue) => {
     blockFooter.value = true;
     setTimeout(() => {
+      galleryAtBottom.value = isScrolledToBottom(galleryContainer.value);
+      mainAtBottom.value = isScrolledToBottom(mainContainer.value);
       blockFooter.value = false;
     }, 1000);
   }

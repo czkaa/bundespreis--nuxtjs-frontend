@@ -82,19 +82,6 @@ const setupObserver = () => {
     }, observerConfig);
 
     observer.observe(sectionRef.value);
-
-    // // Initial check for first element
-    // if (props.isFirst) {
-    //   setTimeout(() => {
-    //     if (sectionRef.value) {
-    //       const rect = sectionRef.value.getBoundingClientRect();
-    //       if (rect && rect.top <= window.innerHeight * 0.1) {
-    //         emit('sectionInView', props.section.slug);
-    //         hasEmitted = true;
-    //       }
-    //     }
-    //   }, 1000);
-    // }
   }
 };
 
