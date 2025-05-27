@@ -67,7 +67,7 @@ export default {
       },
       transitionDuration: {
         intro: '1200ms',
-        gap: '500ms',
+        gap: '900ms',
         page: '1000ms',
         fade: '800ms',
       },
