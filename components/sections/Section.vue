@@ -40,7 +40,7 @@ let hasEmitted = false;
 const setupObserver = () => {
   if (sectionRef.value && !props.disableObserver) {
     const observerConfig = {
-      threshold: Array.from({ length: 101 }, (_, i) => i / 100), // 0.00 to 1.00 in 0.01 steps
+      threshold: Array.from({ length: 101 }, (_, i) => i / 100),
       rootMargin: '0px',
     };
 
@@ -55,25 +55,22 @@ const setupObserver = () => {
 
         const elementRect = boundingClientRect;
         const viewportHeight = window.innerHeight;
-        const middleLine = viewportHeight / 2;
+        const topTriggerLine = viewportHeight * 0.5; // 10% from top
+        const middleTriggerLine = viewportHeight * 0.5; // 50% from top
         const elementTop = elementRect.top;
         const elementBottom = elementRect.bottom;
 
         let shouldEmit = false;
 
         if (props.scrollDirection === 'down') {
-          // Scrolling down: trigger when top edge crosses middle line
-          shouldEmit = elementTop <= middleLine && elementTop > middleLine - 50;
-        } else {
-          // Scrolling up: trigger when bottom edge crosses middle line
+          // Scrolling down: trigger when top edge crosses 10% line from top
           shouldEmit =
-            elementBottom >= middleLine && elementBottom < middleLine + 50;
-        }
-
-        // Special case for last element when scrolling down
-        if (props.isLast && props.scrollDirection === 'down') {
-          // Only trigger when top crosses middle (not bottom)
-          shouldEmit = elementTop <= middleLine && elementTop > middleLine - 50;
+            elementTop <= topTriggerLine && elementTop > topTriggerLine - 50;
+        } else {
+          // Scrolling up: trigger when bottom edge crosses 50% line from top
+          shouldEmit =
+            elementBottom >= middleTriggerLine &&
+            elementBottom < middleTriggerLine + 50;
         }
 
         // Emit only once per crossing to avoid spam
@@ -91,8 +88,9 @@ const setupObserver = () => {
       setTimeout(() => {
         if (sectionRef.value) {
           const rect = sectionRef.value.getBoundingClientRect();
-          if (rect && rect.top <= window.innerHeight / 2) {
+          if (rect && rect.top <= window.innerHeight * 0.1) {
             emit('sectionInView', props.section.slug);
+            hasEmitted = true;
           }
         }
       }, 100);

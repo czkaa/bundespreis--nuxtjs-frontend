@@ -14,7 +14,7 @@
 
 <script setup>
 import { onMounted, onUnmounted, watch, ref, nextTick } from 'vue';
-import throttle from 'lodash.throttle';
+import { throttle } from 'lodash';
 import Section from './Section.vue';
 
 const route = useRoute();
@@ -38,6 +38,39 @@ const isInitialMount = ref(true);
 const scrollDirection = ref('down');
 let lastScrollY = 0;
 
+// Helper function to extract clean slug from route path
+const cleanSlug = (routePath) => {
+  if (!routePath) return null;
+
+  // Remove leading/trailing slashes and split by '/'
+  const segments = routePath.replace(/^\/+|\/+$/g, '').split('/');
+
+  // Return the last segment (the actual slug)
+  return segments.length > 0 && segments[segments.length - 1]
+    ? segments[segments.length - 1]
+    : null;
+};
+
+// Helper function to build new route path
+const buildNewRoutePath = (newSlug) => {
+  const currentPath = route.path;
+  const currentSlug = cleanSlug(currentPath);
+
+  if (currentSlug) {
+    // Replace existing slug with new one
+    const pathWithoutSlug = currentPath.substring(
+      0,
+      currentPath.lastIndexOf(currentSlug)
+    );
+    return `${pathWithoutSlug}${newSlug}`;
+  } else {
+    // Append new slug to current path
+    return currentPath.endsWith('/')
+      ? `${currentPath}${newSlug}`
+      : `${currentPath}/${newSlug}`;
+  }
+};
+
 // Throttled scroll handler to track direction
 const handleScroll = throttle(() => {
   if (!process.client || isScrolling.value) return;
@@ -55,19 +88,12 @@ const handleScroll = throttle(() => {
   lastScrollY = currentScrollY;
 }, 16); // ~60fps throttling
 
-const cleanSlug = (slug) => {
-  // Clean the slug from the route params
-  if (Array.isArray(slug)) {
-    return slug[0] || null; // Use first slug if it's an array
-  }
-  return typeof slug === 'string' ? slug : null;
-};
-
 const scrollToElement = (slug, instant = false) => {
-  const cleanedSlug = cleanSlug(slug);
+  // Only run on client side
+  if (!process.client) return;
 
   const main = document.querySelector('main');
-  const section = document.getElementById(cleanedSlug);
+  const section = document.getElementById(slug);
   if (section && main) {
     isScrolling.value = true;
 
@@ -133,15 +159,12 @@ const scrollToElement = (slug, instant = false) => {
         // Update lastScrollY in case the check failed
         const main = document.querySelector('main');
         if (main) lastScrollY = main.scrollTop;
-      }, 2000);
+      }, 1000);
     }
   }
 };
 
 const handleSectionInView = async (slug) => {
-  const cleanedSlug = cleanSlug(slug);
-  console.log(cleanedSlug);
-
   // Don't update URL during initial mount or while scrolling/updating
   if (isInitialMount.value || isScrolling.value || isUpdatingUrl.value) return;
 
@@ -150,8 +173,12 @@ const handleSectionInView = async (slug) => {
   isUpdatingUrl.value = true;
 
   try {
+    // Build new route path using cleanSlug logic
+    const newRoutePath = buildNewRoutePath(slug);
+    console.log(newRoutePath);
+
     // Update URL through Vue Router
-    await router.replace(localePath(`/${cleanedSlug}`));
+    await router.replace(localePath(newRoutePath));
   } catch (error) {
     console.warn('Router navigation failed:', error);
   } finally {
@@ -167,11 +194,13 @@ const handleSectionInView = async (slug) => {
 
 // Watch for route changes (smooth scroll for navigation)
 watch(
-  () => route.params.slug,
-  (newSlug) => {
+  () => route.path,
+  (newPath) => {
     if (!watcherEnabled.value || isScrolling.value || isUpdatingUrl.value)
       return;
-    const slug = cleanSlug(newSlug);
+
+    const slug = cleanSlug(newPath);
+
     if (slug) {
       scrollToElement(slug, false); // false = smooth scroll
     }
@@ -190,10 +219,12 @@ onMounted(() => {
   }
 
   // Initial scroll on mount - instant (only on client)
-  if (route.params.slug) {
+  const currentSlug = cleanSlug(route.path);
+  if (currentSlug) {
+    console.log('Initial slug:', currentSlug);
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        scrollToElement(route.params.slug, true); // true = instant scroll on mount
+        scrollToElement(currentSlug, true); // true = instant scroll on mount
       });
     });
   }
