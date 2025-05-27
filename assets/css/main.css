@@ -18,7 +18,7 @@
   src: url('../fonts/SeasonSans-SemiBold.otf') format('truetype'),
     url('../fonts/SeasonSans-SemiBold.woff') format('woff'),
     url('../fonts/SeasonSans-SemiBold.woff2') format('woff2');
-  font-weight: 600;
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }

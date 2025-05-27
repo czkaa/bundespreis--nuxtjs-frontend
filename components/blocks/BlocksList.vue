@@ -4,7 +4,7 @@
       <div class="w-40 shrink-0">
         <BasicsText
           :text="item.year"
-          class="block font-sans text-sm-sans text-right whitespace-nowrap tabular-nums tracking-tighter [&_span]:normal-nums [&_span]:tracking-normal"
+          class="block font-sans [&_*]:font-sans text-sm-sans text-right whitespace-nowrap tabular-nums tracking-tighter [&_span]:normal-nums [&_span]:tracking-normal"
         />
       </div>
 
