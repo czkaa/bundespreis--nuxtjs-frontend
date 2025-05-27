@@ -70,7 +70,6 @@ export default {
         gap: '500ms',
         page: '1000ms',
         fade: '500ms',
-        gap: '1s',
       },
     },
   },
