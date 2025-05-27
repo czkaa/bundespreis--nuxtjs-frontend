@@ -112,7 +112,7 @@ body {
     --column-r: 8vw;
     --intro-pl: 0;
     --intro-pr: 0;
-    ;
+    
     --intro-pb: calc(var(--logotype) - 1px);
     --intro-pt: calc(var(--logotype) - 1px);
   }
