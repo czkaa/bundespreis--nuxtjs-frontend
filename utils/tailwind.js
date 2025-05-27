@@ -1,5 +1,5 @@
 // utils/tailwind.js
-let GAP_DURATION = 500 + 100;
+let GAP_DURATION = 800;
 let INTRO_DURATION = 1200;
 let BREAKPOINT_MD = 1000;
 

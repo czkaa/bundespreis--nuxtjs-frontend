@@ -69,7 +69,7 @@ export default {
         intro: '1200ms',
         gap: '500ms',
         page: '1000ms',
-        fade: '500ms',
+        fade: '800ms',
       },
     },
   },
