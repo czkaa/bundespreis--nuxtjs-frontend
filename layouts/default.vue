@@ -19,7 +19,7 @@
         style="scrollbar-gutter: stable"
         class="absolute w-full h-frame-h transition-opacity duration-gap overflow-y-scroll pb-offset-content"
         :class="{
-          'opacity-0': !gap.isGap || !isMounted,
+          'opacity-0': !gap.isGap || !isMounted || gap.isTransitioning,
           'z-50': gap.isGap && gap.isTransitioning,
         }"
         ref="mainContainer"
