@@ -14,7 +14,7 @@
 
 <script setup>
 import { onMounted, onUnmounted, watch, ref, nextTick } from 'vue';
-import { throttle } from 'lodash';
+import throttle from 'lodash.throttle';
 import Section from './Section.vue';
 
 const route = useRoute();
