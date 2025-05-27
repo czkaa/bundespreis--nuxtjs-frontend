@@ -106,7 +106,8 @@ const disconnectObserver = () => {
   hasEmitted = false;
 };
 
-onMounted(() => {
+onMounted(async () => {
+  await nextTick();
   setupObserver();
 });
 
