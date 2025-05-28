@@ -51,7 +51,7 @@ onMounted(async () => {
 });
 
 const handleImageClick = async (item) => {
-  if (gap.isGap) {
+  if (!gap.isGap) {
     imageStore.setCurrentIndex(item.imageIndex);
   }
 };
