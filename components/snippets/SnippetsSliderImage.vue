@@ -19,13 +19,13 @@
         <div
           @click="prevImage"
           style="cursor: url('/cursors/left.svg'), w-resize"
-          class="absolute left-0 top-0 z-[100] w-1/2 h-full !cursor-w-resize"
+          class="absolute left-0 top-0 z-[100] w-1/2 h-full"
           :aria-label="$t('showPreviousImage')"
         ></div>
         <div
           @click="nextImage"
           style="cursor: url('/cursors/right.svg'), e-resize"
-          class="absolute right-0 top-0 z-[100] w-1/2 h-full !cursor-e-resize"
+          class="absolute right-0 top-0 z-[100] w-1/2 h-full"
           :aria-label="$t('showNextImage')"
         ></div>
       </template>
