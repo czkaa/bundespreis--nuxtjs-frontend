@@ -24,14 +24,14 @@
     <img
       alt="Logo Bundespreis für Kunststudierende 2025"
       src="/assets/icons/logotype-br.svg"
-      class="h-logotype"
+      class="block h-logotype"
       v-else
     />
 
     <img
       alt="Logo Bundespreis für Kunststudierende 2025"
       src="/assets/icons/logotype-tl.svg"
-      class="h-logotype"
+      class="block h-logotype"
       v-if="isTop"
     />
   </a>
