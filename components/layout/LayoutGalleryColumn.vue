@@ -9,7 +9,7 @@
           ? '-translate-x-column-l-translate'
           : 'translate-x-column-r-translate'
         : 'translate-x-0',
-      gap.isGap || !gap.isTransitioning
+      gap.isGap && !gap.isTransitioning
         ? 'pointer-events-auto'
         : 'pointer-events-none',
     ]"

@@ -110,6 +110,8 @@ body {
     --image-w: 85%;
     --column-l: 8vw;
     --column-r: 8vw;
+    --intro-pl: 0rem;
+    --intro-pr: 0rem;
     
     --intro-pb: calc(var(--logotype) - 1px);
     --intro-pt: calc(var(--logotype) - 1px);
