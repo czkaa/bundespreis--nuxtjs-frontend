@@ -15,15 +15,22 @@ const { getPageData } = getData();
 const route = useRoute();
 const localePath = useLocalePath();
 
-const { data: page, error } = await useAsyncData(
+const { data: page } = await useAsyncData(
   `pageData-landing-${route.name}`,
-  () => getPageData(`/${locale.value}`)
+  async () => {
+    try {
+      const data = await getPageData(`/${locale.value}`);
+      return data;
+    } catch (err) {
+      // since this is a catch-all route
+      // non-prerendered routes will be directed here
+      // but cause a cors error
+      await navigateTo('/');
+      return null;
+    }
+  },
+  {
+    default: () => null,
+  }
 );
-
-// since this is a catch-all route
-// non-prerendered routes will be directed here
-// but cause a cors error
-if (error.value) {
-  await navigateTo('/ueber');
-}
 </script>
