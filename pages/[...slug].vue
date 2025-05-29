@@ -13,24 +13,9 @@ definePageMeta({
 const { locale } = useI18n();
 const { getPageData } = getData();
 const route = useRoute();
-const localePath = useLocalePath();
 
-const { data: page } = await useAsyncData(
+const { data: page, error } = await useAsyncData(
   `pageData-landing-${route.name}`,
-  async () => {
-    try {
-      const data = await getPageData(`/${locale.value}`);
-      return data;
-    } catch (err) {
-      // since this is a catch-all route
-      // non-prerendered routes will be directed here
-      // but cause a cors error
-      await navigateTo('/');
-      return null;
-    }
-  },
-  {
-    default: () => null,
-  }
+  () => getPageData(`/${locale.value}`)
 );
 </script>
