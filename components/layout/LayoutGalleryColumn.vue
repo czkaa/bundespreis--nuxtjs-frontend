@@ -1,5 +1,7 @@
 <template>
   <div
+    @click.stop="toggleGap"
+    style="cursor: url('/cursors/close.svg'), pointer"
     class="w-1/2 transition-all duration-gap ease-in-out transform overflow-hidden space-y-xs flex flex-col relative"
     :class="[
       gap.isGap
@@ -7,6 +9,9 @@
           ? '-translate-x-column-l-translate'
           : 'translate-x-column-r-translate'
         : 'translate-x-0',
+      gap.isGap && !gap.isTransitioning
+        ? 'pointer-events-auto'
+        : 'pointer-events-none',
     ]"
   >
     <LayoutGalleryImage

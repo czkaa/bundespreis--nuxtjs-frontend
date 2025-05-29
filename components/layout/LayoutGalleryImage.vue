@@ -1,11 +1,12 @@
 <template>
   <NuxtLink
     ref="imageLink"
-    :to="gap.isGap ? localePath('/') : localePath('/' + item.page.uri)"
-    class="relative overflow-hidden"
-    :class="[
-      gap.isTransitioning ? 'pointer-events-none' : 'pointer-events-auto',
-    ]"
+    :to="localePath('/' + item.page.uri)"
+    class="relative cursor-pointer overflow-hidden"
+    :class="{
+      'pointer-events-none': gap.isGap,
+      'pointer-events-auto': !gap.isGap,
+    }"
     @click="handleImageClick(item)"
     :style="positionStyle"
   >
@@ -18,11 +19,6 @@
       <BasicsGalleryImage
         :image="item"
         class="hover-hover:hover:scale-[103%] hover-hover:hover:z-50 transform transition-transform duration-300"
-        :class="[
-          gap.isGap
-            ? 'cursor-[url(/cursors/close.svg),_pointer]'
-            : 'cursor-pointer',
-        ]"
       />
       <BasicsCaption :text="item.page.title" class="-mt-[0.5px]" />
     </div>
@@ -50,9 +46,7 @@ onMounted(async () => {
   await nextTick();
 });
 
-const handleImageClick = async (item) => {
-  if (!gap.isGap) {
-    imageStore.setCurrentIndex(item.imageIndex);
-  }
+const handleImageClick = (item) => {
+  imageStore.setCurrentIndex(item.imageIndex);
 };
 </script>
