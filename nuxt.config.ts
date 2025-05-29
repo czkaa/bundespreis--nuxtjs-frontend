@@ -23,7 +23,9 @@ export default defineNuxtConfig({
     apiToken: 'test',
     
     public: {
-      apiBaseUrl: 'https://bundespreis-backend.czkaa.site'
+      // apiBaseUrl: 'https://bundespreis-backend.czkaa.site'
+      apiBaseUrl: 'http://localhost:3000'
+
     }
   },
 
@@ -32,6 +34,7 @@ export default defineNuxtConfig({
   nitro: {
     preset: 'static',
     prerender: {
+      fallback: true,
       crawlLinks: true,
       routes: 
       ['/', 

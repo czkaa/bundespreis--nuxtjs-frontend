@@ -21,18 +21,15 @@
   >
     <h1 v-if="isTop" class="hidden">Bundespreis für Kunststudierende 2025</h1>
 
-    <img
+    <IconsLogoTopLeft
       alt="Logo Bundespreis für Kunststudierende 2025"
-      src="/assets/icons/logotype-br.svg"
-      class="block h-logotype"
-      v-else
-    />
-
-    <img
-      alt="Logo Bundespreis für Kunststudierende 2025"
-      src="/assets/icons/logotype-tl.svg"
       class="block h-logotype"
       v-if="isTop"
+    />
+    <IconsLogoBottomRight
+      alt="Logo Bundespreis für Kunststudierende 2025"
+      class="block h-logotype"
+      v-else="isTop"
     />
   </a>
 </template>
