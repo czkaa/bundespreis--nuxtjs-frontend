@@ -24,6 +24,6 @@ const { data: page, error } = await useAsyncData(
 // non-prerendered routes will be directed here
 // but cause a cors error
 if (error.value) {
-  await navigateTo(localePath('/'));
+  await navigateTo('/ueber');
 }
 </script>
