@@ -6,7 +6,7 @@
     class="fixed w-fit z-[100]"
     :class="[
       {
-        'transition-all duration-intro ease-linear pointer-events-none':
+        'transition-all duration-intro ease-in pointer-events-none':
           !introStore.isDone && routeStore.template === 'home',
       },
       isTop

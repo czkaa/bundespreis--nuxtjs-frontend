@@ -97,7 +97,7 @@ const imageStyle = computed(() => {
       transform: 'scale(1, 1)',
       transitionProperty: 'transform',
       transitionDuration: `${INTRO_DURATION}ms`,
-      transitionTimingFunction: imageBezier,
+      transitionTimingFunction: 'ease-our',
     };
   }
 
