@@ -7,7 +7,7 @@
     :class="[
       {
         'transition-all duration-intro ease-linear pointer-events-none':
-          !introStore.isDone,
+          !introStore.isDone && routeStore.template === 'home',
       },
       isTop
         ? !introStore.isStart && introStore.isIntro
@@ -37,6 +37,7 @@
 <script setup>
 const localePath = useLocalePath();
 const introStore = useIntroStore();
+const routeStore = useRouteStore();
 
 defineProps({
   isTop: {

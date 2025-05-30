@@ -13,16 +13,18 @@
     <ClientOnly>
       <div
         ref="introContainer"
-        class="ease-linear max-h-full max-w-full will-change-transform w-intro-container-w h-intro-container-h flex justify-center items-center relative overflow-hidden"
+        class="ease-in max-h-full max-w-full will-change-transform w-intro-container-w h-intro-container-h flex justify-center items-center relative overflow-hidden"
         :style="containerStyle"
       >
         <BasicsIntroImage
+          class="!ease-out"
           v-if="randomPortraitImage && showPortrait && isImageVisible"
           :image="randomPortraitImage"
           :style="imageStyle"
           @imageLoaded="handleImageLoaded"
         />
         <BasicsIntroImage
+          class="ease-out"
           v-if="randomLandscapeImage && !showPortrait && isImageVisible"
           :image="randomLandscapeImage"
           :style="imageStyle"
@@ -63,7 +65,7 @@ const scaleValues = ref(null);
 const containerStyle = computed(() => {
   if (!scaleValues.value || !initialStyleApplied.value) {
     return {
-      opacity: '0', // Hide until initial style is applied
+      opacity: '0',
     };
   }
 
@@ -91,12 +93,11 @@ const imageStyle = computed(() => {
   const imageScaleY = maxScale / scaleY;
 
   if (scaleValues.value.isScaled) {
-    // Animate from counter-scaled to normal scale
     return {
       transform: 'scale(1, 1)',
       transitionProperty: 'transform',
       transitionDuration: `${INTRO_DURATION}ms`,
-      transitionTimingFunction: 'ease-out', // You can change this timing function
+      transitionTimingFunction: imageBezier,
     };
   }
 
@@ -151,13 +152,12 @@ const handleImageLoaded = () => {
 
 const startTransition = () => {
   setTimeout(() => {
-    introStore.setStart(true);
-
     // Trigger the scale transition
     scaleValues.value = {
       ...scaleValues.value,
       isScaled: true,
     };
+    introStore.setStart(true);
 
     // Handle completion timing
     setTimeout(() => {
