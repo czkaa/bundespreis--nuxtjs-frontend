@@ -23,8 +23,8 @@ export default defineNuxtConfig({
     apiToken: 'test',
     
     public: {
-      // apiBaseUrl: 'https://bundespreis-backend.czkaa.site'
-      apiBaseUrl: 'http://localhost:8000'
+      apiBaseUrl: 'https://bundespreis-backend.czkaa.site'
+      // apiBaseUrl: 'http://localhost:8000'
     }
   },
 
