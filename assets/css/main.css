@@ -99,7 +99,6 @@ body {
   --spacing-md: 3.75rem;
 
   --intro: 0;
-  --intro-md:
 }
 
 
@@ -113,7 +112,7 @@ body {
     --intro-pl: 0rem;
     --intro-pr: 0rem;
     
-    --intro-pb: calc(var(--logotype) - 1px);
-    --intro-pt: calc(var(--logotype) - 1px);
+    --intro-pb: calc(var(--logotype));
+    --intro-pt: calc(var(--logotype));
   }
 }

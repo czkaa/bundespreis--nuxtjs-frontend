@@ -7,6 +7,7 @@
       :alt="image.alt"
       :width="image.width"
       :height="image.height"
+      :style="{ aspectRatio: image.ratio ? image.ratio : '' }"
       :srcset="isNearViewport ? image.srcset : ''"
       class="w-full h-auto object-cover transition-opacity duration-200 object-center"
       :class="[isNearViewport && loaded ? 'opacity-100' : 'opacity-0']"

@@ -11,10 +11,10 @@
       },
       isTop
         ? !introStore.isStart && introStore.isIntro
-          ? 'top-0 z-10 left-0 translate-y-[calc(50dvh-100%+1.3rem)] translate-x-[calc(50dvw-100%+5.6rem)] md:translate-y-[calc(50dvh-100%+1.9rem)]'
+          ? 'top-0 z-10 left-0 translate-y-[calc(50dvh-100%+1.3rem)] translate-x-[calc(50dvw-100%+5.2rem)] md:translate-x-[calc(50dvw-100%+5.3rem)] md:translate-y-[calc(50dvh-100%+2.1rem)]'
           : 'top-0 left-0 translate-0'
         : !introStore.isStart && introStore.isIntro
-        ? 'bottom-0 right-0 translate-y-[calc(-50dvh+100%-1.55rem)] md:translate-y-[calc(-50dvh+100%-1rem)]  translate-x-[calc(-50vw+100%-13rem)]'
+        ? 'bottom-0 right-0 translate-y-[calc(-50dvh+100%-1.55rem)] md:translate-y-[calc(-50dvh+100%-0.75rem)]  translate-x-[calc(-50vw+100%-13rem)] md:translate-x-[calc(-50vw+100%-12.8rem)]'
         : 'bottom-0 right-0 translate-0',
     ]"
     @click="handleClick()"

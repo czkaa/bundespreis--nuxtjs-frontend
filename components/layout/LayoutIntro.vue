@@ -165,16 +165,15 @@ const handleImageLoaded = () => {
 const startTransition = () => {
   setTimeout(() => {
     introStore.setStart(true);
-
     // Trigger the scale transition
     scaleValues.value = {
       ...scaleValues.value,
       isScaled: true,
     };
-
     // Handle completion timing
     setTimeout(() => {
       introStore.setScaled(true);
+
       setTimeout(() => {
         introStore.setDone(true);
       }, 1000);
