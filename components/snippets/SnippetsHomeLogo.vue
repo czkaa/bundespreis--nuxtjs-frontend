@@ -3,7 +3,7 @@
     :href="localePath('/')"
     :tabindex="isTop ? 1 : -1"
     :aria-label="$t('reloadPage')"
-    class="pointer-events-auto fixed w-fit z-[100]"
+    class="fixed w-fit z-[100]"
     :class="[
       {
         'transition-all duration-intro ease-linear pointer-events-none':

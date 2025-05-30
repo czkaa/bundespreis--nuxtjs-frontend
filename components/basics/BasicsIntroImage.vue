@@ -5,7 +5,7 @@
       :height="image.height"
       :srcset="image.srcsetIntro"
       :style="{ aspectRatio: image.ratio ? image.ratio : '' }"
-      class="w-full h-full object-cover transition-opacity duration-200 object-center relative z-10"
+      class="w-full h-full object-cover object-center relative z-10"
       :class="[imageIsLoaded ? 'opacity-100' : 'opacity-0']"
       @load="handleImageLoad"
     />

@@ -13,17 +13,19 @@
     <ClientOnly>
       <div
         ref="introContainer"
-        class="ease-linear max-h-full max-w-full will-change-transform w-intro-container-w h-intro-container-h flex justify-center items-center relative"
+        class="ease-linear max-h-full max-w-full will-change-transform w-intro-container-w h-intro-container-h flex justify-center items-center relative overflow-hidden"
         :style="containerStyle"
       >
         <BasicsIntroImage
           v-if="randomPortraitImage && showPortrait && isImageVisible"
           :image="randomPortraitImage"
+          :style="imageStyle"
           @imageLoaded="handleImageLoaded"
         />
         <BasicsIntroImage
           v-if="randomLandscapeImage && !showPortrait && isImageVisible"
           :image="randomLandscapeImage"
+          :style="imageStyle"
           @imageLoaded="handleImageLoaded"
         />
       </div>
@@ -58,22 +60,63 @@ const initialStyleApplied = ref(false);
 const scaleValues = ref(null);
 
 // Computed properties
+const imageStyle = computed(() => {
+  if (!scaleValues.value || !initialStyleApplied.value) {
+    return {};
+  }
+
+  const scaleX = scaleValues.value.x;
+  const scaleY = scaleValues.value.y;
+  const maxScale = Math.max(scaleX, scaleY);
+
+  // Calculate what the "natural" image scale should be
+  // We want the image to appear at normal size initially
+  const imageScaleX = maxScale / scaleX;
+  const imageScaleY = maxScale / scaleY;
+
+  if (scaleValues.value.isScaled) {
+    // Final state: image should be at natural size (scale 1,1)
+    return {
+      transform: 'scale(1, 1)',
+      transitionProperty: 'transform',
+      transitionDuration: `${INTRO_DURATION}ms`,
+      transitionTimingFunction: 'linear',
+    };
+  }
+
+  // Initial state: image at natural size, container will be scaled down
+  // The "cropping" effect comes from the container being smaller
+  return {
+    transform: 'scale(1, 1)', // Keep image at natural size
+    transitionProperty: 'none',
+  };
+});
+
 const containerStyle = computed(() => {
   if (!scaleValues.value || !initialStyleApplied.value) {
     return {
-      opacity: '0', // Hide until initial style is applied
+      opacity: '0',
+    };
+  }
+
+  const scaleX = scaleValues.value.x;
+  const scaleY = scaleValues.value.y;
+
+  if (scaleValues.value.isScaled) {
+    return {
+      opacity: '1',
+      transform: 'scale(1, 1)',
+      transitionProperty: 'transform',
+      transitionDuration: `${INTRO_DURATION}ms`,
+      transitionTimingFunction: 'linear',
     };
   }
 
   return {
     opacity: '1',
-    transform: scaleValues.value.isScaled
-      ? 'scale(1, 1)'
-      : `scale(${scaleValues.value.x}, ${scaleValues.value.y})`,
-    transitionProperty: scaleValues.value.isScaled ? 'transform' : 'none',
-    transitionDuration: scaleValues.value.isScaled
-      ? `${INTRO_DURATION}ms`
-      : '0ms',
+    // Scale the container down so the image appears cropped/fitted
+    transform: `scale(${scaleX}, ${scaleY})`,
+    transitionProperty: 'none',
   };
 });
 
@@ -120,8 +163,6 @@ const handleImageLoaded = () => {
 };
 
 const startTransition = () => {
-  if (!isReadyForTransition.value) return;
-
   setTimeout(() => {
     introStore.setStart(true);
 
