@@ -13,7 +13,7 @@
     <ClientOnly>
       <div
         ref="introContainer"
-        class="ease-linear max-h-full max-w-full will-change-transform w-intro-container-w h-intro-container-h flex justify-center items-center relative overflow-hidden"
+        class="linear max-h-full max-w-full will-change-transform w-intro-container-w h-intro-container-h flex justify-center items-center relative overflow-hidden"
         :style="containerStyle"
       >
         <BasicsIntroImage
@@ -59,39 +59,6 @@ const scaleCalculated = ref(false);
 const initialStyleApplied = ref(false);
 const scaleValues = ref(null);
 
-// Computed properties
-const imageStyle = computed(() => {
-  if (!scaleValues.value || !initialStyleApplied.value) {
-    return {};
-  }
-
-  const scaleX = scaleValues.value.x;
-  const scaleY = scaleValues.value.y;
-  const maxScale = Math.max(scaleX, scaleY);
-
-  // Calculate what the "natural" image scale should be
-  // We want the image to appear at normal size initially
-  const imageScaleX = maxScale / scaleX;
-  const imageScaleY = maxScale / scaleY;
-
-  if (scaleValues.value.isScaled) {
-    // Final state: image should be at natural size (scale 1,1)
-    return {
-      transform: 'scale(1, 1)',
-      transitionProperty: 'transform',
-      transitionDuration: `${INTRO_DURATION}ms`,
-      transitionTimingFunction: 'linear',
-    };
-  }
-
-  // Initial state: image at natural size, container will be scaled down
-  // The "cropping" effect comes from the container being smaller
-  return {
-    transform: 'scale(1, 1)', // Keep image at natural size
-    transitionProperty: 'none',
-  };
-});
-
 const containerStyle = computed(() => {
   if (!scaleValues.value || !initialStyleApplied.value) {
     return {
@@ -99,25 +66,51 @@ const containerStyle = computed(() => {
     };
   }
 
-  const scaleX = scaleValues.value.x;
-  const scaleY = scaleValues.value.y;
+  return {
+    opacity: '1',
+    transform: scaleValues.value.isScaled
+      ? 'scale(1, 1)'
+      : `scale(${scaleValues.value.x}, ${scaleValues.value.y})`,
+    transitionProperty: scaleValues.value.isScaled ? 'transform' : 'none',
+    transitionDuration: scaleValues.value.isScaled
+      ? `${INTRO_DURATION}ms`
+      : '0ms',
+    transitionTimingFunction: 'linear', // Smooth container animation
+  };
+});
 
-  if (scaleValues.value.isScaled) {
+const imageStyle = computed(() => {
+  if (!scaleValues.value || !initialStyleApplied.value) {
     return {
-      opacity: '1',
-      transform: 'scale(1, 1)',
-      transitionProperty: 'transform',
-      transitionDuration: `${INTRO_DURATION}ms`,
-      transitionTimingFunction: 'linear',
+      transform: `scale(${imageScaleX}, ${imageScaleY})`,
+      transitionProperty: 'none',
     };
   }
 
-  return {
-    opacity: '1',
-    // Scale the container down so the image appears cropped/fitted
-    transform: `scale(${scaleX}, ${scaleY})`,
-    transitionProperty: 'none',
-  };
+  const scaleX = scaleValues.value.x;
+  const scaleY = scaleValues.value.y;
+  const maxScale = Math.max(scaleX, scaleY);
+  const imageScaleX = maxScale / scaleX;
+  const imageScaleY = maxScale / scaleY;
+
+  if (scaleValues.value.isScaled) {
+    // Calculate a cubic-bezier that compensates for container's ease-out
+    // When container uses ease-out, image needs ease-in to stay synchronized
+    const scaleDifference = Math.abs(scaleX - scaleY);
+    const compensationFactor = Math.min(scaleDifference * 2, 0.8);
+
+    // Custom bezier that counteracts the container's easing
+    const bezierCurve = `cubic-bezier(${compensationFactor}, 0, ${
+      1 - compensationFactor
+    }, 1)`;
+
+    return {
+      transform: 'scale(1, 1)', // Both end at scale(1,1) for clean final state
+      transitionProperty: 'transform',
+      transitionDuration: `${INTRO_DURATION}ms`,
+      transitionTimingFunction: bezierCurve,
+    };
+  }
 });
 
 const isImageVisible = computed(() => {
