@@ -13,7 +13,7 @@
     <ClientOnly>
       <div
         ref="introContainer"
-        class="linear max-h-full max-w-full will-change-transform w-intro-container-w h-intro-container-h flex justify-center items-center relative overflow-hidden"
+        class="ease-linear max-h-full max-w-full will-change-transform w-intro-container-w h-intro-container-h flex justify-center items-center relative overflow-hidden"
         :style="containerStyle"
       >
         <BasicsIntroImage
@@ -59,10 +59,11 @@ const scaleCalculated = ref(false);
 const initialStyleApplied = ref(false);
 const scaleValues = ref(null);
 
+// Computed properties
 const containerStyle = computed(() => {
   if (!scaleValues.value || !initialStyleApplied.value) {
     return {
-      opacity: '0',
+      opacity: '0', // Hide until initial style is applied
     };
   }
 
@@ -75,16 +76,12 @@ const containerStyle = computed(() => {
     transitionDuration: scaleValues.value.isScaled
       ? `${INTRO_DURATION}ms`
       : '0ms',
-    transitionTimingFunction: 'linear', // Smooth container animation
   };
 });
 
 const imageStyle = computed(() => {
   if (!scaleValues.value || !initialStyleApplied.value) {
-    return {
-      transform: `scale(${imageScaleX}, ${imageScaleY})`,
-      transitionProperty: 'none',
-    };
+    return {};
   }
 
   const scaleX = scaleValues.value.x;
@@ -94,23 +91,20 @@ const imageStyle = computed(() => {
   const imageScaleY = maxScale / scaleY;
 
   if (scaleValues.value.isScaled) {
-    // Calculate a cubic-bezier that compensates for container's ease-out
-    // When container uses ease-out, image needs ease-in to stay synchronized
-    const scaleDifference = Math.abs(scaleX - scaleY);
-    const compensationFactor = Math.min(scaleDifference * 2, 0.8);
-
-    // Custom bezier that counteracts the container's easing
-    const bezierCurve = `cubic-bezier(${compensationFactor}, 0, ${
-      1 - compensationFactor
-    }, 1)`;
-
+    // Animate from counter-scaled to normal scale
     return {
-      transform: 'scale(1, 1)', // Both end at scale(1,1) for clean final state
+      transform: 'scale(1, 1)',
       transitionProperty: 'transform',
       transitionDuration: `${INTRO_DURATION}ms`,
-      transitionTimingFunction: bezierCurve,
+      transitionTimingFunction: 'ease-out', // You can change this timing function
     };
   }
+
+  // Initial state: counter-scaled
+  return {
+    transform: `scale(${imageScaleX}, ${imageScaleY})`,
+    transitionProperty: 'none',
+  };
 });
 
 const isImageVisible = computed(() => {
@@ -158,15 +152,16 @@ const handleImageLoaded = () => {
 const startTransition = () => {
   setTimeout(() => {
     introStore.setStart(true);
+
     // Trigger the scale transition
     scaleValues.value = {
       ...scaleValues.value,
       isScaled: true,
     };
+
     // Handle completion timing
     setTimeout(() => {
       introStore.setScaled(true);
-
       setTimeout(() => {
         introStore.setDone(true);
       }, 1000);
