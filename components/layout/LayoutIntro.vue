@@ -36,7 +36,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch, nextTick } from 'vue';
+import { ref, onMounted, onUnmounted, computed, watch, nextTick } from 'vue';
+import _ from 'lodash';
 const introStore = useIntroStore();
 import { INTRO_DURATION, BREAKPOINT_MD } from '../utils/tailwind';
 
@@ -196,6 +197,28 @@ const checkViewportSize = () => {
   showPortrait.value = window.innerWidth <= BREAKPOINT_MD;
 };
 
+const handleResize = async () => {
+  const previousShowPortrait = showPortrait.value;
+  checkViewportSize();
+
+  // If orientation changed, select new images
+  if (previousShowPortrait !== showPortrait.value) {
+    selectRandomImages();
+    // Reset image loaded state to wait for new image
+    imageLoaded.value = false;
+  }
+
+  // Reset states for recalculation
+  scaleCalculated.value = false;
+  initialStyleApplied.value = false;
+
+  // Recalculate scale
+  await calculateScale();
+};
+
+// Create debounced resize handler
+const debouncedHandleResize = _.debounce(handleResize, 250);
+
 // Watchers
 watch(isReadyForTransition, (newValue) => {
   if (newValue) {
@@ -209,5 +232,15 @@ onMounted(async () => {
   selectRandomImages();
   await nextTick();
   calculateScale();
+
+  // Add resize event listener
+  window.addEventListener('resize', debouncedHandleResize);
+});
+
+onUnmounted(() => {
+  // Clean up resize event listener
+  window.removeEventListener('resize', debouncedHandleResize);
+  // Cancel any pending debounced calls
+  debouncedHandleResize.cancel();
 });
 </script>

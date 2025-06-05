@@ -1,0 +1,35 @@
+Action x-mapp-php5 /system-bin/php5exe
+AddType x-mapp-php5 .php
+AddHandler x-mapp-php5 .php
+
+<Files .json>
+  Header unset Cache-Control
+</Files>
+
+
+RewriteEngine on
+RewriteBase /
+
+RewriteCond %{SERVER_PORT} !=443
+RewriteRule ^(.*)$ https://www.kunst-wettbewerb.de/$1 [R=301,L]
+
+# Keep folder-based access to the archive functional
+RewriteRule ^archiv/[0-9]{4}/ - [L]
+
+# The 2007 Flash site loads files from /2007, so fake this directory
+RewriteRule ^2007/(.*)$ archiv/2007/$1 [L]
+
+# The 2013 Wordpress site loads files from /2013, so fake this directory
+RewriteRule ^atlas2013/(.*)$ archiv/2013/atlas2013/$1 [L]
+
+# The 2019 site loads files from /2013, so fake this directory
+RewriteRule ^2019/(.*)$ archiv/2019/$1 [L]
+
+# Use the 2021 site from the archive as main site
+# RewriteRule ^(.*)$ archiv/2021/$1 [L]
+
+# serve current site
+RewriteRule ^(.*)$ archiv/2023/$1 [L]
+
+# Redirect everything else  to Vercel
+RewriteRule ^(.*)$ https://your-app-name.vercel.app/$1 [R=301,L]
