@@ -20,16 +20,5 @@
         "destination": "https://archiv.kunst-wettbewerb.de/archiv/2019/:path*",
         "permanent": true
       }
-    ],
-    "headers": [
-      {
-        "source": "/**/*.json",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "no-cache"
-          }
-        ]
-      }
     ]
   }
