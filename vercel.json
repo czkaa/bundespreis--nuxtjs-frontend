@@ -1,0 +1,35 @@
+{
+    "redirects": [
+      {
+        "source": "/archiv/:year(\\d{4})/:path*",
+        "destination": "https://archiv.kunst-wettbewerb.de/archiv/:year/:path*",
+        "permanent": true
+      },
+      {
+        "source": "/2007/:path*",
+        "destination": "https://archiv.kunst-wettbewerb.de/archiv/2007/:path*",
+        "permanent": true
+      },
+      {
+        "source": "/atlas2013/:path*",
+        "destination": "https://archiv.kunst-wettbewerb.de/archiv/2013/atlas2013/:path*",
+        "permanent": true
+      },
+      {
+        "source": "/2019/:path*",
+        "destination": "https://archiv.kunst-wettbewerb.de/archiv/2019/:path*",
+        "permanent": true
+      }
+    ],
+    "headers": [
+      {
+        "source": "/**/*.json",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      }
+    ]
+  }
