@@ -3,6 +3,9 @@
     <div
       :style="{ aspectRatio: image.ratio }"
       class="relative max-h-remaining-content overflow-hidden mx-auto"
+      @touchstart="handleTouchStart"
+      @touchmove="handleTouchMove"
+      @touchend="handleTouchEnd"
     >
       <BasicsImage :image="image" class="w-full [&>img]:object-cover" />
       <div
@@ -63,20 +66,6 @@
         />
       </div>
     </div>
-
-    <!-- Navigation with swipe handling -->
-    <div
-      class="mx-auto"
-      :style="{ maxWidth: `calc(var(--remaining-content) * ${image.ratio})` }"
-    >
-      <SnippetSliderNav
-        :current-index="imageStore.currentIndex"
-        :total-items="imagesLength"
-        @navigate="handleNavigate"
-        @previous="prevImage"
-        @next="nextImage"
-      />
-    </div>
   </div>
 </template>
 
@@ -84,11 +73,20 @@
 const imageStore = useImageStore();
 const showShowmore = ref(false);
 
+// Touch/swipe state
+const touchStartX = ref(0);
+const touchStartY = ref(0);
+const touchEndX = ref(0);
+const touchEndY = ref(0);
+const minSwipeDistance = 50; // Minimum distance for a swipe
+const maxVerticalDistance = 100; // Maximum vertical movement to still count as horizontal swipe
+
 const props = defineProps({
   image: {
     type: Object,
     required: true,
   },
+
   index: {
     type: Number,
     required: true,
@@ -99,20 +97,71 @@ const props = defineProps({
   },
 });
 
-// Navigation methods
+// Navigation methods - Fixed to properly handle wrap-around
 const nextImage = () => {
+  // Use modulo arithmetic with adjustment for proper wrap-around
   const nextIndex = (imageStore.currentIndex + 1) % props.imagesLength;
   imageStore.setCurrentIndex(nextIndex);
 };
 
 const prevImage = () => {
+  // Fix: Calculate the previous index with proper wrap-around for negative values
   const prevIndex =
     (imageStore.currentIndex - 1 + props.imagesLength) % props.imagesLength;
   imageStore.setCurrentIndex(prevIndex);
 };
 
-const handleNavigate = (index) => {
-  imageStore.setCurrentIndex(index);
+// Touch event handlers
+const handleTouchStart = (e) => {
+  // Only handle if we have multiple images and showmore is not active
+  if (props.imagesLength <= 1 || showShowmore.value) return;
+
+  touchStartX.value = e.touches[0].clientX;
+  touchStartY.value = e.touches[0].clientY;
+};
+
+const handleTouchMove = (e) => {
+  // Only handle if we have multiple images and showmore is not active
+  if (props.imagesLength <= 1 || showShowmore.value) return;
+
+  // Prevent default scrolling behavior during horizontal swipes
+  const currentX = e.touches[0].clientX;
+  const currentY = e.touches[0].clientY;
+  const deltaX = Math.abs(currentX - touchStartX.value);
+  const deltaY = Math.abs(currentY - touchStartY.value);
+
+  // If horizontal movement is greater than vertical, prevent default
+  if (deltaX > deltaY) {
+    e.preventDefault();
+  }
+};
+
+const handleTouchEnd = (e) => {
+  // Only handle if we have multiple images and showmore is not active
+  if (props.imagesLength <= 1 || showShowmore.value) return;
+
+  touchEndX.value = e.changedTouches[0].clientX;
+  touchEndY.value = e.changedTouches[0].clientY;
+
+  handleSwipe();
+};
+
+const handleSwipe = () => {
+  const deltaX = touchEndX.value - touchStartX.value;
+  const deltaY = touchEndY.value - touchStartY.value;
+  const absDeltaX = Math.abs(deltaX);
+  const absDeltaY = Math.abs(deltaY);
+
+  // Check if it's a valid horizontal swipe
+  if (absDeltaX > minSwipeDistance && absDeltaY < maxVerticalDistance) {
+    if (deltaX > 0) {
+      // Swipe right - go to previous image
+      prevImage();
+    } else {
+      // Swipe left - go to next image
+      nextImage();
+    }
+  }
 };
 
 watch(
