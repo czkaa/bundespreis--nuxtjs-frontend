@@ -1,35 +1,30 @@
 <template>
   <div class="w-full row-start-1 col-start-1 relative" snippets-slider-image>
-    <div
-      :style="{ aspectRatio: image.ratio }"
-      class="relative max-h-remaining-content overflow-hidden mx-auto"
+    <SnippetsSliderNav
+      :current-index="imageStore.currentIndex"
+      :total-items="imagesLength"
+      :disabled="showShowmore"
+      @navigate="handleNavigate"
+      @previous="prevImage"
+      @next="nextImage"
     >
-      <BasicsImage :image="image" class="w-full [&>img]:object-cover" />
       <div
-        class="absolute top-0 p-xs bg-black bg-opacity-70 h-full"
-        v-if="image.hasShowmore && image.showmore.length > 0 && showShowmore"
+        :style="{ aspectRatio: image.ratio }"
+        class="relative max-h-remaining-content overflow-hidden mx-auto"
       >
-        <BasicsText
-          :text="image.showmore"
-          size="xs"
-          class="text-white [&_p]:mb-4"
-        />
+        <BasicsImage :image="image" class="w-full [&>img]:object-cover" />
+        <div
+          class="absolute top-0 p-xs bg-black bg-opacity-70 h-full"
+          v-if="image.hasShowmore && image.showmore.length > 0 && showShowmore"
+        >
+          <BasicsText
+            :text="image.showmore"
+            size="xs"
+            class="text-white [&_p]:mb-4"
+          />
+        </div>
       </div>
-      <template v-if="imagesLength > 1 && !showShowmore">
-        <div
-          @click="prevImage"
-          style="cursor: url('/cursors/left.svg'), w-resize"
-          class="absolute left-0 top-0 z-[100] w-1/2 h-full"
-          :aria-label="$t('showPreviousImage')"
-        ></div>
-        <div
-          @click="nextImage"
-          style="cursor: url('/cursors/right.svg'), e-resize"
-          class="absolute right-0 top-0 z-[100] w-1/2 h-full"
-          :aria-label="$t('showNextImage')"
-        ></div>
-      </template>
-    </div>
+    </SnippetsSliderNav>
 
     <div
       class="flex mx-auto overflow-hidden justify-start items-start gap-xs shrink-0 w-full z-50"
@@ -63,24 +58,12 @@
         />
       </div>
     </div>
-
-    <!-- Navigation with swipe handling -->
-    <div
-      class="mx-auto"
-      :style="{ maxWidth: `calc(var(--remaining-content) * ${image.ratio})` }"
-    >
-      <SnippetSliderNav
-        :current-index="imageStore.currentIndex"
-        :total-items="imagesLength"
-        @navigate="handleNavigate"
-        @previous="prevImage"
-        @next="nextImage"
-      />
-    </div>
   </div>
 </template>
 
 <script setup>
+import { ref, watch } from 'vue';
+
 const imageStore = useImageStore();
 const showShowmore = ref(false);
 
