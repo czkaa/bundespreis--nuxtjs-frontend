@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full row-start-1 col-start-1 relative" snippets-slider-image>
+  <div class="w-full row-start-1 col-start-1 relative" snippets-slider-nav>
     <div
       :style="{ aspectRatio: image.ratio }"
       class="relative max-h-remaining-content overflow-hidden mx-auto"
