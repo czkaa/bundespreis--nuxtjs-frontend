@@ -6,6 +6,11 @@
       "permanent": true
     },
     {
+      "source": "/archiv/:year/",
+      "destination": "https://archiv.kunst-wettbewerb.de/:year/",
+      "permanent": true
+    },
+    {
       "source": "/2007/:path*",
       "destination": "https://archiv.kunst-wettbewerb.de/2007/:path*",
       "permanent": true
