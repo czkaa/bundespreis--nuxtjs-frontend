@@ -66,6 +66,11 @@ export default defineNuxtConfig({
       },
     ],
     strategy: 'prefix_except_default',
+    detectBrowserLanguage: {
+      useCookie: false,
+      alwaysRedirect: false,
+      fallbackLocale: 'en'
+    },
     customRoutes: 'config',
     pages: {
       'preistragendesub-slug': {
