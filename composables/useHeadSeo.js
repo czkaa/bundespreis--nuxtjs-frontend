@@ -14,6 +14,9 @@ export const useHeadSeo = () => {
 
     head.patch({
       title: siteTitle,
+      htmlAttrs: {
+        lang: locale.value === 'en' ? 'en' : 'de',
+      },
       meta: [
         {
           name: 'description',
