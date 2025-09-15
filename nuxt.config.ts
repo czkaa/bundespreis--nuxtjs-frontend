@@ -69,7 +69,7 @@ export default defineNuxtConfig({
     detectBrowserLanguage: {
       useCookie: false,
       alwaysRedirect: false,
-      fallbackLocale: 'en'
+      fallbackLocale: 'de'
     },
     customRoutes: 'config',
     pages: {
