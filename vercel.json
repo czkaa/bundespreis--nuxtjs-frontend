@@ -9,21 +9,7 @@
       "source": "/archiv/:year/",
       "destination": "https://archiv.kunst-wettbewerb.de/:year/",
       "permanent": true
-    },
-    {
-      "source": "/2007/:path*",
-      "destination": "https://archiv.kunst-wettbewerb.de/2007/:path*",
-      "permanent": true
-    },
-    {
-      "source": "/atlas2013/:path*",
-      "destination": "https://archiv.kunst-wettbewerb.de/2013/atlas2013/:path*",
-      "permanent": true
-    },
-    {
-      "source": "/2019/:path*",
-      "destination": "https://archiv.kunst-wettbewerb.de/2019/:path*",
-      "permanent": true
     }
-  ]
+  ],
+  "trailingSlash": true
 }

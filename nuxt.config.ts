@@ -53,6 +53,16 @@ export default defineNuxtConfig({
   },
 
 
+
+  experimental: {
+    defaults: {
+      nuxtLink: {
+        trailingSlash: 'append'
+      }
+    }
+  },
+
+
   i18n: {
     defaultLocale: 'de',
     locales: [
