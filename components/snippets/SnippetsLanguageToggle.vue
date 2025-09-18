@@ -40,7 +40,13 @@ const switchPath = computed(() => {
     return `${targetLocale.value === 'de' ? '/' : '/en'}`;
   }
   const routes = props.languageData?.[locale.value]?.routes || {};
-  const translation = routes[pathWithoutLocale.value]?.[targetLocale.value];
+
+  // Try both with and without trailing slash
+  const pathKey = pathWithoutLocale.value;
+  const pathKeyWithSlash = pathKey + '/';
+
+  const currentRoute = routes[pathKey] || routes[pathKeyWithSlash];
+  const translation = currentRoute?.[targetLocale.value];
 
   return translation
     ? `${targetLocale.value === 'de' ? '' : '/en'}/${translation}`
