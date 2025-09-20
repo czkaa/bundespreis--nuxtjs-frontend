@@ -32,7 +32,8 @@ const targetLocale = computed(() => (locale.value === 'de' ? 'en' : 'de'));
 const pathWithoutLocale = computed(() => {
   return route.path
     .replace(new RegExp(`^\\/${locale.value}\\/?`), '')
-    .replace(/^\/+/, '');
+    .replace(/^\/+/, '')
+    .replace(/\/+$/, '');
 });
 
 const switchPath = computed(() => {
@@ -41,11 +42,11 @@ const switchPath = computed(() => {
   }
   const routes = props.languageData?.[locale.value]?.routes || {};
 
-  // Try both with and without trailing slash
   const pathKey = pathWithoutLocale.value;
-  const pathKeyWithSlash = pathKey + '/';
 
-  const currentRoute = routes[pathKey] || routes[pathKeyWithSlash];
+  const currentRoute = routes[pathKey];
+  console.log(routes, pathKey);
+
   const translation = currentRoute?.[targetLocale.value];
 
   return translation
