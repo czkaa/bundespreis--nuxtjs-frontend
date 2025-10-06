@@ -23,7 +23,7 @@ export default defineNuxtConfig({
     apiToken: 'qjwJwdIc8wgz24',
     
     public: {
-      apiBaseUrl: 'https://bundespreis-backend.czkaa.site'
+      apiBaseUrl: 'https://backend-2025.kunst-wettbewerb.de'
       // apiBaseUrl: 'http://localhost:8000'
     }
   },
